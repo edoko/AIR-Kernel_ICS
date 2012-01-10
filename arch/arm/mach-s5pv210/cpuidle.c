@@ -62,7 +62,7 @@ static void s5p_enter_idle(void)
 
 /* Actual code that puts the SoC in different idle states */
 static int s5p_enter_idle_normal(struct cpuidle_device *dev,
-				struct cpuidle_state *state,
+			struct cpuidle_driver *drv,
 			      int index)
 {
 	struct timeval before, after;
