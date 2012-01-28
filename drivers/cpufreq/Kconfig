@@ -164,6 +164,20 @@ config CPU_FREQ_DEFAULT_GOV_WHEATLEY
 	help
 	  Use the CPUFreq governor 'wheatley' as default.
 
+config CPU_FREQ_DEFAULT_GOV_INTELLIDEMAND
+	bool "intellidemand"
+	select CPU_FREQ_GOV_INTELLIDEMAND
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Intelligent OnDemand Govneror based on Samsung Patched OnDemand
+
+config CPU_FREQ_DEFAULT_GOV_SCARY
+    bool "scary"
+    select CPU_FREQ_GOV_SCARY
+    select CPU_FREQ_GOV_SCARY
+    help
+        Use the CPUFreq governor 'scary' as default.
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -316,6 +330,19 @@ config CPU_FREQ_GOV_LAZY
 config CPU_FREQ_GOV_WHEATLEY
 	tristate "'wheatley' cpufreq governor"
 	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_SCARY
+    tristate "'smartass' cpufreq governor"
+    depends on CPU_FREQ
+    help
+        scary - a governor for cabbages
+        If in doubt, say N.
+
+config CPU_FREQ_GOV_INTELLIDEMAND
+	tristate "'intellidemand' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  'intellidemand' - an intelligent ondemand governor
 
 menu "x86 CPU frequency scaling drivers"
 depends on X86

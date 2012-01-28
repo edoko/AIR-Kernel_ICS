@@ -62,4 +62,7 @@ obj-$(CONFIG_CUSTOM_VOLTAGE)	+= custom_voltage.o
 obj-$(CONFIG_GENERIC_BLN)	+= bln.o
 obj-$(CONFIG_BLD)		+= bld.o
 obj-$(CONFIG_TOUCH_WAKE)	+= touch_wake.o
+<<<<<<< HEAD
 obj-$(CONFIG_CPU_DIDLE)		+= deep_idle.o
+=======
+>>>>>>> parent of 7f8d2c1... Add power saving state DEEP IDLE version 2.
