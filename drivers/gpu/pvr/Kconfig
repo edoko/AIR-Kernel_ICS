@@ -18,6 +18,14 @@ config PVR_BUILD_RELEASE
 config PVR_BUILD_DEBUG
 	bool "Debug"
 
+config PVR_LIMIT_MINFREQ
+	bool "Limit minimum CPU frequency"
+	depends on PVR_SGX
+	default y
+	help
+	  Enable to limit the minimum CPU frequency to 200MHz while the GPU is
+	  active to make sure the GPU always runs at full speed.
+
 endchoice
 
 # Release build debugging options
