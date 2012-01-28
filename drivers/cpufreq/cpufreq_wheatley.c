@@ -484,8 +484,6 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 	unsigned int idle_time, wall_time, iowait_time;
 	unsigned int load, load_freq;
 	int freq_avg;
-	struct cpuidle_device * j_cpuidle_dev = NULL;
-	struct cpuidle_state * deepidle_state = NULL;
 	unsigned long long deepidle_time, deepidle_usage;
 
 	j_dbs_info = &per_cpu(od_cpu_dbs_info, j);
@@ -545,7 +543,7 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 	if (load_freq > max_load_freq)
 	    max_load_freq = load_freq;
 
-	j_cpuidle_dev = per_cpu(cpuidle_devices, j);
+	/*j_cpuidle_dev = per_cpu(cpuidle_devices, j);
 
 	if (j_cpuidle_dev)
 	    deepidle_state = &j_cpuidle_dev->states[j_cpuidle_dev->state_count - 1];
@@ -559,7 +557,7 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 
 	    j_dbs_info->prev_idletime = deepidle_time;
 	    j_dbs_info->prev_idleusage = deepidle_usage;
-	}
+	}*/
     }
 
     if (total_usage > 0 && total_idletime / total_usage >= dbs_tuners_ins.target_residency) { 
