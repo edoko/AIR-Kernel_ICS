@@ -57,8 +57,12 @@ obj-$(CONFIG_PN544)		+= pn544.o
 obj-$(CONFIG_SAMSUNG_JACK)	+= sec_jack.o
 obj-$(CONFIG_USB_SWITCH_FSA9480)	+= fsa9480.o
 obj-$(CONFIG_SAMSUNG_MODEMCTL) += samsung_modemctl/
+<<<<<<< HEAD
 obj-$(CONFIG_LIVE_OC)		+= live_oc.o
 obj-$(CONFIG_CUSTOM_VOLTAGE)	+= custom_voltage.o
 obj-$(CONFIG_GENERIC_BLN)	+= bln.o
 obj-$(CONFIG_BLD)		+= bld.o
 obj-$(CONFIG_TOUCH_WAKE)	+= touch_wake.o
+=======
+obj-$(CONFIG_CPU_DIDLE)		+= deep_idle.o
+>>>>>>> d948ec4... Add power saving state DEEP IDLE version 2.
