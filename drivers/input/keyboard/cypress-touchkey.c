@@ -124,11 +124,11 @@ static int i2c_touchkey_write_byte(struct cypress_touchkey_devdata *devdata,
 static void all_keys_up(struct cypress_touchkey_devdata *devdata)
 {
 	int i;
-
+    
 	for (i = 0; i < devdata->pdata->keycode_cnt; i++)
 		input_report_key(devdata->input_dev,
-						devdata->pdata->keycode[i], 0);
-
+                         devdata->pdata->keycode[i], 0);
+    
 	input_sync(devdata->input_dev);
 }
 
@@ -190,51 +190,62 @@ static irqreturn_t touchkey_interrupt_thread(int irq, void *touchkey_devdata)
 		scancode = (data & SCANCODE_MASK) - 1;
 		if (scancode < 0 || scancode >= devdata->pdata->keycode_cnt) {
 			dev_err(&devdata->client->dev, "%s: scancode is out of "
-				"range\n", __func__);
+                    "range\n", __func__);
 			goto err;
 		}
-
+        
 #ifdef CONFIG_TOUCH_WAKE
 		if (!device_is_suspended())
 #endif
-		    {
+        {
 			input_report_key(devdata->input_dev,
-					 devdata->pdata->keycode[scancode],
-					 !(data & UPDOWN_EVENT_MASK));
-		    }
+                             devdata->pdata->keycode[scancode],
+                             !(data & UPDOWN_EVENT_MASK));
+        }
 #if defined(CONFIG_TOUCH_WAKE) || defined(CONFIG_BLD)
 		if (!(data & UPDOWN_EVENT_MASK))
-		    {
+        {
+            
+            #ifdef CONFIG_BLD      
+           
+                  touchkey_pressed();
+         
+            #endif
 #ifdef CONFIG_TOUCH_WAKE
 			touch_press();
 #endif
-		    }
+        }
 #endif
 	} else {
 #ifdef CONFIG_TOUCH_WAKE
 		if (!device_is_suspended())
 #endif
-		    {
+        {
 			for (i = 0; i < devdata->pdata->keycode_cnt; i++)
 			    input_report_key(devdata->input_dev,
-					     devdata->pdata->keycode[i],
-					     !!(data & (1U << i)));
-		    }
-
+                                 devdata->pdata->keycode[i],
+                                 !!(data & (1U << i)));
+        }
+        
 #if defined(CONFIG_TOUCH_WAKE) || defined(CONFIG_BLD)
 		for (i = 0; i < devdata->pdata->keycode_cnt; i++)
-			{
+        {
 			if(!!(data & (1U << i)))
-			    {
+            {
+                #ifdef CONFIG_BLD      
+                	
+                      touchkey_pressed();
+                	
+                #endif
 #ifdef CONFIG_TOUCH_WAKE
 				touch_press();
 #endif
 				break;
-			    }
-		    }
+            }
+        }
 #endif
 	}
-
+    
 	input_sync(devdata->input_dev);
 err:
 	return IRQ_HANDLED;
