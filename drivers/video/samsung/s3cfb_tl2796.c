@@ -77,7 +77,7 @@ struct s5p_lcd *lcd_;
 u32 original_color_adj_mults[3];
 unsigned int panel_config_sequence = 0;
 
-int hacky_v1_offset[3] = {-14, -17, -18};
+int hacky_v1_offset[3] = {-24, -30, -33};
 
 static const u16 s6e63m0_SEQ_ETC_SETTING_SAMSUNG[] = {
 	/* ETC Condition Set Command  */
@@ -278,7 +278,7 @@ static void setup_gamma_regs(struct s5p_lcd *lcd, u16 gamma_regs[])
 		// terrible shameful hack allowing to get back standard
 		// colors without fixing the real thing properly (gamma table)
 		// it consist on a simple (negative) offset applied on v0
-		gamma_regs[c] = ((adj + hacky_v1_offset[c]) > 0 && (adj <=255)) ? (adj + hacky_v1_offset[c]) | 0x100 : adj | 0x100;
+		gamma_regs[c] = (adj > hacky_v1_offset[c] && (adj <=255)) ? (adj - hacky_v1_offset[c]) | 0x100 : adj | 0x100;
 #else
 		gamma_regs[c] = adj | 0x100;
 #endif
