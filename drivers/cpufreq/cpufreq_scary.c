@@ -1,5 +1,5 @@
 /*
-        Scary governor based off of conservatives source with some of smartasses features
+        Scary governor based off of conservatives source with some of scaryes features
         
         For devs - If you're going to port this driver to other devices, make sure to edit the default sleep frequencies & prev frequencies or else you might be going outside your devices hardware limits.
 */
@@ -28,15 +28,11 @@
 
 #define DEF_FREQUENCY_UP_THRESHOLD		(80)
 #define DEF_FREQUENCY_DOWN_THRESHOLD		(45)
-#define DEFAULT_SLEEP_MAX_FREQ 245760
-#define DEFAULT_SLEEP_MIN_FREQ 122880
-#define DEFAULT_SLEEP_PREV_FREQ 122880 //This is so that if there are any issues resulting in sleep_prev_freq getting set, there will be a backup freq
-#define DEFAULT_PREV_MAX 614400
 static unsigned int suspended;
-static unsigned int sleep_max_freq=DEFAULT_SLEEP_MAX_FREQ;
-static unsigned int sleep_min_freq=DEFAULT_SLEEP_MIN_FREQ;
-static unsigned int sleep_prev_freq=DEFAULT_SLEEP_PREV_FREQ;
-static unsigned int sleep_prev_max=DEFAULT_PREV_MAX;
+static unsigned int sleep_max_freq=800000;
+static unsigned int sleep_min_freq=400000;
+static unsigned int sleep_prev_freq=200000;
+static unsigned int sleep_prev_max=1000000;
 
 /*
  * The polling frequency of this governor depends on the capability of
@@ -367,14 +363,14 @@ static struct attribute_group dbs_attr_group = {
 
 /************************** sysfs end ************************/
 
-/********** Porting smartass code for suspension**********/
-static void smartass_suspend(int cpu, int suspend)
+/********** Porting scary code for suspension**********/
+static void scary_suspend(int cpu, int suspend)
 {
-    struct cpu_dbs_info_s *this_smartass = &per_cpu(cs_cpu_dbs_info, smp_processor_id());
-    struct cpufreq_policy *policy = this_smartass->cur_policy;
+    struct cpu_dbs_info_s *this_scary = &per_cpu(cs_cpu_dbs_info, smp_processor_id());
+    struct cpufreq_policy *policy = this_scary->cur_policy;
     unsigned int new_freq;
 
-    if (!this_smartass->enable || sleep_max_freq==0) // disable behavior for sleep_max_freq==0
+    if (!this_scary->enable || sleep_max_freq==0) // disable behavior for sleep_max_freq==0
         return;
 
     if (suspend) 
@@ -411,26 +407,26 @@ static void smartass_suspend(int cpu, int suspend)
     
 }
 
-static void smartass_early_suspend(struct early_suspend *handler) 
+static void scary_early_suspend(struct early_suspend *handler) 
 {
     int i;
     suspended = 1;
     for_each_online_cpu(i)
-    smartass_suspend(i,1);
+    scary_suspend(i,1);
 }
 
-static void smartass_late_resume(struct early_suspend *handler) 
+static void scary_late_resume(struct early_suspend *handler) 
 {
     int i;
     suspended = 0;
     for_each_online_cpu(i)
-    smartass_suspend(i,0);
+    scary_suspend(i,0);
 }
 
-static struct early_suspend smartass_power_suspend = 
+static struct early_suspend scary_power_suspend = 
 {
-    .suspend = smartass_early_suspend,
-    .resume = smartass_late_resume,
+    .suspend = scary_early_suspend,
+    .resume = scary_late_resume,
 };
 
 
@@ -705,7 +701,7 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 static
 #endif
 struct cpufreq_governor cpufreq_gov_scary = {
-	.name			= "Scary",
+	.name			= "scary",
 	.governor		= cpufreq_governor_dbs,
 	.max_transition_latency	= TRANSITION_LATENCY_LIMIT,
 	.owner			= THIS_MODULE,
@@ -720,7 +716,7 @@ static int __init cpufreq_gov_dbs_init(void)
 		printk(KERN_ERR "Creation of kconservative failed\n");
 		return -EFAULT;
 	}
-    register_early_suspend(&smartass_power_suspend);
+    register_early_suspend(&scary_power_suspend);
 	err = cpufreq_register_governor(&cpufreq_gov_scary);
 	if (err)
 		destroy_workqueue(kconservative_wq);
@@ -741,4 +737,3 @@ fs_initcall(cpufreq_gov_dbs_init);
 module_init(cpufreq_gov_dbs_init);
 #endif
 module_exit(cpufreq_gov_dbs_exit);
-
