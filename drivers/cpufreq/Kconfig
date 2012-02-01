@@ -316,16 +316,17 @@ config CPU_FREQ_SAMPLING_LATENCY_MULTIPLIER
 	  Sampling latency rate multiplied by the cpu switch latency.
 	  Affects governor polling.
 
-config CPU_FREQ_GOV_LAZY
-	tristate "'lazy' cpufreq governor"
-	depends on CPU_FREQ
-
 config CPU_FREQ_GOV_SCARY
-    tristate "'smartass' cpufreq governor"
+    tristate "'scary' cpufreq governor"
     depends on CPU_FREQ
     help
         scary - a governor for cabbages
+
         If in doubt, say N.
+
+config CPU_FREQ_GOV_LAZY
+	tristate "'lazy' cpufreq governor"
+	depends on CPU_FREQ
 
 config CPU_FREQ_GOV_INTELLIDEMAND
 	tristate "'intellidemand' cpufreq governor"
