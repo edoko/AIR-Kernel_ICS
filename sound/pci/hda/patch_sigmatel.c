@@ -4162,31 +4162,13 @@ static int enable_pin_detect(struct hda_codec *codec, hda_nid_t nid,
 	return 1;
 }
 
-<<<<<<< HEAD
 static int is_nid_hp_pin(struct auto_pin_cfg *cfg, hda_nid_t nid)
-=======
-<<<<<<< HEAD
-static int is_nid_hp_pin(struct auto_pin_cfg *cfg, hda_nid_t nid)
-=======
-static int is_nid_out_jack_pin(struct auto_pin_cfg *cfg, hda_nid_t nid)
->>>>>>> 253a6f1ab24570af2e4142cc50da697305f3e501
->>>>>>> parent of 456e670... ALSA: hda - Fix silent outputs from docking-station jacks of Dell laptops
 {
 	int i;
 	for (i = 0; i < cfg->hp_outs; i++)
 		if (cfg->hp_pins[i] == nid)
 			return 1; /* nid is a HP-Out */
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-
-=======
-	for (i = 0; i < cfg->line_outs; i++)
-		if (cfg->line_out_pins[i] == nid)
-			return 1; /* nid is a line-Out */
->>>>>>> 253a6f1ab24570af2e4142cc50da697305f3e501
->>>>>>> parent of 456e670... ALSA: hda - Fix silent outputs from docking-station jacks of Dell laptops
 	return 0; /* nid is not a HP-Out */
 };
 
@@ -4372,15 +4354,7 @@ static int stac92xx_init(struct hda_codec *codec)
 			continue;
 		}
 
-<<<<<<< HEAD
 		if (is_nid_hp_pin(cfg, nid))
-=======
-<<<<<<< HEAD
-		if (is_nid_hp_pin(cfg, nid))
-=======
-		if (is_nid_out_jack_pin(cfg, nid))
->>>>>>> 253a6f1ab24570af2e4142cc50da697305f3e501
->>>>>>> parent of 456e670... ALSA: hda - Fix silent outputs from docking-station jacks of Dell laptops
 			continue; /* already has an unsol event */
 
 		pinctl = snd_hda_codec_read(codec, nid, 0,
