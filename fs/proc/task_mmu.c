@@ -344,7 +344,6 @@ struct mem_size_stats {
 	u64 pss;
 };
 
-
 static void smaps_pte_entry(pte_t ptent, unsigned long addr,
 		unsigned long ptent_size, struct mm_walk *walk, int huge_file)
 {
@@ -379,7 +378,6 @@ static void smaps_pte_entry(pte_t ptent, unsigned long addr,
 	if (mapcount >= 2) {
 		if (pte_dirty(ptent) || (!huge_file && PageDirty(page))) {
 			mss->shared_dirty += ptent_size;
-
 			if (huge_file)
 				mss->shared_huge_dirty += ptent_size;
 		} else {
@@ -702,7 +700,6 @@ static int pagemap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
 	struct pagemapread *pm = walk->private;
 	pte_t *pte;
 	int err = 0;
-
 
 	/* find the first VMA at or above 'addr' */
 	vma = find_vma(walk->mm, addr);
