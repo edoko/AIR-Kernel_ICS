@@ -209,10 +209,10 @@ static struct mm_struct *mm_access(struct task_struct *task, unsigned int mode)
 	if (err)
 		return ERR_PTR(err);
 
-	mm = get_task_mm(task);
+    mm = get_task_mm(task);
 	if (mm && mm != current->mm &&
-			!ptrace_may_access(task, mode) &&
-			!capable(CAP_SYS_RESOURCE)) {
+        !ptrace_may_access(task, mode) &&
+        !capable(CAP_SYS_RESOURCE)) {
 		mmput(mm);
 		mm = ERR_PTR(-EACCES);
 	}
@@ -365,7 +365,7 @@ static int proc_pid_stack(struct seq_file *m, struct pid_namespace *ns,
 static int proc_pid_schedstat(struct task_struct *task, char *buffer)
 {
 	return sprintf(buffer, "%llu %llu %lu\n",
-			(unsigned long long)task->se.sum_exec_runtime,
+			(unsigned long long)tsk_seruntime(task),
 			(unsigned long long)task->sched_info.run_delay,
 			task->sched_info.pcount);
 }
@@ -800,52 +800,8 @@ static ssize_t mem_rw(struct file *file, char __user *buf,
 			size_t count, loff_t *ppos, int write)
 {
 	struct mm_struct *mm = file->private_data;
-
-<<<<<<< HEAD
-	if (!mm)
-		return 0;
-
-	page = (char *)__get_free_page(GFP_TEMPORARY);
-	if (!page)
-		return -ENOMEM;
-
-	ret = 0;
- 
-	while (count > 0) {
-		int this_len, retval;
-
-		this_len = (count > PAGE_SIZE) ? PAGE_SIZE : count;
-		retval = access_remote_vm(mm, src, page, this_len, 0);
-		if (!retval) {
-			if (!ret)
-				ret = -EIO;
-			break;
-		}
-
-		if (copy_to_user(buf, page, retval)) {
-			ret = -EFAULT;
-			break;
-		}
- 
-		ret += retval;
-		src += retval;
-		buf += retval;
-		count -= retval;
-	}
-	*ppos = src;
-
-	free_page((unsigned long) page);
-	return ret;
-}
-
-static ssize_t mem_write(struct file * file, const char __user *buf,
-			 size_t count, loff_t *ppos)
-{
-	int copied;
-=======
 	unsigned long addr = *ppos;
 	ssize_t copied;
->>>>>>> 2d14358... Upgrade to 3.0.21
 	char *page;
 
 	if (!mm)
@@ -891,8 +847,6 @@ free:
 	free_page((unsigned long) page);
 	return copied;
 }
-<<<<<<< HEAD
-=======
 
 static ssize_t mem_read(struct file *file, char __user *buf,
 			size_t count, loff_t *ppos)
@@ -901,11 +855,10 @@ static ssize_t mem_read(struct file *file, char __user *buf,
 }
 
 static ssize_t mem_write(struct file *file, const char __user *buf,
-		size_t count, loff_t *ppos)
+			 size_t count, loff_t *ppos)
 {
 	return mem_rw(file, (char __user*)buf, count, ppos, 1);
 }
->>>>>>> 2d14358... Upgrade to 3.0.21
 
 loff_t mem_lseek(struct file *file, loff_t offset, int orig)
 {
