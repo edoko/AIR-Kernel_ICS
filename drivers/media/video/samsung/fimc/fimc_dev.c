@@ -1639,7 +1639,7 @@ int fimc_resume(struct platform_device *pdev)
 
 	if (in_use && 0 != ctrl->id)
 		fimc_clk_en(ctrl, false);
-	
+
 	return 0;
 }
 #else
