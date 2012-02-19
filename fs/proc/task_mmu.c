@@ -1113,4 +1113,4 @@ const struct file_operations proc_numa_maps_operations = {
 	.llseek		= seq_lseek,
 	.release	= seq_release_private,
 };
-#endif /* CONFIG_NUMA */
+#endif /* CONFIG_NUMA */ 

@@ -487,6 +487,7 @@ ext4_xattr_release_block(handle_t *handle, struct inode *inode,
 		ext4_free_blocks(handle, inode, bh, 0, 1,
 				 EXT4_FREE_BLOCKS_METADATA |
 				 EXT4_FREE_BLOCKS_FORGET);
+
 	} else {
 		le32_add_cpu(&BHDR(bh)->h_refcount, -1);
 		error = ext4_handle_dirty_metadata(handle, inode, bh);
