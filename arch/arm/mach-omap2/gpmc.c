@@ -78,9 +78,9 @@ struct gpmc_cs_config {
 
 /*
  * Structure to save/restore gpmc context
- * to support core off on OMAP3
+ * to support core off.
  */
-struct omap3_gpmc_regs {
+struct omap_gpmc_regs {
 	u32 sysconfig;
 	u32 irqenable;
 	u32 timeout_ctrl;
@@ -528,7 +528,13 @@ int gpmc_cs_configure(int cs, int cmd, int wval)
 
 	case GPMC_CONFIG_DEV_SIZE:
 		regval  = gpmc_cs_read_reg(cs, GPMC_CS_CONFIG1);
+
+		/* clear 2 target bits */
+		regval &= ~GPMC_CONFIG1_DEVICESIZE(3);
+
+		/* set the proper value */
 		regval |= GPMC_CONFIG1_DEVICESIZE(wval);
+
 		gpmc_cs_write_reg(cs, GPMC_CS_CONFIG1, regval);
 		break;
 
@@ -770,10 +776,9 @@ static irqreturn_t gpmc_handle_irq(int irq, void *dev)
 	return IRQ_HANDLED;
 }
 
-#ifdef CONFIG_ARCH_OMAP3
-static struct omap3_gpmc_regs gpmc_context;
+static struct omap_gpmc_regs gpmc_context;
 
-void omap3_gpmc_save_context(void)
+void omap_gpmc_save_context(void)
 {
 	int i;
 
@@ -805,7 +810,7 @@ void omap3_gpmc_save_context(void)
 	}
 }
 
-void omap3_gpmc_restore_context(void)
+void omap_gpmc_restore_context(void)
 {
 	int i;
 
@@ -835,7 +840,6 @@ void omap3_gpmc_restore_context(void)
 		}
 	}
 }
-#endif /* CONFIG_ARCH_OMAP3 */
 
 /**
  * gpmc_enable_hwecc - enable hardware ecc functionality
