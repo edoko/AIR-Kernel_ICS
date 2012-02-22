@@ -34,12 +34,12 @@
 #include <mach/cpuidle.h>
 #include <mach/power-domain.h>
 
-<<<<<<< HEAD
+
 extern bool suspend_ongoing(void);
 extern bool bt_is_running(void);
 extern bool gps_is_running(void);
 extern bool vibrator_is_running(void);
-=======
+
 static int s5p_enter_idle_normal(struct cpuidle_device *dev,
 			struct cpuidle_driver *drv,
 			      int index);
@@ -58,7 +58,6 @@ static struct cpuidle_state sp5_cpuidle_set[] = {
 static void s5p_enter_idle(void)
 {
 	unsigned long tmp;
->>>>>>> 331dda4... Fix S5pv210 cpuidle driver for 3.2 port
 
 /*
  * For saving & restoring VIC register before entering
@@ -124,15 +123,15 @@ static int check_sdmmc_op(unsigned int ch)
     (reg2 & (S3C_HSMMC_CLOCK_CARD_EN));
 }
 
-<<<<<<< HEAD
+
 /* Check all sdmmc controller */
 static int loop_sdmmc_check(void)
-=======
+
 /* Actual code that puts the SoC in different idle states */
 static int s5p_enter_idle_normal(struct cpuidle_device *dev,
 			struct cpuidle_driver *drv,
 			      int index)
->>>>>>> 331dda4... Fix S5pv210 cpuidle driver for 3.2 port
+
 {
 	unsigned int iter;
     
@@ -166,7 +165,7 @@ static int check_usbotg_op(void)
 extern volatile int s5p_rp_is_running;
 extern int s5p_rp_get_op_level(void);
 
-<<<<<<< HEAD
+
 static int check_power_clock_gating(void)
 {
 	unsigned long val;
@@ -197,7 +196,7 @@ static int check_power_clock_gating(void)
 		return 1;
     
 	return 0;
-=======
+
 	do_gettimeofday(&after);
 	local_irq_enable();
 	idle_time = (after.tv_sec - before.tv_sec) * USEC_PER_SEC +
@@ -205,7 +204,7 @@ static int check_power_clock_gating(void)
 
 	dev->last_residency = idle_time;
 	return index;
->>>>>>> 331dda4... Fix S5pv210 cpuidle driver for 3.2 port
+
 }
 
 /*
@@ -227,7 +226,7 @@ static int check_idmapos(void)
 
 static int check_rtcint(void)
 {
-<<<<<<< HEAD
+
 	unsigned int current_cnt = get_rtc_cnt();
     
 	return current_cnt < 0x40;
@@ -415,7 +414,7 @@ skipped_didle:
 	    tmp |= (S5P_OTHERS_RET_IO | S5P_OTHERS_RET_CF |	\
                 S5P_OTHERS_RET_MMC | S5P_OTHERS_RET_UART);
 	    __raw_writel(tmp, S5P_OTHERS);
-=======
+
 	int i, max_cpuidle_state, cpu_id;
 	struct cpuidle_device *device;
 	struct cpuidle_driver *drv = &s5p_idle_driver;
@@ -440,7 +439,7 @@ skipped_didle:
 			printk(KERN_ERR "s5p_init_cpuidle: Failed registering\n");
 			return -EIO;
 		}
->>>>>>> 331dda4... Fix S5pv210 cpuidle driver for 3.2 port
+
 	}
     
 	if (!top_on) {
