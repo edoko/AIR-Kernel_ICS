@@ -130,7 +130,7 @@ static int loop_sdmmc_check(void)
 =======
 /* Actual code that puts the SoC in different idle states */
 static int s5p_enter_idle_normal(struct cpuidle_device *dev,
-			struct cpuidle_driver *drv,
+				struct cpuidle_state *state,
 			      int index)
 >>>>>>> 331dda4... Fix S5pv210 cpuidle driver for 3.2 port
 {
