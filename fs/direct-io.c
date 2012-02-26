@@ -527,8 +527,9 @@ static int get_more_blocks(struct dio *dio)
 	int ret;
 	struct buffer_head *map_bh = &dio->map_bh;
 	sector_t fs_startblk;	/* Into file, in filesystem-sized blocks */
-	sector_t fs_endblk;	/* Into file, in filesystem-sized blocks */
 	unsigned long fs_count;	/* Number of filesystem-sized blocks */
+	unsigned long dio_count;/* Number of dio_block-sized blocks */
+	unsigned long blkmask;
 	int create;
 
 	/*
@@ -539,9 +540,11 @@ static int get_more_blocks(struct dio *dio)
 	if (ret == 0) {
 		BUG_ON(dio->block_in_file >= dio->final_block_in_request);
 		fs_startblk = dio->block_in_file >> dio->blkfactor;
-		fs_endblk = (sdio->final_block_in_request - 1) >>
-					sdio->blkfactor;
-		fs_count = fs_endblk - fs_startblk + 1;
+		dio_count = dio->final_block_in_request - dio->block_in_file;
+		fs_count = dio_count >> dio->blkfactor;
+		blkmask = (1 << dio->blkfactor) - 1;
+		if (dio_count & blkmask)	
+			fs_count++;
 
 		map_bh->b_state = 0;
 		map_bh->b_size = fs_count << dio->inode->i_blkbits;
