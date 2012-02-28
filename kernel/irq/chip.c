@@ -157,19 +157,22 @@ static void irq_state_set_masked(struct irq_desc *desc)
 	irqd_set(&desc->irq_data, IRQD_IRQ_MASKED);
 }
 
-int irq_startup(struct irq_desc *desc)
+int irq_startup(struct irq_desc *desc, bool resend)
 {
+	int ret = 0;
+
 	irq_state_clr_disabled(desc);
 	desc->depth = 0;
 
 	if (desc->irq_data.chip->irq_startup) {
-		int ret = desc->irq_data.chip->irq_startup(&desc->irq_data);
+		ret = desc->irq_data.chip->irq_startup(&desc->irq_data);
 		irq_state_clr_masked(desc);
-		return ret;
+	} else {
+		irq_enable(desc);
 	}
-
-	irq_enable(desc);
-	return 0;
+	if (resend)
+		check_irq_resend(desc, desc->irq_data.irq);
+	return ret;
 }
 
 void irq_shutdown(struct irq_desc *desc)
@@ -325,10 +328,15 @@ static void cond_unmask_irq(struct irq_desc *desc)
 	 *   spurious interrupt or a primary handler handling it
 	 *   completely).
 	 */
+<<<<<<< HEAD
 	// FIXME
 	// if (!irqd_irq_disabled(&desc->irq_data) &&
 	//    irqd_irq_masked(&desc->irq_data) && !desc->threads_oneshot)
 	if (!irqd_irq_disabled(&desc->irq_data) && !(desc->istate & IRQS_ONESHOT))
+=======
+	if (!irqd_irq_disabled(&desc->irq_data) &&
+	    irqd_irq_masked(&desc->irq_data) && !desc->threads_oneshot)
+>>>>>>> 8e6a9c8... Upgrade to 3.0.23-rc1
 		unmask_irq(desc);
 }
 
@@ -364,8 +372,8 @@ handle_level_irq(unsigned int irq, struct irq_desc *desc)
 
 	handle_irq_event(desc);
 
-	if (!irqd_irq_disabled(&desc->irq_data) && !(desc->istate & IRQS_ONESHOT))
-		unmask_irq(desc);
+	cond_unmask_irq(desc);
+
 out_unlock:
 	raw_spin_unlock(&desc->lock);
 }
@@ -418,6 +426,9 @@ handle_fasteoi_irq(unsigned int irq, struct irq_desc *desc)
 
 	preflow_handler(desc);
 	handle_irq_event(desc);
+
+	if (desc->istate & IRQS_ONESHOT)
+		cond_unmask_irq(desc);
 
 out_eoi:
 	desc->irq_data.chip->irq_eoi(&desc->irq_data);
@@ -595,7 +606,7 @@ __irq_set_handler(unsigned int irq, irq_flow_handler_t handle, int is_chained,
 		irq_settings_set_noprobe(desc);
 		irq_settings_set_norequest(desc);
 		irq_settings_set_nothread(desc);
-		irq_startup(desc);
+		irq_startup(desc, true);
 	}
 out:
 	irq_put_desc_busunlock(desc, flags);
