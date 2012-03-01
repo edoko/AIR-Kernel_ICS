@@ -15,9 +15,12 @@
 
 #define MAX_OCVALUE 150
 
-extern void liveoc_update(unsigned int oc_value);
+extern void liveoc_update(unsigned int oc_value, unsigned int oc_target);
 
 static int oc_value = 100;
+
+/* Apply Live OC to 800MHz and above*/
+static int oc_target = 800000;
 
 static ssize_t liveoc_ocvalue_read(struct device * dev, struct device_attribute * attr, char * buf)
 {
@@ -36,7 +39,7 @@ static ssize_t liveoc_ocvalue_write(struct device * dev, struct device_attribute
 			{
 			    oc_value = data;
 
-			    liveoc_update(oc_value);
+			    liveoc_update(oc_value, oc_target);
 			}
 
 		    pr_info("LIVEOC oc-value set to %u\n", oc_value);

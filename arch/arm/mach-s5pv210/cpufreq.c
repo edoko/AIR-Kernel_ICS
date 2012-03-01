@@ -628,7 +628,7 @@ static void liveoc_init(void)
     return;
 }
 
-void liveoc_update(unsigned int oc_value)
+void liveoc_update(unsigned int oc_value, unsigned int oc_target)
 {
     int i, index, index_min = L0, index_max = L0, divider;
 
@@ -650,7 +650,10 @@ void liveoc_update(unsigned int oc_value)
 	if (s5pv210_freq_table[i].frequency == policy->user_policy.max)
 	    index_max = index;
 
-	fclk = (original_fclk[index] * oc_value) / 100;
+	if(s5pv210_freq_table[i].frequency >= oc_target)
+		fclk = (original_fclk[index] * oc_value) / 100;
+	else
+		fclk = original_fclk[index];
 
 	s5pv210_freq_table[i].frequency = fclk / (clkdiv_val[index][0] + 1);
 
