@@ -184,6 +184,13 @@ config CPU_FREQ_DEFAULT_GOV_WHEATLEY
 	help
 	  Use the CPUFreq governor 'wheatley' as default.
 
+config CPU_FREQ_DEFAULT_GOV_SAVAGEDZEN
+	bool "savagedzen"
+	select CPU_FREQ_GOV_SAVAGEDZEN
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Use the CPUFreq governor 'lionheart' as default.
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -353,6 +360,10 @@ config CPU_FREQ_GOV_LIONHEART
 
 config CPU_FREQ_GOV_WHEATLEY
 	tristate "'wheatley' cpufreq governor"
+	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_SAVAGEDZEN
+	tristate "'savagedzen' cpufreq governor"
 	depends on CPU_FREQ
 
 menu "x86 CPU frequency scaling drivers"
