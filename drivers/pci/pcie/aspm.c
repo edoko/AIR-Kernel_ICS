@@ -500,6 +500,8 @@ static int pcie_aspm_sanity_check(struct pci_dev *pdev)
 	int pos;
 	u32 reg32;
 
+	if (aspm_disabled)
+		return 0;
 
 	/*
 	 * Some functions in a slot might not all be PCIe functions,
