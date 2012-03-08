@@ -650,10 +650,17 @@ void liveoc_update(unsigned int oc_value, unsigned int oc_low_freq, unsigned int
 	if (s5pv210_freq_table[i].frequency == policy->user_policy.max)
 	    index_max = index;
 
-	if(s5pv210_freq_table[i].frequency >= oc_low_freq && s5pv210_freq_table[i].frequency <= oc_high_freq)
-		fclk = (original_fclk[index] * oc_value) / 100;
+	if(oc_low_freq < oc_high_freq)
+		if(s5pv210_freq_table[i].frequency >= oc_low_freq && s5pv210_freq_table[i].frequency <= oc_high_freq)
+			fclk = (original_fclk[index] * oc_value) / 100;
+		else
+			fclk = original_fclk[index];
+
 	else
-		fclk = original_fclk[index];
+		if(s5pv210_freq_table[i].frequency >= oc_low_freq || s5pv210_freq_table[i].frequency <= oc_high_freq)
+			fclk = (original_fclk[index] * oc_value) / 100;
+		else
+			fclk = original_fclk[index];
 
 	s5pv210_freq_table[i].frequency = fclk / (clkdiv_val[index][0] + 1);
 
