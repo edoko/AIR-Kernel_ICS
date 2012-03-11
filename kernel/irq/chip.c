@@ -312,8 +312,6 @@ out_unlock:
 }
 EXPORT_SYMBOL_GPL(handle_simple_irq);
 
-<<<<<<< HEAD
-=======
 /*
  * Called unconditionally from handle_level_irq() and only for oneshot
  * interrupts from handle_fasteoi_irq()
@@ -334,7 +332,6 @@ static void cond_unmask_irq(struct irq_desc *desc)
 		unmask_irq(desc);
 }
 
->>>>>>> 0d86bf5... Check irq condition mask condition
 /**
  *	handle_level_irq - Level type irq handler
  *	@irq:	the interrupt number
