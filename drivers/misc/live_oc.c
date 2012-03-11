@@ -50,13 +50,8 @@ static ssize_t liveoc_ocvalue_write(struct device * dev, struct device_attribute
 		    if (data != oc_value)
 			{
 			    oc_value = data;
-<<<<<<< HEAD
-
-			    liveoc_update(oc_value, oc_target);
-=======
 		    
 			    liveoc_update(oc_value, oc_low_freq, oc_high_freq);
->>>>>>> 286eb6d... [MOD] Add Lower/Higher Frequency Limit on LiveOC
 			}
 
 		    pr_info("LIVEOC oc-value set to %u\n", oc_value);
@@ -82,18 +77,11 @@ static ssize_t liveoc_octarget_low_write(struct device * dev, struct device_attr
 	{
 	    if (data != oc_low_freq)
 		{
-<<<<<<< HEAD
-		    oc_target = data;
-
-		    liveoc_update(oc_value, oc_target);
-		    pr_info("LIVEOC oc-target set to %u\n", oc_target);
-=======
 		    oc_low_freq = data;
 	    
 		    liveoc_update(oc_value, oc_low_freq, oc_high_freq);
 
 		    pr_info("LIVEOC oc-target-low set to %u\n", oc_low_freq);
->>>>>>> 286eb6d... [MOD] Add Lower/Higher Frequency Limit on LiveOC
 		}
 	    else
 		{
