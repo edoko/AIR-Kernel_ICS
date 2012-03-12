@@ -1,7 +1,12 @@
 VERSION = 3
 PATCHLEVEL = 0
+<<<<<<< HEAD
 SUBLEVEL = 23
 EXTRAVERSION = -rc1
+=======
+SUBLEVEL = 24
+EXTRAVERSION =
+>>>>>>> 5909488... Linux 3.0.24
 NAME = Sneaky Weasel
 
 # *DOCUMENTATION*
