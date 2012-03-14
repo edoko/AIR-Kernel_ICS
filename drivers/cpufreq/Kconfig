@@ -191,6 +191,13 @@ config CPU_FREQ_DEFAULT_GOV_SAVAGEDZEN
 	help
 	  Use the CPUFreq governor 'lionheart' as default.
 
+config CPU_FREQ_DEFAULT_GOV_ONDEMANDX
+	bool "ondemandx"
+	select CPU_FREQ_GOV_ONDEMANDX
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Use the CPUFreq governor 'lionheart' as default.
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -364,6 +371,10 @@ config CPU_FREQ_GOV_WHEATLEY
 
 config CPU_FREQ_GOV_SAVAGEDZEN
 	tristate "'savagedzen' cpufreq governor"
+	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_ONDEMANDX
+	tristate "'ondemandx' cpufreq governor"
 	depends on CPU_FREQ
 
 menu "x86 CPU frequency scaling drivers"
