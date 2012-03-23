@@ -19,10 +19,10 @@ extern void liveoc_update(unsigned int oc_value, unsigned int oc_low_freq, unsig
 
 static int oc_value = 100;
 
-/* Apply Live OC to 800MHz and above*/
-static int oc_low_freq = 800000;
-/* Apply Live OC to 2000MHz and below */
-static int oc_high_freq = 2000000;
+/* Apply Live OC to 400MHz and above*/
+static int oc_low_freq = 400000;
+/* Apply Live OC to 800MHz and below */
+static int oc_high_freq = 800000;
 
 static ssize_t liveoc_ocvalue_read(struct device * dev, struct device_attribute * attr, char * buf)
 {
