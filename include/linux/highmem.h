@@ -185,6 +185,7 @@ static inline void clear_highpage(struct page *page)
 	kunmap_atomic(kaddr, KM_USER0);
 }
 
+<<<<<<< HEAD
 static inline void sanitize_highpage(struct page *page)
 {
 	void *kaddr;
@@ -197,6 +198,8 @@ static inline void sanitize_highpage(struct page *page)
 	local_irq_restore(flags);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static inline void zero_user_segments(struct page *page,
 	unsigned start1, unsigned end1,
 	unsigned start2, unsigned end2)

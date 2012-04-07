@@ -45,7 +45,10 @@
 #include <linux/freezer.h>
 
 #include "ext4.h"
+<<<<<<< HEAD
 #include "ext4_extents.h"
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include "ext4_jbd2.h"
 #include "xattr.h"
 #include "acl.h"
@@ -1031,6 +1034,11 @@ static int ext4_show_options(struct seq_file *seq, struct vfsmount *vfs)
 		seq_puts(seq, ",nouid32");
 	if (test_opt(sb, DEBUG) && !(def_mount_opts & EXT4_DEFM_DEBUG))
 		seq_puts(seq, ",debug");
+<<<<<<< HEAD
+=======
+	if (test_opt(sb, OLDALLOC))
+		seq_puts(seq, ",oldalloc");
+>>>>>>> remotes/gregkh/linux-3.0.y
 #ifdef CONFIG_EXT4_FS_XATTR
 	if (test_opt(sb, XATTR_USER))
 		seq_puts(seq, ",user_xattr");
@@ -1538,12 +1546,19 @@ static int parse_options(char *options, struct super_block *sb,
 			set_opt(sb, DEBUG);
 			break;
 		case Opt_oldalloc:
+<<<<<<< HEAD
 			ext4_msg(sb, KERN_WARNING,
 				 "Ignoring deprecated oldalloc option");
 			break;
 		case Opt_orlov:
 			ext4_msg(sb, KERN_WARNING,
 				 "Ignoring deprecated orlov option");
+=======
+			set_opt(sb, OLDALLOC);
+			break;
+		case Opt_orlov:
+			clear_opt(sb, OLDALLOC);
+>>>>>>> remotes/gregkh/linux-3.0.y
 			break;
 #ifdef CONFIG_EXT4_FS_XATTR
 		case Opt_user_xattr:
@@ -3610,12 +3625,18 @@ no_journal:
 	}
 	if (!S_ISDIR(root->i_mode) || !root->i_blocks || !root->i_size) {
 		ext4_msg(sb, KERN_ERR, "corrupt root inode, run e2fsck");
+<<<<<<< HEAD
 		iput(root);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 		goto failed_mount4;
 	}
 	sb->s_root = d_alloc_root(root);
 	if (!sb->s_root) {
+<<<<<<< HEAD
 		iput(root);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 		ext4_msg(sb, KERN_ERR, "get root dentry failed");
 		ret = -ENOMEM;
 		goto failed_mount4;
@@ -3671,7 +3692,11 @@ no_journal:
 	if (err) {
 		ext4_msg(sb, KERN_ERR, "failed to initialize system "
 			 "zone (%d)", err);
+<<<<<<< HEAD
 		goto failed_mount4a;
+=======
+		goto failed_mount4;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 
 	ext4_ext_init(sb);
@@ -3728,6 +3753,7 @@ cantfind_ext4:
 		ext4_msg(sb, KERN_ERR, "VFS: Can't find ext4 filesystem");
 	goto failed_mount;
 
+<<<<<<< HEAD
 failed_mount7:
 	ext4_unregister_li_request(sb);
 failed_mount6:
@@ -3739,6 +3765,11 @@ failed_mount4a:
 	dput(sb->s_root);
 	sb->s_root = NULL;
 failed_mount4:
+=======
+failed_mount4:
+	iput(root);
+	sb->s_root = NULL;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	ext4_msg(sb, KERN_ERR, "mount failed");
 	destroy_workqueue(EXT4_SB(sb)->dio_unwritten_wq);
 failed_mount_wq:

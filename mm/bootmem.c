@@ -768,6 +768,7 @@ void * __init alloc_bootmem_section(unsigned long size,
 				    unsigned long section_nr)
 {
 	bootmem_data_t *bdata;
+<<<<<<< HEAD
 	unsigned long pfn, goal, limit;
 
 	pfn = section_nr_to_pfn(section_nr);
@@ -776,6 +777,15 @@ void * __init alloc_bootmem_section(unsigned long size,
 	bdata = &bootmem_node_data[early_pfn_to_nid(pfn)];
 
 	return alloc_bootmem_core(bdata, size, SMP_CACHE_BYTES, goal, limit);
+=======
+	unsigned long pfn, goal;
+
+	pfn = section_nr_to_pfn(section_nr);
+	goal = pfn << PAGE_SHIFT;
+	bdata = &bootmem_node_data[early_pfn_to_nid(pfn)];
+
+	return alloc_bootmem_core(bdata, size, SMP_CACHE_BYTES, goal, 0);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 #endif
 

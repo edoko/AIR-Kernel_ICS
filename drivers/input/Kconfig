@@ -161,6 +161,7 @@ config INPUT_APMPOWER
 	  To compile this driver as a module, choose M here: the
 	  module will be called apm-power.
 
+<<<<<<< HEAD
 config INPUT_KEYRESET
 	tristate "Reset key"
 	depends on INPUT
@@ -170,6 +171,8 @@ config INPUT_KEYRESET
 	  To compile this driver as a module, choose M here: the
 	  module will be called keyreset.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 comment "Input Device Drivers"
 
 source "drivers/input/keyboard/Kconfig"

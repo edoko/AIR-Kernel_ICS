@@ -736,7 +736,10 @@ extern int __build_bug_on_failed;
 # define REBUILD_DUE_TO_FTRACE_MCOUNT_RECORD
 #endif
 
+<<<<<<< HEAD
 /* To identify board information in panic logs, set this */
 extern char *mach_panic_string;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif

@@ -66,7 +66,11 @@ struct hrtimer_sleeper;
 
 #define __RT_MUTEX_INITIALIZER(mutexname) \
 	{ .wait_lock = __RAW_SPIN_LOCK_UNLOCKED(mutexname.wait_lock) \
+<<<<<<< HEAD
 	, .wait_list = PLIST_HEAD_INIT(mutexname.wait_list) \
+=======
+	, .wait_list = PLIST_HEAD_INIT_RAW(mutexname.wait_list, mutexname.wait_lock) \
+>>>>>>> remotes/gregkh/linux-3.0.y
 	, .owner = NULL \
 	__DEBUG_RT_MUTEX_INITIALIZER(mutexname)}
 
@@ -100,7 +104,11 @@ extern void rt_mutex_unlock(struct rt_mutex *lock);
 
 #ifdef CONFIG_RT_MUTEXES
 # define INIT_RT_MUTEXES(tsk)						\
+<<<<<<< HEAD
 	.pi_waiters	= PLIST_HEAD_INIT(tsk.pi_waiters),	\
+=======
+	.pi_waiters	= PLIST_HEAD_INIT(tsk.pi_waiters, tsk.pi_lock),	\
+>>>>>>> remotes/gregkh/linux-3.0.y
 	INIT_RT_MUTEX_DEBUG(tsk)
 #else
 # define INIT_RT_MUTEXES(tsk)

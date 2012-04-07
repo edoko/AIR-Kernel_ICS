@@ -290,6 +290,7 @@ struct usb_ep *usb_ep_autoconfig (
 		if (ep && ep_matches (gadget, ep, desc))
 			return ep;
 #endif
+<<<<<<< HEAD
 	} else if (gadget_is_s3c(gadget)) {
 		if (USB_ENDPOINT_XFER_INT == type) {
 			/* single buffering is enough */
@@ -340,6 +341,8 @@ struct usb_ep *usb_ep_autoconfig (
 			if (ep && ep_matches (gadget, ep, desc))
 				return ep;
 		}
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 
 	/* Second, look at endpoints until an unclaimed one looks usable */

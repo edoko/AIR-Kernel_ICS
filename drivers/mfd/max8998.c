@@ -39,8 +39,11 @@ static struct mfd_cell max8998_devs[] = {
 		.name = "max8998-pmic",
 	}, {
 		.name = "max8998-rtc",
+<<<<<<< HEAD
 	}, {
 		.name = "max8998-charger",
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	},
 };
 

@@ -2290,8 +2290,12 @@ static int copy_and_check(struct load_info *info,
 		return -ENOEXEC;
 
 	/* Suck in entire file: we'll want most of it. */
+<<<<<<< HEAD
 	/* vmalloc barfs on "unusual" numbers.  Check here */
 	if (len > 64 * 1024 * 1024 || (hdr = vmalloc(len)) == NULL)
+=======
+	if ((hdr = vmalloc(len)) == NULL)
+>>>>>>> remotes/gregkh/linux-3.0.y
 		return -ENOMEM;
 
 	if (copy_from_user(hdr, umod, len) != 0) {

@@ -30,7 +30,10 @@ obj-$(CONFIG_HUGETLBFS)	+= hugetlb.o
 obj-$(CONFIG_NUMA) 	+= mempolicy.o
 obj-$(CONFIG_SPARSEMEM)	+= sparse.o
 obj-$(CONFIG_SPARSEMEM_VMEMMAP) += sparse-vmemmap.o
+<<<<<<< HEAD
 obj-$(CONFIG_ASHMEM) += ashmem.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 obj-$(CONFIG_SLOB) += slob.o
 obj-$(CONFIG_COMPACTION) += compaction.o
 obj-$(CONFIG_MMU_NOTIFIER) += mmu_notifier.o
@@ -38,7 +41,10 @@ obj-$(CONFIG_KSM) += ksm.o
 obj-$(CONFIG_PAGE_POISONING) += debug-pagealloc.o
 obj-$(CONFIG_SLAB) += slab.o
 obj-$(CONFIG_SLUB) += slub.o
+<<<<<<< HEAD
 obj-$(CONFIG_SLQB) += slqb.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 obj-$(CONFIG_KMEMCHECK) += kmemcheck.o
 obj-$(CONFIG_FAILSLAB) += failslab.o
 obj-$(CONFIG_MEMORY_HOTPLUG) += memory_hotplug.o

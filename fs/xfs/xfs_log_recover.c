@@ -3159,11 +3159,26 @@ xlog_recover_process_iunlinks(
 			 */
 			continue;
 		}
+<<<<<<< HEAD
 		agi = XFS_BUF_TO_AGI(agibp);
+=======
+		/*
+		 * Unlock the buffer so that it can be acquired in the normal
+		 * course of the transaction to truncate and free each inode.
+		 * Because we are not racing with anyone else here for the AGI
+		 * buffer, we don't even need to hold it locked to read the
+		 * initial unlinked bucket entries out of the buffer. We keep
+		 * buffer reference though, so that it stays pinned in memory
+		 * while we need the buffer.
+		 */
+		agi = XFS_BUF_TO_AGI(agibp);
+		xfs_buf_unlock(agibp);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		for (bucket = 0; bucket < XFS_AGI_UNLINKED_BUCKETS; bucket++) {
 			agino = be32_to_cpu(agi->agi_unlinked[bucket]);
 			while (agino != NULLAGINO) {
+<<<<<<< HEAD
 				/*
 				 * Release the agi buffer so that it can
 				 * be acquired in the normal course of the
@@ -3190,6 +3205,13 @@ xlog_recover_process_iunlinks(
 		 * go on to the next one.
 		 */
 		xfs_buf_relse(agibp);
+=======
+				agino = xlog_recover_process_one_iunlink(mp,
+							agno, agino, bucket);
+			}
+		}
+		xfs_buf_rele(agibp);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 
 	mp->m_dmevmask = mp_dmevmask;

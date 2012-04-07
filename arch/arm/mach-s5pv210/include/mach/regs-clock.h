@@ -17,9 +17,12 @@
 
 #define S5P_CLKREG(x)		(S3C_VA_SYS + (x))
 
+<<<<<<< HEAD
 #define S5P_IECREG(x)		(S5PC11X_VA_IEC + (x))
 #define S5P_APCREG(x)		(S5PC11X_VA_APC + (x))
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define S5P_APLL_LOCK		S5P_CLKREG(0x00)
 #define S5P_MPLL_LOCK		S5P_CLKREG(0x08)
 #define S5P_EPLL_LOCK		S5P_CLKREG(0x10)
@@ -67,7 +70,12 @@
 #define S5P_CLKGATE_IP4		S5P_CLKREG(0x470)
 
 #define S5P_CLKGATE_BLOCK	S5P_CLKREG(0x480)
+<<<<<<< HEAD
 #define S5P_CLKGATE_IP5		S5P_CLKREG(0x484)
+=======
+#define S5P_CLKGATE_BUS0	S5P_CLKREG(0x484)
+#define S5P_CLKGATE_BUS1	S5P_CLKREG(0x488)
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define S5P_CLK_OUT		S5P_CLKREG(0x500)
 
 /* DIV/MUX STATUS */
@@ -79,6 +87,7 @@
 /* CLKSRC0 */
 #define S5P_CLKSRC0_MUX200_SHIFT	(16)
 #define S5P_CLKSRC0_MUX200_MASK		(0x1 << S5P_CLKSRC0_MUX200_SHIFT)
+<<<<<<< HEAD
 
 #define S5P_MIXER_OUT_SEL	S5P_CLKREG(0x7004)
 
@@ -90,6 +99,8 @@
 #define S5P_EPLL_MASK_M			(0x1FF<<16)
 #define S5P_EPLL_MASK_P			(0x3F<<8)
 #define S5P_EPLL_MASK_S			(0x3<<0)
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define S5P_CLKSRC0_MUX166_MASK		(0x1<<20)
 #define S5P_CLKSRC0_MUX133_MASK		(0x1<<24)
 
@@ -135,6 +146,7 @@
 
 #define S5P_ARM_MCS_CON		S5P_CLKREG(0x6100)
 
+<<<<<<< HEAD
 /* IP Clock Gate 0 Registers */
 #define S5P_CLKGATE_IP0_CSIS		(1<<31)	
 #define S5P_CLKGATE_IP0_IPC		(1<<30)
@@ -290,6 +302,8 @@
 #define S5P_APM_WEINT2_PEND     (0x348)
 #define S5P_APM_WEINT3_PEND     (0x34C)
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /* Registers related to power management */
 #define S5P_PWR_CFG		S5P_CLKREG(0xC000)
 #define S5P_EINT_WAKEUP_MASK	S5P_CLKREG(0xC004)
@@ -309,6 +323,7 @@
 
 #define S5P_WAKEUP_STAT		S5P_CLKREG(0xC200)
 #define S5P_BLK_PWR_STAT	S5P_CLKREG(0xC204)
+<<<<<<< HEAD
 #define S5P_ABB_VALUE		S5P_CLKREG(0xC300)
 
 #define S5P_OTHERS		S5P_CLKREG(0xE000)
@@ -317,13 +332,22 @@
 #define S5P_HDMI_CONTROL	S5P_CLKREG(0xE804)
 #define S5P_USB_PHY_CONTROL	S5P_CLKREG(0xE80C)
 #define S5P_HDMI_PHY_CONTROL	S5P_CLKREG(0xE804)
+=======
+
+#define S5P_OTHERS		S5P_CLKREG(0xE000)
+#define S5P_OM_STAT		S5P_CLKREG(0xE100)
+#define S5P_USB_PHY_CONTROL	S5P_CLKREG(0xE80C)
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define S5P_DAC_CONTROL		S5P_CLKREG(0xE810)
 #define S5P_MIPI_DPHY_CONTROL(x) S5P_CLKREG(0xE814)
 #define S5P_MIPI_DPHY_ENABLE	(1 << 0)
 #define S5P_MIPI_DPHY_SRESETN	(1 << 1)
 #define S5P_MIPI_DPHY_MRESETN	(1 << 2)
+<<<<<<< HEAD
 #define S5P_ADC_CONTROL 	S5P_CLKREG(0xE818)
 #define S5P_PSHOLD_CONTROL 	S5P_CLKREG(0xE81C)
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #define S5P_INFORM0		S5P_CLKREG(0xF000)
 #define S5P_INFORM1		S5P_CLKREG(0xF004)

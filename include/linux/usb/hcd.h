@@ -22,7 +22,10 @@
 #ifdef __KERNEL__
 
 #include <linux/rwsem.h>
+<<<<<<< HEAD
 #include <linux/host_notify.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #define MAX_TOPO_LEVEL		6
 
@@ -174,6 +177,7 @@ struct usb_hcd {
 	 * input size of periodic table to an interrupt scheduler.
 	 * (ohci 32, uhci 1024, ehci 256/512/1024).
 	 */
+<<<<<<< HEAD
 #ifdef CONFIG_USB_HOST_NOTIFY
         struct host_notify_dev ndev;
         int host_notify;
@@ -182,6 +186,8 @@ struct usb_hcd {
         int sec_whlist_table_num;
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/* The HC driver's private data is stored at the end of
 	 * this structure.

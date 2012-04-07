@@ -19,7 +19,10 @@ obj-$(CONFIG_PHANTOM)		+= phantom.o
 obj-$(CONFIG_SENSORS_BH1780)	+= bh1780gli.o
 obj-$(CONFIG_SENSORS_BH1770)	+= bh1770glc.o
 obj-$(CONFIG_SENSORS_APDS990X)	+= apds990x.o
+<<<<<<< HEAD
 obj-$(CONFIG_ANDROID_PMEM)	+= pmem.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 obj-$(CONFIG_SGI_IOC4)		+= ioc4.o
 obj-$(CONFIG_ENCLOSURE_SERVICES) += enclosure.o
 obj-$(CONFIG_KGDB_TESTS)	+= kgdbts.o
@@ -34,7 +37,10 @@ obj-$(CONFIG_SENSORS_TSL2550)	+= tsl2550.o
 obj-$(CONFIG_EP93XX_PWM)	+= ep93xx_pwm.o
 obj-$(CONFIG_DS1682)		+= ds1682.o
 obj-$(CONFIG_TI_DAC7512)	+= ti_dac7512.o
+<<<<<<< HEAD
 obj-$(CONFIG_UID_STAT)		+= uid_stat.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 obj-$(CONFIG_C2PORT)		+= c2port/
 obj-$(CONFIG_IWMC3200TOP)      += iwmc3200top/
 obj-$(CONFIG_HMC6352)		+= hmc6352.o
@@ -48,6 +54,7 @@ obj-y				+= ti-st/
 obj-$(CONFIG_AB8500_PWM)	+= ab8500-pwm.o
 obj-y				+= lis3lv02d/
 obj-y				+= carma/
+<<<<<<< HEAD
 obj-$(CONFIG_WL127X_RFKILL)	+= wl127x-rfkill.o
 obj-$(CONFIG_APANIC)		+= apanic.o
 obj-$(CONFIG_SENSORS_AK8973)	+= ak8973.o
@@ -63,3 +70,5 @@ obj-$(CONFIG_GENERIC_BLN)	+= bln.o
 obj-$(CONFIG_BLD)		+= bld.o
 obj-$(CONFIG_TOUCH_WAKE)	+= touch_wake.o
 obj-$(CONFIG_CPU_DIDLE)		+= deep_idle.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

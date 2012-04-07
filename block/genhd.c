@@ -624,6 +624,7 @@ void add_disk(struct gendisk *disk)
 				   "bdi");
 	WARN_ON(retval);
 
+<<<<<<< HEAD
 	/*
 	 * Limit default readahead size for small devices.
 	 *        disk size    readahead size
@@ -644,6 +645,8 @@ void add_disk(struct gendisk *disk)
 		bdi->ra_pages = min(bdi->ra_pages, size);
 	}
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	disk_add_events(disk);
 }
 EXPORT_SYMBOL(add_disk);
@@ -1136,6 +1139,7 @@ static void disk_release(struct device *dev)
 		blk_put_queue(disk->queue);
 	kfree(disk);
 }
+<<<<<<< HEAD
 
 static int disk_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
@@ -1152,6 +1156,8 @@ static int disk_uevent(struct device *dev, struct kobj_uevent_env *env)
 	return 0;
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 struct class block_class = {
 	.name		= "block",
 };
@@ -1170,7 +1176,10 @@ static struct device_type disk_type = {
 	.groups		= disk_attr_groups,
 	.release	= disk_release,
 	.devnode	= block_devnode,
+<<<<<<< HEAD
 	.uevent		= disk_uevent,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 #ifdef CONFIG_PROC_FS

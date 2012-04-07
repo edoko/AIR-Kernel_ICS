@@ -14,7 +14,10 @@
 #include <linux/slab.h>
 #include <linux/clk.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/regulator/consumer.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include <sound/soc.h>
 #include <sound/pcm_params.h>
@@ -147,8 +150,11 @@ struct i2s_dai {
 	unsigned rfs, bfs;
 	/* I2S Controller's core clock */
 	struct clk *clk;
+<<<<<<< HEAD
 	/* I2S Controller's power domain */
 	struct regulator *regulator;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* Clock for generating I2S signals */
 	struct clk *op_clk;
 	/* Array of clock names for op_clk */
@@ -575,6 +581,7 @@ static int i2s_set_fmt(struct snd_soc_dai *dai,
 	unsigned int fmt)
 {
 	struct i2s_dai *i2s = to_info(dai);
+<<<<<<< HEAD
 	u32 mod;
 	u32 tmp = 0;
 
@@ -582,6 +589,11 @@ static int i2s_set_fmt(struct snd_soc_dai *dai,
 	
 	mod = readl(i2s->addr + I2SMOD);
 
+=======
+	u32 mod = readl(i2s->addr + I2SMOD);
+	u32 tmp = 0;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* Format is priority */
 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
 	case SND_SOC_DAIFMT_RIGHT_J:
@@ -958,9 +970,12 @@ static int i2s_resume(struct snd_soc_dai *dai)
 
 static int samsung_i2s_dai_probe(struct snd_soc_dai *dai)
 {
+<<<<<<< HEAD
 	struct clk *fout_epll, *mout_epll;
 	struct clk *mout_audss = NULL;
 	struct clk *sclk_audio, *iis_clk, *iis_busclk, *iis_ipclk; /* these belong shomewhere else */
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	struct i2s_dai *i2s = to_info(dai);
 	struct i2s_dai *other = i2s->pri_dai ? : i2s->sec_dai;
 
@@ -981,6 +996,7 @@ static int samsung_i2s_dai_probe(struct snd_soc_dai *dai)
 	}
 	clk_enable(i2s->clk);
 
+<<<<<<< HEAD
 	/* Get i2s power domain regulator */
 	i2s->regulator = regulator_get(&i2s->pdev->dev, "pd");
 	if (IS_ERR(i2s->regulator)) {
@@ -1034,6 +1050,8 @@ static int samsung_i2s_dai_probe(struct snd_soc_dai *dai)
 	}
 
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (other) {
 		other->addr = i2s->addr;
 		other->clk = i2s->clk;

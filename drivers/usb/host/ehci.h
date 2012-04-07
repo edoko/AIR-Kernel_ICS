@@ -737,6 +737,7 @@ static inline u32 hc32_to_cpup (const struct ehci_hcd *ehci, const __hc32 *x)
 
 #endif
 
+<<<<<<< HEAD
 /*
  * Writing to dma coherent memory on ARM may be delayed via L2
  * writing buffer, so introduce the helper which can flush L2 writing
@@ -754,6 +755,8 @@ static inline void ehci_sync_mem()
 }
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*-------------------------------------------------------------------------*/
 
 #ifdef CONFIG_PCI

@@ -764,7 +764,10 @@ static int hidp_session(void *arg)
 
 	up_write(&hidp_session_sem);
 
+<<<<<<< HEAD
 	kfree(session->rd_data);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	kfree(session);
 	return 0;
 }
@@ -842,8 +845,12 @@ static int hidp_setup_input(struct hidp_session *session,
 
 	err = input_register_device(input);
 	if (err < 0) {
+<<<<<<< HEAD
 		input_free_device(input);
 		session->input = NULL;
+=======
+		hci_conn_put_device(session->conn);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		return err;
 	}
 
@@ -1046,12 +1053,17 @@ int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, 
 	}
 
 	err = hid_add_device(session->hid);
+<<<<<<< HEAD
 	if (err < 0) {
 		atomic_inc(&session->terminate);
 		wake_up_process(session->task);
 		up_write(&hidp_session_sem);
 		return err;
 	}
+=======
+	if (err < 0)
+		goto err_add_device;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	if (session->input) {
 		hidp_send_ctrl_message(session,
@@ -1065,6 +1077,15 @@ int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, 
 	up_write(&hidp_session_sem);
 	return 0;
 
+<<<<<<< HEAD
+=======
+err_add_device:
+	hid_destroy_device(session->hid);
+	session->hid = NULL;
+	atomic_inc(&session->terminate);
+	wake_up_process(session->task);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 unlink:
 	hidp_del_timer(session);
 
@@ -1090,6 +1111,10 @@ purge:
 failed:
 	up_write(&hidp_session_sem);
 
+<<<<<<< HEAD
+=======
+	input_free_device(session->input);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	kfree(session);
 	return err;
 }

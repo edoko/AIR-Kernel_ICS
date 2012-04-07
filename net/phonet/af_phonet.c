@@ -68,7 +68,11 @@ static int pn_socket_create(struct net *net, struct socket *sock, int protocol,
 	struct phonet_protocol *pnp;
 	int err;
 
+<<<<<<< HEAD
 	if (!capable(CAP_SYS_ADMIN) && !capable(CAP_NET_ADMIN))
+=======
+	if (!capable(CAP_SYS_ADMIN))
+>>>>>>> remotes/gregkh/linux-3.0.y
 		return -EPERM;
 
 	if (protocol == 0) {

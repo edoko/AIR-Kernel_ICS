@@ -18,6 +18,7 @@ config SUSPEND_FREEZER
 
 	  Turning OFF this setting is NOT recommended! If in doubt, say Y.
 
+<<<<<<< HEAD
 config HAS_WAKELOCK
 	bool
 
@@ -85,6 +86,8 @@ choice
 		  to the screen and notifies user-space when it should resume.
 endchoice
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config HIBERNATE_CALLBACKS
 	bool
 
@@ -294,6 +297,7 @@ config PM_OPP
 config PM_RUNTIME_CLK
 	def_bool y
 	depends on PM_RUNTIME && HAVE_CLK
+<<<<<<< HEAD
 
 config SUSPEND_TIME
 	bool "Log time spent in suspend"
@@ -301,3 +305,5 @@ config SUSPEND_TIME
 	  Prints the time spent in suspend in the kernel log, and
 	  keeps statistics on the time spent in suspend in
 	  /sys/kernel/debug/suspend_time
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

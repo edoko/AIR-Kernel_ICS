@@ -63,7 +63,11 @@
 static void shrink_liability(struct ubifs_info *c, int nr_to_write)
 {
 	down_read(&c->vfs_sb->s_umount);
+<<<<<<< HEAD
 	writeback_inodes_sb(c->vfs_sb, WB_REASON_FS_FREE_SPACE);
+=======
+	writeback_inodes_sb(c->vfs_sb);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	up_read(&c->vfs_sb->s_umount);
 }
 

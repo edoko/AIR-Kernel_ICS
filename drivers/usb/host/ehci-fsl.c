@@ -216,6 +216,11 @@ static void ehci_fsl_setup_phy(struct ehci_hcd *ehci,
 			       unsigned int port_offset)
 {
 	u32 portsc;
+<<<<<<< HEAD
+=======
+	struct usb_hcd *hcd = ehci_to_hcd(ehci);
+	void __iomem *non_ehci = hcd->regs;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	portsc = ehci_readl(ehci, &ehci->regs->port_status[port_offset]);
 	portsc &= ~(PORT_PTS_MSK | PORT_PTS_PTW);
@@ -231,6 +236,11 @@ static void ehci_fsl_setup_phy(struct ehci_hcd *ehci,
 		portsc |= PORT_PTS_PTW;
 		/* fall through */
 	case FSL_USB2_PHY_UTMI:
+<<<<<<< HEAD
+=======
+		/* enable UTMI PHY */
+		setbits32(non_ehci + FSL_SOC_USB_CTRL, CTRL_UTMI_PHY_EN);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		portsc |= PORT_PTS_UTMI;
 		break;
 	case FSL_USB2_PHY_NONE:

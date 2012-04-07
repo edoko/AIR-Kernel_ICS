@@ -22,8 +22,11 @@
 #include <linux/gfp.h>
 #include <net/tcp.h>
 
+<<<<<<< HEAD
 int lastack_retries = 4;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 int sysctl_tcp_syn_retries __read_mostly = TCP_SYN_RETRIES;
 int sysctl_tcp_synack_retries __read_mostly = TCP_SYNACK_RETRIES;
 int sysctl_tcp_keepalive_time __read_mostly = TCP_KEEPALIVE_TIME;
@@ -201,11 +204,14 @@ static int tcp_write_timeout(struct sock *sk)
 		}
 	}
 
+<<<<<<< HEAD
 	if ((sk->sk_state == TCP_LAST_ACK) &&
 	    (lastack_retries > 0) &&
 	    (lastack_retries < retry_until))
 		retry_until = lastack_retries;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (retransmits_timed_out(sk, retry_until,
 				  syn_set ? 0 : icsk->icsk_user_timeout, syn_set)) {
 		/* Has it gone just too far? */

@@ -103,7 +103,10 @@ struct onenand_chip {
 
 	unsigned int		bufferram_index;
 	struct onenand_bufferram	bufferram[MAX_BUFFERRAM];
+<<<<<<< HEAD
 	struct clk		*clk;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	int (*command)(struct mtd_info *mtd, int cmd, loff_t address, size_t len);
 	int (*wait)(struct mtd_info *mtd, int state);

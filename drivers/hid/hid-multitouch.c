@@ -213,6 +213,7 @@ static int mt_input_mapping(struct hid_device *hdev, struct hid_input *hi,
 	struct mt_class *cls = td->mtclass;
 	__s32 quirks = cls->quirks;
 
+<<<<<<< HEAD
 	/* Only map fields from TouchScreen or TouchPad collections.
          * We need to ignore fields that belong to other collections
          * such as Mouse that might have the same GenericDesktop usages. */
@@ -223,6 +224,8 @@ static int mt_input_mapping(struct hid_device *hdev, struct hid_input *hi,
 	else
 		return 0;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	switch (usage->hid & HID_USAGE_PAGE) {
 
 	case HID_UP_GENDESK:

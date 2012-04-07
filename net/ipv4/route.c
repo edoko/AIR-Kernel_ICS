@@ -109,7 +109,10 @@
 #ifdef CONFIG_SYSCTL
 #include <linux/sysctl.h>
 #endif
+<<<<<<< HEAD
 #include <net/atmclip.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include <net/secure_seq.h>
 
 #define RT_FL_TOS(oldflp4) \

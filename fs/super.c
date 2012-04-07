@@ -241,6 +241,7 @@ static int grab_super(struct super_block *s) __releases(sb_lock)
 }
 
 /*
+<<<<<<< HEAD
  *	grab_super_passive - acquire a passive reference
  *	@s: reference we are trying to grab
  *
@@ -274,15 +275,25 @@ bool grab_super_passive(struct super_block *sb)
 }
 
 /*
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
  * Superblock locking.  We really ought to get rid of these two.
  */
 void lock_super(struct super_block * sb)
 {
+<<<<<<< HEAD
+=======
+	get_fs_excl();
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mutex_lock(&sb->s_lock);
 }
 
 void unlock_super(struct super_block * sb)
 {
+<<<<<<< HEAD
+=======
+	put_fs_excl();
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mutex_unlock(&sb->s_lock);
 }
 
@@ -853,7 +864,11 @@ struct dentry *mount_bdev(struct file_system_type *fs_type,
 	} else {
 		char b[BDEVNAME_SIZE];
 
+<<<<<<< HEAD
 		s->s_flags = flags;
+=======
+		s->s_flags = flags | MS_NOSEC;
+>>>>>>> remotes/gregkh/linux-3.0.y
 		s->s_mode = mode;
 		strlcpy(s->s_id, bdevname(bdev, b), sizeof(s->s_id));
 		sb_set_blocksize(s, block_size(bdev));

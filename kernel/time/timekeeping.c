@@ -608,12 +608,15 @@ static struct timespec timekeeping_suspend_time;
  */
 static void __timekeeping_inject_sleeptime(struct timespec *delta)
 {
+<<<<<<< HEAD
 	if (!timespec_valid(delta)) {
 		printk(KERN_WARNING "__timekeeping_inject_sleeptime: Invalid "
 					"sleep delta value!\n");
 		return;
 	}
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	xtime = timespec_add(xtime, *delta);
 	wall_to_monotonic = timespec_sub(wall_to_monotonic, *delta);
 	total_sleep_time = timespec_add(total_sleep_time, *delta);

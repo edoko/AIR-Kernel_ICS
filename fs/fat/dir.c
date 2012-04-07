@@ -754,6 +754,7 @@ static int fat_ioctl_readdir(struct inode *inode, struct file *filp,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int fat_ioctl_volume_id(struct inode *dir)
 {
 	struct super_block *sb = dir->i_sb;
@@ -761,6 +762,8 @@ static int fat_ioctl_volume_id(struct inode *dir)
 	return sbi->vol_id;
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static long fat_dir_ioctl(struct file *filp, unsigned int cmd,
 			  unsigned long arg)
 {
@@ -777,8 +780,11 @@ static long fat_dir_ioctl(struct file *filp, unsigned int cmd,
 		short_only = 0;
 		both = 1;
 		break;
+<<<<<<< HEAD
 	case VFAT_IOCTL_GET_VOLUME_ID:
 		return fat_ioctl_volume_id(inode);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	default:
 		return fat_generic_ioctl(filp, cmd, arg);
 	}

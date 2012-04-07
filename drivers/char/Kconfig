@@ -6,6 +6,7 @@ menu "Character devices"
 
 source "drivers/tty/Kconfig"
 
+<<<<<<< HEAD
 config DEVMEM
 	bool "Memory device driver"
 	default y
@@ -19,6 +20,8 @@ config DEVMEM
 	  system and most users should say Y here. You might say N if very
 	  security conscience or memory is tight.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config DEVKMEM
 	bool "/dev/kmem virtual device support"
 	default y
@@ -611,10 +614,13 @@ config DEVPORT
 	depends on ISA || PCI
 	default y
 
+<<<<<<< HEAD
 config DCC_TTY
 	tristate "DCC tty driver"
 	depends on ARM
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 source "drivers/s390/char/Kconfig"
 
 config RAMOOPS

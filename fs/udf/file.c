@@ -201,12 +201,18 @@ out:
 static int udf_release_file(struct inode *inode, struct file *filp)
 {
 	if (filp->f_mode & FMODE_WRITE) {
+<<<<<<< HEAD
 		mutex_lock(&inode->i_mutex);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 		down_write(&UDF_I(inode)->i_data_sem);
 		udf_discard_prealloc(inode);
 		udf_truncate_tail_extent(inode);
 		up_write(&UDF_I(inode)->i_data_sem);
+<<<<<<< HEAD
 		mutex_unlock(&inode->i_mutex);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 	return 0;
 }

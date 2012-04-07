@@ -16,7 +16,10 @@
 #include <linux/freezer.h>
 #include <linux/delay.h>
 #include <linux/workqueue.h>
+<<<<<<< HEAD
 #include <linux/wakelock.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /* 
  * Timeout for stopping processes
@@ -83,10 +86,13 @@ static int try_to_freeze_tasks(bool sig_only)
 			todo += wq_busy;
 		}
 
+<<<<<<< HEAD
 		if (todo && has_wake_lock(WAKE_LOCK_SUSPEND)) {
 			wakeup = 1;
 			break;
 		}
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 		if (!todo || time_after(jiffies, end_time))
 			break;
 
@@ -113,6 +119,7 @@ static int try_to_freeze_tasks(bool sig_only)
 		 * and caller must call thaw_processes() if something fails),
 		 * but it cleans up leftover PF_FREEZE requests.
 		 */
+<<<<<<< HEAD
 		if(wakeup) {
 			printk("\n");
 			printk(KERN_ERR "Freezing of %s aborted\n",
@@ -125,13 +132,26 @@ static int try_to_freeze_tasks(bool sig_only)
 			       elapsed_csecs / 100, elapsed_csecs % 100,
 			       todo - wq_busy, wq_busy);
 		}
+=======
+		printk("\n");
+		printk(KERN_ERR "Freezing of tasks %s after %d.%02d seconds "
+		       "(%d tasks refusing to freeze, wq_busy=%d):\n",
+		       wakeup ? "aborted" : "failed",
+		       elapsed_csecs / 100, elapsed_csecs % 100,
+		       todo - wq_busy, wq_busy);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 		thaw_workqueues();
 
 		read_lock(&tasklist_lock);
 		do_each_thread(g, p) {
 			task_lock(p);
+<<<<<<< HEAD
 			if (freezing(p) && !freezer_should_skip(p) &&
 				elapsed_csecs > 100)
+=======
+			if (!wakeup && freezing(p) && !freezer_should_skip(p))
+>>>>>>> remotes/gregkh/linux-3.0.y
 				sched_show_task(p);
 			cancel_freezing(p);
 			task_unlock(p);

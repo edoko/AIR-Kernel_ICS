@@ -469,7 +469,10 @@ pm_runtime_autosuspend()
 pm_runtime_resume()
 pm_runtime_get_sync()
 pm_runtime_put_sync_suspend()
+<<<<<<< HEAD
 pm_runtime_put_sync_autosuspend()
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 5. Run-time PM Initialization, Device Probing and Removal
 

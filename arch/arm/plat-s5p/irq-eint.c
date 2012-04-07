@@ -37,16 +37,20 @@ static inline void s5p_irq_eint_mask(struct irq_data *data)
 	__raw_writel(mask, S5P_EINT_MASK(EINT_REG_NR(data->irq)));
 }
 
+<<<<<<< HEAD
 static inline void s5p_irq_eint_ack(struct irq_data *data)
 {
 	__raw_writel(eint_irq_to_bit(data->irq),
 		     S5P_EINT_PEND(EINT_REG_NR(data->irq)));
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static void s5p_irq_eint_unmask(struct irq_data *data)
 {
 	u32 mask;
 
+<<<<<<< HEAD
 	/* for level triggered interrupts, masking doesn't prevent
 	 * the interrupt from becoming pending again.  by the time
 	 * the handler (either irq or thread) can do its thing to clear
@@ -57,11 +61,22 @@ static void s5p_irq_eint_unmask(struct irq_data *data)
 	if (irqd_is_level_type(data))
 		s5p_irq_eint_ack(data);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mask = __raw_readl(S5P_EINT_MASK(EINT_REG_NR(data->irq)));
 	mask &= ~(eint_irq_to_bit(data->irq));
 	__raw_writel(mask, S5P_EINT_MASK(EINT_REG_NR(data->irq)));
 }
 
+<<<<<<< HEAD
+=======
+static inline void s5p_irq_eint_ack(struct irq_data *data)
+{
+	__raw_writel(eint_irq_to_bit(data->irq),
+		     S5P_EINT_PEND(EINT_REG_NR(data->irq)));
+}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 static void s5p_irq_eint_maskack(struct irq_data *data)
 {
 	/* compiler should in-line these */
@@ -75,7 +90,10 @@ static int s5p_irq_eint_set_type(struct irq_data *data, unsigned int type)
 	int shift;
 	u32 ctrl, mask;
 	u32 newvalue = 0;
+<<<<<<< HEAD
 	struct irq_desc *desc = irq_to_desc(data->irq);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	switch (type) {
 	case IRQ_TYPE_EDGE_RISING:
@@ -126,11 +144,14 @@ static int s5p_irq_eint_set_type(struct irq_data *data, unsigned int type)
 	else
 		printk(KERN_ERR "No such irq number %d", offs);
 
+<<<<<<< HEAD
 	if (type & IRQ_TYPE_EDGE_BOTH)
 		desc->handle_irq = handle_edge_irq;
 	else
 		desc->handle_irq = handle_level_irq;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return 0;
 }
 

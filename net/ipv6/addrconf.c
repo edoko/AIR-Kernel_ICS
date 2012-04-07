@@ -828,13 +828,20 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, struct inet6_ifaddr *i
 {
 	struct inet6_dev *idev = ifp->idev;
 	struct in6_addr addr, *tmpaddr;
+<<<<<<< HEAD
 	unsigned long tmp_prefered_lft, tmp_valid_lft, tmp_tstamp, age;
+=======
+	unsigned long tmp_prefered_lft, tmp_valid_lft, tmp_cstamp, tmp_tstamp, age;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	unsigned long regen_advance;
 	int tmp_plen;
 	int ret = 0;
 	int max_addresses;
 	u32 addr_flags;
+<<<<<<< HEAD
 	unsigned long now = jiffies;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	write_lock(&idev->lock);
 	if (ift) {
@@ -879,7 +886,11 @@ retry:
 		goto out;
 	}
 	memcpy(&addr.s6_addr[8], idev->rndid, 8);
+<<<<<<< HEAD
 	age = (now - ifp->tstamp) / HZ;
+=======
+	age = (jiffies - ifp->tstamp) / HZ;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	tmp_valid_lft = min_t(__u32,
 			      ifp->valid_lft,
 			      idev->cnf.temp_valid_lft + age);
@@ -889,6 +900,10 @@ retry:
 				 idev->cnf.max_desync_factor);
 	tmp_plen = ifp->prefix_len;
 	max_addresses = idev->cnf.max_addresses;
+<<<<<<< HEAD
+=======
+	tmp_cstamp = ifp->cstamp;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	tmp_tstamp = ifp->tstamp;
 	spin_unlock_bh(&ifp->lock);
 
@@ -933,7 +948,11 @@ retry:
 	ift->ifpub = ifp;
 	ift->valid_lft = tmp_valid_lft;
 	ift->prefered_lft = tmp_prefered_lft;
+<<<<<<< HEAD
 	ift->cstamp = now;
+=======
+	ift->cstamp = tmp_cstamp;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	ift->tstamp = tmp_tstamp;
 	spin_unlock_bh(&ift->lock);
 
@@ -1992,6 +2011,7 @@ ok:
 #ifdef CONFIG_IPV6_PRIVACY
 			read_lock_bh(&in6_dev->lock);
 			/* update all temporary addresses in the list */
+<<<<<<< HEAD
 			list_for_each_entry(ift, &in6_dev->tempaddr_list,
 					    tmp_list) {
 				int age, max_valid, max_prefered;
@@ -2036,6 +2056,27 @@ ok:
 				if (prefered_lft > 0)
 					ift->flags &= ~IFA_F_DEPRECATED;
 
+=======
+			list_for_each_entry(ift, &in6_dev->tempaddr_list, tmp_list) {
+				/*
+				 * When adjusting the lifetimes of an existing
+				 * temporary address, only lower the lifetimes.
+				 * Implementations must not increase the
+				 * lifetimes of an existing temporary address
+				 * when processing a Prefix Information Option.
+				 */
+				if (ifp != ift->ifpub)
+					continue;
+
+				spin_lock(&ift->lock);
+				flags = ift->flags;
+				if (ift->valid_lft > valid_lft &&
+				    ift->valid_lft - valid_lft > (jiffies - ift->tstamp) / HZ)
+					ift->valid_lft = valid_lft + (jiffies - ift->tstamp) / HZ;
+				if (ift->prefered_lft > prefered_lft &&
+				    ift->prefered_lft - prefered_lft > (jiffies - ift->tstamp) / HZ)
+					ift->prefered_lft = prefered_lft + (jiffies - ift->tstamp) / HZ;
+>>>>>>> remotes/gregkh/linux-3.0.y
 				spin_unlock(&ift->lock);
 				if (!(flags&IFA_F_TENTATIVE))
 					ipv6_ifa_notify(0, ift);
@@ -2043,11 +2084,17 @@ ok:
 
 			if ((create || list_empty(&in6_dev->tempaddr_list)) && in6_dev->cnf.use_tempaddr > 0) {
 				/*
+<<<<<<< HEAD
 				 * When a new public address is created as
 				 * described in [ADDRCONF], also create a new
 				 * temporary address. Also create a temporary
 				 * address if it's enabled but no temporary
 				 * address currently exists.
+=======
+				 * When a new public address is created as described in [ADDRCONF],
+				 * also create a new temporary address. Also create a temporary
+				 * address if it's enabled but no temporary address currently exists.
+>>>>>>> remotes/gregkh/linux-3.0.y
 				 */
 				read_unlock_bh(&in6_dev->lock);
 				ipv6_create_tempaddr(ifp, NULL);

@@ -17,6 +17,10 @@
 #ifndef __ASM_ARCH_VMALLOC_H
 #define __ASM_ARCH_VMALLOC_H __FILE__
 
+<<<<<<< HEAD
 #define VMALLOC_END	  (0xFC000000)
+=======
+#define VMALLOC_END	0xF6000000UL
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #endif /* __ASM_ARCH_VMALLOC_H */

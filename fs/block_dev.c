@@ -44,28 +44,46 @@ inline struct block_device *I_BDEV(struct inode *inode)
 {
 	return &BDEV_I(inode)->bdev;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(I_BDEV);
 
 /*
  * Move the inode from its current bdi to a new bdi. If the inode is dirty we
  * need to move it onto the dirty list of @dst so that the inode is always on
  * the right list.
+=======
+
+EXPORT_SYMBOL(I_BDEV);
+
+/*
+ * move the inode from it's current bdi to the a new bdi. if the inode is dirty
+ * we need to move it onto the dirty list of @dst so that the inode is always
+ * on the right list.
+>>>>>>> remotes/gregkh/linux-3.0.y
  */
 static void bdev_inode_switch_bdi(struct inode *inode,
 			struct backing_dev_info *dst)
 {
+<<<<<<< HEAD
 	struct backing_dev_info *old = inode->i_data.backing_dev_info;
 
 	if (unlikely(dst == old))		/* deadlock avoidance */
 		return;
 	bdi_lock_two(&old->wb, &dst->wb);
+=======
+	spin_lock(&inode_wb_list_lock);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	spin_lock(&inode->i_lock);
 	inode->i_data.backing_dev_info = dst;
 	if (inode->i_state & I_DIRTY)
 		list_move(&inode->i_wb_list, &dst->wb.b_dirty);
 	spin_unlock(&inode->i_lock);
+<<<<<<< HEAD
 	spin_unlock(&old->wb.list_lock);
 	spin_unlock(&dst->wb.list_lock);
+=======
+	spin_unlock(&inode_wb_list_lock);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static sector_t max_block(struct block_device *bdev)
@@ -1433,6 +1451,14 @@ static int __blkdev_put(struct block_device *bdev, fmode_t mode, int for_part)
 		WARN_ON_ONCE(bdev->bd_holders);
 		sync_blockdev(bdev);
 		kill_bdev(bdev);
+<<<<<<< HEAD
+=======
+		/* ->release can cause the old bdi to disappear,
+		 * so must switch it out first
+		 */
+		bdev_inode_switch_bdi(bdev->bd_inode,
+					&default_backing_dev_info);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 	if (bdev->bd_contains == bdev) {
 		if (disk->fops->release)
@@ -1444,8 +1470,11 @@ static int __blkdev_put(struct block_device *bdev, fmode_t mode, int for_part)
 		disk_put_part(bdev->bd_part);
 		bdev->bd_part = NULL;
 		bdev->bd_disk = NULL;
+<<<<<<< HEAD
 		bdev_inode_switch_bdi(bdev->bd_inode,
 					&default_backing_dev_info);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 		if (bdev != bdev->bd_contains)
 			victim = bdev->bd_contains;
 		bdev->bd_contains = NULL;

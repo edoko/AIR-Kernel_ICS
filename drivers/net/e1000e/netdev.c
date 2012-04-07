@@ -930,6 +930,10 @@ static void e1000_print_hw_hang(struct work_struct *work)
 	struct e1000_adapter *adapter = container_of(work,
 	                                             struct e1000_adapter,
 	                                             print_hang_task);
+<<<<<<< HEAD
+=======
+	struct net_device *netdev = adapter->netdev;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	struct e1000_ring *tx_ring = adapter->tx_ring;
 	unsigned int i = tx_ring->next_to_clean;
 	unsigned int eop = tx_ring->buffer_info[i].next_to_watch;
@@ -941,6 +945,24 @@ static void e1000_print_hw_hang(struct work_struct *work)
 	if (test_bit(__E1000_DOWN, &adapter->state))
 		return;
 
+<<<<<<< HEAD
+=======
+	if (!adapter->tx_hang_recheck &&
+	    (adapter->flags2 & FLAG2_DMA_BURST)) {
+		/* May be block on write-back, flush and detect again
+		 * flush pending descriptor writebacks to memory
+		 */
+		ew32(TIDV, adapter->tx_int_delay | E1000_TIDV_FPD);
+		/* execute the writes immediately */
+		e1e_flush();
+		adapter->tx_hang_recheck = true;
+		return;
+	}
+	/* Real hang detected */
+	adapter->tx_hang_recheck = false;
+	netif_stop_queue(netdev);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	e1e_rphy(hw, PHY_STATUS, &phy_status);
 	e1e_rphy(hw, PHY_1000T_STATUS, &phy_1000t_status);
 	e1e_rphy(hw, PHY_EXT_STATUS, &phy_ext_status);
@@ -1054,10 +1076,17 @@ static bool e1000_clean_tx_irq(struct e1000_adapter *adapter)
 		if (tx_ring->buffer_info[i].time_stamp &&
 		    time_after(jiffies, tx_ring->buffer_info[i].time_stamp
 			       + (adapter->tx_timeout_factor * HZ)) &&
+<<<<<<< HEAD
 		    !(er32(STATUS) & E1000_STATUS_TXOFF)) {
 			schedule_work(&adapter->print_hang_task);
 			netif_stop_queue(netdev);
 		}
+=======
+		    !(er32(STATUS) & E1000_STATUS_TXOFF))
+			schedule_work(&adapter->print_hang_task);
+		else
+			adapter->tx_hang_recheck = false;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 	adapter->total_tx_bytes += total_tx_bytes;
 	adapter->total_tx_packets += total_tx_packets;
@@ -3678,6 +3707,10 @@ static int e1000_open(struct net_device *netdev)
 
 	e1000_irq_enable(adapter);
 
+<<<<<<< HEAD
+=======
+	adapter->tx_hang_recheck = false;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	netif_start_queue(netdev);
 
 	adapter->idle_check = true;

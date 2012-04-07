@@ -98,7 +98,10 @@ obj-$(CONFIG_CPU_IDLE)		+= cpuidle/
 obj-$(CONFIG_MMC)		+= mmc/
 obj-$(CONFIG_MEMSTICK)		+= memstick/
 obj-y				+= leds/
+<<<<<<< HEAD
 obj-$(CONFIG_SWITCH)		+= switch/
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 obj-$(CONFIG_INFINIBAND)	+= infiniband/
 obj-$(CONFIG_SGI_SN)		+= sn/
 obj-y				+= firmware/

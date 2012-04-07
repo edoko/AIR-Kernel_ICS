@@ -26,6 +26,19 @@
 #include "xvmalloc.h"
 #include "xvmalloc_int.h"
 
+<<<<<<< HEAD
+=======
+static void stat_inc(u64 *value)
+{
+	*value = *value + 1;
+}
+
+static void stat_dec(u64 *value)
+{
+	*value = *value - 1;
+}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int test_flag(struct block_header *block, enum blockflags flag)
 {
 	return block->prev & BIT(flag);
@@ -271,7 +284,11 @@ static int grow_pool(struct xv_pool *pool, gfp_t flags)
 	if (unlikely(!page))
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	pool->total_pages++;
+=======
+	stat_inc(&pool->total_pages);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	spin_lock(&pool->lock);
 	block = get_ptr_atomic(page, 0, KM_USER0);
@@ -462,7 +479,11 @@ void xv_free(struct xv_pool *pool, struct page *page, u32 offset)
 		spin_unlock(&pool->lock);
 
 		__free_page(page);
+<<<<<<< HEAD
 		pool->total_pages--;
+=======
+		stat_dec(&pool->total_pages);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		return;
 	}
 
@@ -495,6 +516,10 @@ EXPORT_SYMBOL_GPL(xv_get_object_size);
  */
 u64 xv_get_total_size_bytes(struct xv_pool *pool)
 {
+<<<<<<< HEAD
 	return (u64)pool->total_pages << PAGE_SHIFT;
+=======
+	return pool->total_pages << PAGE_SHIFT;
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 EXPORT_SYMBOL_GPL(xv_get_total_size_bytes);

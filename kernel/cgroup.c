@@ -268,6 +268,7 @@ static void cgroup_release_agent(struct work_struct *work);
 static DECLARE_WORK(release_agent_work, cgroup_release_agent);
 static void check_for_release(struct cgroup *cgrp);
 
+<<<<<<< HEAD
 /*
  * A queue for waiters to do rmdir() cgroup. A tasks will sleep when
  * cgroup->count == 0 && list_empty(&cgroup->children) && subsys has some
@@ -295,6 +296,8 @@ void cgroup_release_and_wakeup_rmdir(struct cgroup_subsys_state *css)
 	css_put(css);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /* Link structure for associating css_set objects with cgroups */
 struct cg_cgroup_link {
 	/*
@@ -354,6 +357,7 @@ static struct hlist_head *css_set_hash(struct cgroup_subsys_state *css[])
 	return &css_set_table[index];
 }
 
+<<<<<<< HEAD
 static void free_css_set_work(struct work_struct *work)
 {
 	struct css_set *cg = container_of(work, struct css_set, work);
@@ -361,11 +365,41 @@ static void free_css_set_work(struct work_struct *work)
 	struct cg_cgroup_link *saved_link;
 
 	write_lock(&css_set_lock);
+=======
+/* We don't maintain the lists running through each css_set to its
+ * task until after the first call to cgroup_iter_start(). This
+ * reduces the fork()/exit() overhead for people who have cgroups
+ * compiled into their kernel but not actually in use */
+static int use_task_css_set_links __read_mostly;
+
+static void __put_css_set(struct css_set *cg, int taskexit)
+{
+	struct cg_cgroup_link *link;
+	struct cg_cgroup_link *saved_link;
+	/*
+	 * Ensure that the refcount doesn't hit zero while any readers
+	 * can see it. Similar to atomic_dec_and_lock(), but for an
+	 * rwlock
+	 */
+	if (atomic_add_unless(&cg->refcount, -1, 1))
+		return;
+	write_lock(&css_set_lock);
+	if (!atomic_dec_and_test(&cg->refcount)) {
+		write_unlock(&css_set_lock);
+		return;
+	}
+
+	/* This css_set is dead. unlink it and release cgroup refcounts */
+	hlist_del(&cg->hlist);
+	css_set_count--;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	list_for_each_entry_safe(link, saved_link, &cg->cg_links,
 				 cg_link_list) {
 		struct cgroup *cgrp = link->cgrp;
 		list_del(&link->cg_link_list);
 		list_del(&link->cgrp_link_list);
+<<<<<<< HEAD
 		if (atomic_dec_and_test(&cgrp->count)) {
 			check_for_release(cgrp);
 			cgroup_wakeup_rmdir_waiter(cgrp);
@@ -391,6 +425,22 @@ static void free_css_set_rcu(struct rcu_head *obj)
  * compiled into their kernel but not actually in use */
 static int use_task_css_set_links __read_mostly;
 
+=======
+		if (atomic_dec_and_test(&cgrp->count) &&
+		    notify_on_release(cgrp)) {
+			if (taskexit)
+				set_bit(CGRP_RELEASABLE, &cgrp->flags);
+			check_for_release(cgrp);
+		}
+
+		kfree(link);
+	}
+
+	write_unlock(&css_set_lock);
+	kfree_rcu(cg, rcu_head);
+}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*
  * refcounted get/put for css_set objects
  */
@@ -399,6 +449,7 @@ static inline void get_css_set(struct css_set *cg)
 	atomic_inc(&cg->refcount);
 }
 
+<<<<<<< HEAD
 static void put_css_set(struct css_set *cg)
 {
 	/*
@@ -419,6 +470,16 @@ static void put_css_set(struct css_set *cg)
 
 	write_unlock(&css_set_lock);
 	call_rcu(&cg->rcu_head, free_css_set_rcu);
+=======
+static inline void put_css_set(struct css_set *cg)
+{
+	__put_css_set(cg, 0);
+}
+
+static inline void put_css_set_taskexit(struct css_set *cg)
+{
+	__put_css_set(cg, 1);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 /*
@@ -750,9 +811,15 @@ static struct cgroup *task_cgroup_from_root(struct task_struct *task,
  * cgroup_attach_task(), which overwrites one tasks cgroup pointer with
  * another.  It does so using cgroup_mutex, however there are
  * several performance critical places that need to reference
+<<<<<<< HEAD
  * task->cgroups without the expense of grabbing a system global
  * mutex.  Therefore except as noted below, when dereferencing or, as
  * in cgroup_attach_task(), modifying a task's cgroups pointer we use
+=======
+ * task->cgroup without the expense of grabbing a system global
+ * mutex.  Therefore except as noted below, when dereferencing or, as
+ * in cgroup_attach_task(), modifying a task'ss cgroup pointer we use
+>>>>>>> remotes/gregkh/linux-3.0.y
  * task_lock(), which acts on a spinlock (task->alloc_lock) already in
  * the task_struct routinely used for such matters.
  *
@@ -942,6 +1009,36 @@ static void cgroup_d_remove_dir(struct dentry *dentry)
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * A queue for waiters to do rmdir() cgroup. A tasks will sleep when
+ * cgroup->count == 0 && list_empty(&cgroup->children) && subsys has some
+ * reference to css->refcnt. In general, this refcnt is expected to goes down
+ * to zero, soon.
+ *
+ * CGRP_WAIT_ON_RMDIR flag is set under cgroup's inode->i_mutex;
+ */
+DECLARE_WAIT_QUEUE_HEAD(cgroup_rmdir_waitq);
+
+static void cgroup_wakeup_rmdir_waiter(struct cgroup *cgrp)
+{
+	if (unlikely(test_and_clear_bit(CGRP_WAIT_ON_RMDIR, &cgrp->flags)))
+		wake_up_all(&cgroup_rmdir_waitq);
+}
+
+void cgroup_exclude_rmdir(struct cgroup_subsys_state *css)
+{
+	css_get(css);
+}
+
+void cgroup_release_and_wakeup_rmdir(struct cgroup_subsys_state *css)
+{
+	cgroup_wakeup_rmdir_waiter(css->cgroup);
+	css_put(css);
+}
+
+/*
+>>>>>>> remotes/gregkh/linux-3.0.y
  * Call with cgroup_mutex held. Drops reference counts on modules, including
  * any duplicate ones that parse_cgroupfs_options took. If this function
  * returns an error, no reference counts are touched.
@@ -1823,7 +1920,10 @@ int cgroup_attach_task(struct cgroup *cgrp, struct task_struct *tsk)
 	struct cgroup_subsys *ss, *failed_ss = NULL;
 	struct cgroup *oldcgrp;
 	struct cgroupfs_root *root = cgrp->root;
+<<<<<<< HEAD
 	struct css_set *cg;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/* Nothing to do if the task is already in that cgroup */
 	oldcgrp = task_cgroup_from_root(tsk, root);
@@ -1853,11 +1953,14 @@ int cgroup_attach_task(struct cgroup *cgrp, struct task_struct *tsk)
 		}
 	}
 
+<<<<<<< HEAD
 	task_lock(tsk);
 	cg = tsk->cgroups;
 	get_css_set(cg);
 	task_unlock(tsk);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	retval = cgroup_task_migrate(cgrp, oldcgrp, tsk, false);
 	if (retval)
 		goto out;
@@ -1870,9 +1973,14 @@ int cgroup_attach_task(struct cgroup *cgrp, struct task_struct *tsk)
 		if (ss->attach)
 			ss->attach(ss, cgrp, oldcgrp, tsk);
 	}
+<<<<<<< HEAD
 	set_bit(CGRP_RELEASABLE, &cgrp->flags);
 	/* put_css_set will not destroy cg until after an RCU grace period */
 	put_css_set(cg);
+=======
+
+	synchronize_rcu();
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/*
 	 * wake up rmdir() waiter. the rmdir should fail since the cgroup
@@ -2194,6 +2302,7 @@ out_free_group_list:
 	return retval;
 }
 
+<<<<<<< HEAD
 static int cgroup_allow_attach(struct cgroup *cgrp, struct task_struct *tsk)
 {
 	struct cgroup_subsys *ss;
@@ -2212,6 +2321,8 @@ static int cgroup_allow_attach(struct cgroup *cgrp, struct task_struct *tsk)
 	return 0;
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*
  * Find the task_struct of the task to attach by vpid and pass it along to the
  * function to attach either it or all tasks in its threadgroup. Will take
@@ -2257,6 +2368,7 @@ static int attach_task_by_pid(struct cgroup *cgrp, u64 pid, bool threadgroup)
 		if (cred->euid &&
 		    cred->euid != tcred->uid &&
 		    cred->euid != tcred->suid) {
+<<<<<<< HEAD
 			/*
 			 * if the default permission check fails, give each
 			 * cgroup a chance to extend the permission check
@@ -2267,6 +2379,11 @@ static int attach_task_by_pid(struct cgroup *cgrp, u64 pid, bool threadgroup)
 				cgroup_unlock();
 				return ret;
 			}
+=======
+			rcu_read_unlock();
+			cgroup_unlock();
+			return -EACCES;
+>>>>>>> remotes/gregkh/linux-3.0.y
 		}
 		get_task_struct(tsk);
 		rcu_read_unlock();
@@ -3840,8 +3957,11 @@ static long cgroup_create(struct cgroup *parent, struct dentry *dentry,
 	if (err < 0)
 		goto err_remove;
 
+<<<<<<< HEAD
 	set_bit(CGRP_RELEASABLE, &parent->flags);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* The cgroup directory was pre-locked for us */
 	BUG_ON(!mutex_is_locked(&cgrp->dentry->d_inode->i_mutex));
 
@@ -3973,6 +4093,7 @@ static int cgroup_clear_css_refs(struct cgroup *cgrp)
 	return !failed;
 }
 
+<<<<<<< HEAD
 /* checks if all of the css_sets attached to a cgroup have a refcount of 0.
  * Must be called with css_set_lock held */
 static int cgroup_css_sets_empty(struct cgroup *cgrp)
@@ -3988,6 +4109,8 @@ static int cgroup_css_sets_empty(struct cgroup *cgrp)
 	return 1;
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int cgroup_rmdir(struct inode *unused_dir, struct dentry *dentry)
 {
 	struct cgroup *cgrp = dentry->d_fsdata;
@@ -4000,7 +4123,11 @@ static int cgroup_rmdir(struct inode *unused_dir, struct dentry *dentry)
 	/* the vfs holds both inode->i_mutex already */
 again:
 	mutex_lock(&cgroup_mutex);
+<<<<<<< HEAD
 	if (!cgroup_css_sets_empty(cgrp)) {
+=======
+	if (atomic_read(&cgrp->count) != 0) {
+>>>>>>> remotes/gregkh/linux-3.0.y
 		mutex_unlock(&cgroup_mutex);
 		return -EBUSY;
 	}
@@ -4033,7 +4160,11 @@ again:
 
 	mutex_lock(&cgroup_mutex);
 	parent = cgrp->parent;
+<<<<<<< HEAD
 	if (!cgroup_css_sets_empty(cgrp) || !list_empty(&cgrp->children)) {
+=======
+	if (atomic_read(&cgrp->count) || !list_empty(&cgrp->children)) {
+>>>>>>> remotes/gregkh/linux-3.0.y
 		clear_bit(CGRP_WAIT_ON_RMDIR, &cgrp->flags);
 		mutex_unlock(&cgroup_mutex);
 		return -EBUSY;
@@ -4073,6 +4204,10 @@ again:
 	cgroup_d_remove_dir(d);
 	dput(d);
 
+<<<<<<< HEAD
+=======
+	set_bit(CGRP_RELEASABLE, &parent->flags);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	check_for_release(parent);
 
 	/*
@@ -4672,7 +4807,11 @@ void cgroup_exit(struct task_struct *tsk, int run_callbacks)
 	task_unlock(tsk);
 
 	if (cg)
+<<<<<<< HEAD
 		put_css_set(cg);
+=======
+		put_css_set_taskexit(cg);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 /**
@@ -4726,6 +4865,7 @@ static void check_for_release(struct cgroup *cgrp)
 }
 
 /* Caller must verify that the css is not for root cgroup */
+<<<<<<< HEAD
 void __css_get(struct cgroup_subsys_state *css, int count)
 {
 	atomic_add(count, &css->refcnt);
@@ -4734,6 +4874,8 @@ void __css_get(struct cgroup_subsys_state *css, int count)
 EXPORT_SYMBOL_GPL(__css_get);
 
 /* Caller must verify that the css is not for root cgroup */
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 void __css_put(struct cgroup_subsys_state *css, int count)
 {
 	struct cgroup *cgrp = css->cgroup;
@@ -4741,7 +4883,14 @@ void __css_put(struct cgroup_subsys_state *css, int count)
 	rcu_read_lock();
 	val = atomic_sub_return(count, &css->refcnt);
 	if (val == 1) {
+<<<<<<< HEAD
 		check_for_release(cgrp);
+=======
+		if (notify_on_release(cgrp)) {
+			set_bit(CGRP_RELEASABLE, &cgrp->flags);
+			check_for_release(cgrp);
+		}
+>>>>>>> remotes/gregkh/linux-3.0.y
 		cgroup_wakeup_rmdir_waiter(cgrp);
 	}
 	rcu_read_unlock();

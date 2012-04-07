@@ -25,9 +25,12 @@
 
 #include <linux/mmc/mmc.h>
 #include <linux/mmc/host.h>
+<<<<<<< HEAD
 #include <linux/mmc/card.h>
 
 #include <plat/regs-sdhci.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include "sdhci.h"
 
@@ -107,6 +110,7 @@ static void sdhci_dumpregs(struct sdhci_host *host)
  *                                                                           *
 \*****************************************************************************/
 
+<<<<<<< HEAD
 static void sdhci_enable_clock_card(struct sdhci_host *host)
 {
 	u16 clk;
@@ -125,6 +129,8 @@ static void sdhci_disable_clock_card(struct sdhci_host *host)
 	writew(clk, host->ioaddr + SDHCI_CLOCK_CONTROL);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static void sdhci_clear_set_irqs(struct sdhci_host *host, u32 clear, u32 set)
 {
 	u32 ier;
@@ -951,6 +957,7 @@ static void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
 	int flags;
 	u32 mask;
 	unsigned long timeout;
+<<<<<<< HEAD
 #if defined(CONFIG_MMC_SDHCI_S3C) || defined(CONFIG_MMC_SDHCI_MODULE)
 	int i;
 #endif
@@ -959,6 +966,11 @@ static void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
 
 	del_timer(&host->busy_check_timer);
 
+=======
+
+	WARN_ON(host->cmd);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* Wait max 10 ms */
 	timeout = 10;
 
@@ -988,12 +1000,17 @@ static void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
 
 	host->cmd = cmd;
 
+<<<<<<< HEAD
 	sdhci_enable_clock_card(host);
 	sdhci_prepare_data(host, cmd);
 
 	if(cmd->flags & MMC_RSP_BUSY)
 		sdhci_writeb(host, 0xE, SDHCI_TIMEOUT_CONTROL);
 
+=======
+	sdhci_prepare_data(host, cmd);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	sdhci_writel(host, cmd->arg, SDHCI_ARGUMENT);
 
 	sdhci_set_transfer_mode(host, cmd);
@@ -1024,6 +1041,7 @@ static void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
 	if (cmd->data || (cmd->opcode == MMC_SEND_TUNING_BLOCK))
 		flags |= SDHCI_CMD_DATA;
 
+<<<<<<< HEAD
 #if defined(CONFIG_MMC_SDHCI_S3C) || defined(CONFIG_MMC_SDHCI_MODULE)
 	mask = readl(host->ioaddr + SDHCI_INT_STATUS);
 	writel(mask & SDHCI_INT_DATA_MASK & SDHCI_INT_CMD_MASK, host->ioaddr + SDHCI_INT_STATUS);
@@ -1035,6 +1053,8 @@ static void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
 	}
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	sdhci_writew(host, SDHCI_MAKE_CMD(cmd->opcode, flags), SDHCI_COMMAND);
 }
 
@@ -1085,7 +1105,11 @@ static void sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
 	u16 clk = 0;
 	unsigned long timeout;
 
+<<<<<<< HEAD
 	if (clock && clock == host->clock)
+=======
+	if (clock == host->clock)
+>>>>>>> remotes/gregkh/linux-3.0.y
 		return;
 
 	if (host->ops->set_clock) {
@@ -1330,9 +1354,12 @@ static void sdhci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 		sdhci_reinit(host);
 	}
 
+<<<<<<< HEAD
 	if (host->ops->set_ios)
 		host->ops->set_ios(host, ios);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	sdhci_set_clock(host, ios->clock);
 
 	if (ios->power_mode == MMC_POWER_OFF)
@@ -1842,6 +1869,7 @@ static void sdhci_enable_preset_value(struct mmc_host *mmc, bool enable)
 	spin_unlock_irqrestore(&host->lock, flags);
 }
 
+<<<<<<< HEAD
 void sdhci_adjust_cfg(struct mmc_host *mmc, int rw)
 {
 	struct sdhci_host *host;
@@ -1862,6 +1890,8 @@ void sdhci_adjust_cfg(struct mmc_host *mmc, int rw)
 	spin_unlock_irqrestore(&host->lock, flags);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static const struct mmc_host_ops sdhci_ops = {
 	.request	= sdhci_request,
 	.set_ios	= sdhci_set_ios,
@@ -1870,7 +1900,10 @@ static const struct mmc_host_ops sdhci_ops = {
 	.start_signal_voltage_switch	= sdhci_start_signal_voltage_switch,
 	.execute_tuning			= sdhci_execute_tuning,
 	.enable_preset_value		= sdhci_enable_preset_value,
+<<<<<<< HEAD
 	.adjust_cfg = sdhci_adjust_cfg,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 /*****************************************************************************\
@@ -1916,9 +1949,12 @@ static void sdhci_tasklet_finish(unsigned long param)
 
 	host = (struct sdhci_host*)param;
 
+<<<<<<< HEAD
 	if(host == NULL)
 		return;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
         /*
          * If this tasklet gets rescheduled while running, it will
          * be run again afterwards but without any active request.
@@ -1932,9 +1968,12 @@ static void sdhci_tasklet_finish(unsigned long param)
 
 	mrq = host->mrq;
 
+<<<<<<< HEAD
 	if(mrq == NULL || mrq->cmd == NULL)
 		goto out;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/*
 	 * The controller needs a reset of internal state machines
 	 * upon error conditions.
@@ -1960,12 +1999,15 @@ static void sdhci_tasklet_finish(unsigned long param)
 		sdhci_reset(host, SDHCI_RESET_CMD);
 		sdhci_reset(host, SDHCI_RESET_DATA);
 	}
+<<<<<<< HEAD
 out:
 	if((readl(host->ioaddr + SDHCI_PRESENT_STATE) & SDHCI_DATA_INHIBIT) ||
 			(host->quirks & SDHCI_QUIRK_MUST_MAINTAIN_CLOCK))
 		mod_timer(&host->busy_check_timer, jiffies + msecs_to_jiffies(10));
 	else
 		sdhci_disable_clock_card(host);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	host->mrq = NULL;
 	host->cmd = NULL;
@@ -2026,6 +2068,7 @@ static void sdhci_tuning_timer(unsigned long data)
 	spin_unlock_irqrestore(&host->lock, flags);
 }
 
+<<<<<<< HEAD
 static void sdhci_busy_check_timer(unsigned long data)
 {
 	struct sdhci_host *host;
@@ -2044,6 +2087,8 @@ static void sdhci_busy_check_timer(unsigned long data)
 	spin_unlock_irqrestore(&host->lock, flags);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*****************************************************************************\
  *                                                                           *
  * Interrupt handling                                                        *
@@ -2070,7 +2115,10 @@ static void sdhci_cmd_irq(struct sdhci_host *host, u32 intmask)
 
 	if (host->cmd->error) {
 		tasklet_schedule(&host->finish_tasklet);
+<<<<<<< HEAD
 		host->cmd = NULL;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 		return;
 	}
 
@@ -2315,8 +2363,12 @@ out:
 
 int sdhci_suspend_host(struct sdhci_host *host, pm_message_t state)
 {
+<<<<<<< HEAD
 	int ret = 0;
 	struct mmc_host *mmc = host->mmc;
+=======
+	int ret;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	sdhci_disable_card_detection(host);
 
@@ -2327,6 +2379,7 @@ int sdhci_suspend_host(struct sdhci_host *host, pm_message_t state)
 		host->flags &= ~SDHCI_NEEDS_RETUNING;
 	}
 
+<<<<<<< HEAD
 	if (mmc->card && (mmc->card->type != MMC_TYPE_SDIO))
 		ret = mmc_suspend_host(host->mmc);
 
@@ -2336,6 +2389,13 @@ int sdhci_suspend_host(struct sdhci_host *host, pm_message_t state)
 
 	if (host->irq)
 		disable_irq(host->irq);
+=======
+	ret = mmc_suspend_host(host->mmc);
+	if (ret)
+		return ret;
+
+	free_irq(host->irq, host);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	if (host->vmmc)
 		ret = regulator_disable(host->vmmc);
@@ -2347,8 +2407,12 @@ EXPORT_SYMBOL_GPL(sdhci_suspend_host);
 
 int sdhci_resume_host(struct sdhci_host *host)
 {
+<<<<<<< HEAD
 	int ret = 0;
 	struct mmc_host *mmc = host->mmc;
+=======
+	int ret;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	if (host->vmmc) {
 		int ret = regulator_enable(host->vmmc);
@@ -2362,15 +2426,26 @@ int sdhci_resume_host(struct sdhci_host *host)
 			host->ops->enable_dma(host);
 	}
 
+<<<<<<< HEAD
 	if (host->irq)
 		enable_irq(host->irq);
+=======
+	ret = request_irq(host->irq, sdhci_irq, IRQF_SHARED,
+			  mmc_hostname(host->mmc), host);
+	if (ret)
+		return ret;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	sdhci_init(host, (host->mmc->pm_flags & MMC_PM_KEEP_POWER));
 	mmiowb();
 
+<<<<<<< HEAD
 	if (mmc->card && (mmc->card->type != MMC_TYPE_SDIO))
 		ret = mmc_resume_host(host->mmc);
 
+=======
+	ret = mmc_resume_host(host->mmc);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	sdhci_enable_card_detection(host);
 
 	/* Set the re-tuning expiration flag */
@@ -2801,7 +2876,10 @@ int sdhci_add_host(struct sdhci_host *host)
 		sdhci_tasklet_finish, (unsigned long)host);
 
 	setup_timer(&host->timer, sdhci_timeout_timer, (unsigned long)host);
+<<<<<<< HEAD
 	setup_timer(&host->busy_check_timer, sdhci_busy_check_timer, (unsigned long)host);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	if (host->version >= SDHCI_SPEC_300) {
 		init_waitqueue_head(&host->buf_ready_int);
@@ -2907,7 +2985,10 @@ void sdhci_remove_host(struct sdhci_host *host, int dead)
 	del_timer_sync(&host->timer);
 	if (host->version >= SDHCI_SPEC_300)
 		del_timer_sync(&host->tuning_timer);
+<<<<<<< HEAD
 	del_timer_sync(&host->busy_check_timer);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	tasklet_kill(&host->card_tasklet);
 	tasklet_kill(&host->finish_tasklet);

@@ -9,7 +9,10 @@
 
 struct ext4_allocation_context;
 struct ext4_allocation_request;
+<<<<<<< HEAD
 struct ext4_extent;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 struct ext4_prealloc_space;
 struct ext4_inode_info;
 struct mpage_da_data;
@@ -1389,6 +1392,7 @@ DEFINE_EVENT(ext4__truncate, ext4_truncate_exit,
 	TP_ARGS(inode)
 );
 
+<<<<<<< HEAD
 /* 'ux' is the uninitialized extent. */
 TRACE_EVENT(ext4_ext_convert_to_initialized_enter,
 	TP_PROTO(struct inode *inode, struct ext4_map_blocks *map,
@@ -1470,6 +1474,8 @@ TRACE_EVENT(ext4_ext_convert_to_initialized_fastpath,
 		  __entry->i_lblk, __entry->i_len, __entry->i_pblk)
 );
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 DECLARE_EVENT_CLASS(ext4__map_blocks_enter,
 	TP_PROTO(struct inode *inode, ext4_lblk_t lblk,
 		 unsigned int len, unsigned int flags),

@@ -24,4 +24,7 @@ obj-$(CONFIG_INPUT_TOUCHSCREEN)	+= touchscreen/
 obj-$(CONFIG_INPUT_MISC)	+= misc/
 
 obj-$(CONFIG_INPUT_APMPOWER)	+= apm-power.o
+<<<<<<< HEAD
 obj-$(CONFIG_INPUT_KEYRESET)	+= keyreset.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

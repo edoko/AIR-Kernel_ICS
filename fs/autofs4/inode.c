@@ -19,6 +19,10 @@
 #include <linux/parser.h>
 #include <linux/bitops.h>
 #include <linux/magic.h>
+<<<<<<< HEAD
+=======
+#include <linux/compat.h>
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include "autofs_i.h"
 #include <linux/module.h>
 
@@ -224,6 +228,10 @@ int autofs4_fill_super(struct super_block *s, void *data, int silent)
 	set_autofs_type_indirect(&sbi->type);
 	sbi->min_proto = 0;
 	sbi->max_proto = 0;
+<<<<<<< HEAD
+=======
+	sbi->compat_daemon = is_compat_task();
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mutex_init(&sbi->wq_mutex);
 	spin_lock_init(&sbi->fs_lock);
 	sbi->queues = NULL;

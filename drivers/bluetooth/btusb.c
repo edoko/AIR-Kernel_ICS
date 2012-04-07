@@ -116,6 +116,10 @@ static struct usb_device_id blacklist_table[] = {
 	{ USB_DEVICE(0x0cf3, 0x3002), .driver_info = BTUSB_IGNORE },
 	{ USB_DEVICE(0x13d3, 0x3304), .driver_info = BTUSB_IGNORE },
 	{ USB_DEVICE(0x0930, 0x0215), .driver_info = BTUSB_IGNORE },
+<<<<<<< HEAD
+=======
+	{ USB_DEVICE(0x0489, 0xe03d), .driver_info = BTUSB_IGNORE },
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/* Atheros AR9285 Malbec with sflash firmware */
 	{ USB_DEVICE(0x03f0, 0x311d), .driver_info = BTUSB_IGNORE },
@@ -497,6 +501,7 @@ static int btusb_submit_isoc_urb(struct hci_dev *hdev, gfp_t mem_flags)
 
 	pipe = usb_rcvisocpipe(data->udev, data->isoc_rx_ep->bEndpointAddress);
 
+<<<<<<< HEAD
 	urb->dev      = data->udev;
 	urb->pipe     = pipe;
 	urb->context  = hdev;
@@ -506,6 +511,12 @@ static int btusb_submit_isoc_urb(struct hci_dev *hdev, gfp_t mem_flags)
 	urb->transfer_flags  = URB_FREE_BUFFER | URB_ISO_ASAP;
 	urb->transfer_buffer = buf;
 	urb->transfer_buffer_length = size;
+=======
+	usb_fill_int_urb(urb, data->udev, pipe, buf, size, btusb_isoc_complete,
+				hdev, data->isoc_rx_ep->bInterval);
+
+	urb->transfer_flags  = URB_FREE_BUFFER | URB_ISO_ASAP;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	__fill_isoc_descriptor(urb, size,
 			le16_to_cpu(data->isoc_rx_ep->wMaxPacketSize));

@@ -770,7 +770,11 @@ static int irq_thread(void *data)
 			struct irqaction *action);
 	int wake;
 
+<<<<<<< HEAD
 	if (force_irqthreads & test_bit(IRQTF_FORCED_THREAD,
+=======
+	if (force_irqthreads && test_bit(IRQTF_FORCED_THREAD,
+>>>>>>> remotes/gregkh/linux-3.0.y
 					&action->thread_flags))
 		handler_fn = irq_forced_thread_fn;
 	else

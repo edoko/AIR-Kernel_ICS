@@ -98,12 +98,15 @@
 #endif
 .endm
 
+<<<<<<< HEAD
 #ifdef CONFIG_VM86
 #define resume_userspace_sig	check_userspace
 #else
 #define resume_userspace_sig	resume_userspace
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*
  * User gs save/restore
  *
@@ -327,10 +330,26 @@ ret_from_exception:
 	preempt_stop(CLBR_ANY)
 ret_from_intr:
 	GET_THREAD_INFO(%ebp)
+<<<<<<< HEAD
 check_userspace:
 	movl PT_EFLAGS(%esp), %eax	# mix EFLAGS and CS
 	movb PT_CS(%esp), %al
 	andl $(X86_EFLAGS_VM | SEGMENT_RPL_MASK), %eax
+=======
+resume_userspace_sig:
+#ifdef CONFIG_VM86
+	movl PT_EFLAGS(%esp), %eax	# mix EFLAGS and CS
+	movb PT_CS(%esp), %al
+	andl $(X86_EFLAGS_VM | SEGMENT_RPL_MASK), %eax
+#else
+	/*
+	 * We can be coming here from a syscall done in the kernel space,
+	 * e.g. a failed kernel_execve().
+	 */
+	movl PT_CS(%esp), %eax
+	andl $SEGMENT_RPL_MASK, %eax
+#endif
+>>>>>>> remotes/gregkh/linux-3.0.y
 	cmpl $USER_RPL, %eax
 	jb resume_kernel		# not returning to v8086 or userspace
 

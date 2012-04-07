@@ -37,6 +37,7 @@
 #include <trace/events/writeback.h>
 
 /*
+<<<<<<< HEAD
  * Sleep at most 200ms at a time in balance_dirty_pages().
  */
 #define MAX_PAUSE		max(HZ/5, 1)
@@ -53,13 +54,37 @@
  * will look to see if it needs to force writeback or throttling.
  */
 static long ratelimit_pages = 32;
+=======
+ * After a CPU has dirtied this many pages, balance_dirty_pages_ratelimited
+ * will look to see if it needs to force writeback or throttling.
+ */
+static long ratelimit_pages = 32;
+
+/*
+ * When balance_dirty_pages decides that the caller needs to perform some
+ * non-background writeback, this is how many pages it will attempt to write.
+ * It should be somewhat larger than dirtied pages to ensure that reasonably
+ * large amounts of I/O are submitted.
+ */
+static inline long sync_writeback_pages(unsigned long dirtied)
+{
+	if (dirtied < ratelimit_pages)
+		dirtied = ratelimit_pages;
+
+	return dirtied + dirtied / 2;
+}
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /* The following parameters are exported via /proc/sys/vm */
 
 /*
  * Start background writeback (via writeback threads) at this percentage
  */
+<<<<<<< HEAD
 int dirty_background_ratio = 3;
+=======
+int dirty_background_ratio = 10;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /*
  * dirty_background_bytes starts at 0 (disabled) so that it is a function of
@@ -76,7 +101,11 @@ int vm_highmem_is_dirtyable;
 /*
  * The generator of dirty data starts writeback at this percentage
  */
+<<<<<<< HEAD
 int vm_dirty_ratio = 15;
+=======
+int vm_dirty_ratio = 20;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /*
  * vm_dirty_bytes starts at 0 (disabled) so that it is a function of
@@ -87,7 +116,11 @@ unsigned long vm_dirty_bytes;
 /*
  * The interval between `kupdate'-style writebacks
  */
+<<<<<<< HEAD
 unsigned int dirty_writeback_interval = 15 * 100; /* centiseconds */
+=======
+unsigned int dirty_writeback_interval = 5 * 100; /* centiseconds */
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /*
  * The longest time for which data is allowed to remain dirty
@@ -109,7 +142,10 @@ EXPORT_SYMBOL(laptop_mode);
 
 /* End of sysctl-exported parameters */
 
+<<<<<<< HEAD
 unsigned long global_dirty_limit;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /*
  * Scale the writeback cache size proportional to the relative writeout speeds.
@@ -155,8 +191,11 @@ static void update_completion_period(void)
 	int shift = calc_period_shift();
 	prop_change_shift(&vm_completions, shift);
 	prop_change_shift(&vm_dirties, shift);
+<<<<<<< HEAD
 
 	writeback_set_ratelimit();
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 int dirty_background_ratio_handler(struct ctl_table *table, int write,
@@ -220,7 +259,10 @@ int dirty_bytes_handler(struct ctl_table *table, int write,
  */
 static inline void __bdi_writeout_inc(struct backing_dev_info *bdi)
 {
+<<<<<<< HEAD
 	__inc_bdi_stat(bdi, BDI_WRITTEN);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	__prop_inc_percpu_max(&vm_completions, &bdi->completions,
 			      bdi->max_prop_frac);
 }
@@ -246,8 +288,55 @@ void task_dirty_inc(struct task_struct *tsk)
 static void bdi_writeout_fraction(struct backing_dev_info *bdi,
 		long *numerator, long *denominator)
 {
+<<<<<<< HEAD
 	prop_fraction_percpu(&vm_completions, &bdi->completions,
 				numerator, denominator);
+=======
+	if (bdi_cap_writeback_dirty(bdi)) {
+		prop_fraction_percpu(&vm_completions, &bdi->completions,
+				numerator, denominator);
+	} else {
+		*numerator = 0;
+		*denominator = 1;
+	}
+}
+
+static inline void task_dirties_fraction(struct task_struct *tsk,
+		long *numerator, long *denominator)
+{
+	prop_fraction_single(&vm_dirties, &tsk->dirties,
+				numerator, denominator);
+}
+
+/*
+ * task_dirty_limit - scale down dirty throttling threshold for one task
+ *
+ * task specific dirty limit:
+ *
+ *   dirty -= (dirty/8) * p_{t}
+ *
+ * To protect light/slow dirtying tasks from heavier/fast ones, we start
+ * throttling individual tasks before reaching the bdi dirty limit.
+ * Relatively low thresholds will be allocated to heavy dirtiers. So when
+ * dirty pages grow large, heavy dirtiers will be throttled first, which will
+ * effectively curb the growth of dirty pages. Light dirtiers with high enough
+ * dirty threshold may never get throttled.
+ */
+static unsigned long task_dirty_limit(struct task_struct *tsk,
+				       unsigned long bdi_dirty)
+{
+	long numerator, denominator;
+	unsigned long dirty = bdi_dirty;
+	u64 inv = dirty >> 3;
+
+	task_dirties_fraction(tsk, &numerator, &denominator);
+	inv *= numerator;
+	do_div(inv, denominator);
+
+	dirty -= inv;
+
+	return max(dirty, bdi_dirty/2);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 /*
@@ -357,6 +446,7 @@ unsigned long determine_dirtyable_memory(void)
 	return x + 1;	/* Ensure that we never return 0 */
 }
 
+<<<<<<< HEAD
 static unsigned long dirty_freerun_ceiling(unsigned long thresh,
 					   unsigned long bg_thresh)
 {
@@ -368,6 +458,8 @@ static unsigned long hard_dirty_limit(unsigned long thresh)
 	return max(thresh, global_dirty_limit);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*
  * global_dirty_limits - background-writeback and dirty-throttling thresholds
  *
@@ -406,6 +498,7 @@ void global_dirty_limits(unsigned long *pbackground, unsigned long *pdirty)
 	}
 	*pbackground = background;
 	*pdirty = dirty;
+<<<<<<< HEAD
 	trace_global_dirty_state(background, dirty);
 }
 
@@ -420,6 +513,14 @@ void global_dirty_limits(unsigned long *pbackground, unsigned long *pdirty)
  * balance_dirty_pages().
  *
  * It allocates high/low dirty limits to fast/slow devices, in order to prevent
+=======
+}
+
+/*
+ * bdi_dirty_limit - @bdi's share of dirty throttling threshold
+ *
+ * Allocate high/low dirty limits to fast/slow devices, in order to prevent
+>>>>>>> remotes/gregkh/linux-3.0.y
  * - starving fast devices
  * - piling up dirty pages (that will take long time to sync) on slow devices
  *
@@ -448,6 +549,7 @@ unsigned long bdi_dirty_limit(struct backing_dev_info *bdi, unsigned long dirty)
 }
 
 /*
+<<<<<<< HEAD
  * Dirty position control.
  *
  * (o) global/bdi setpoints
@@ -997,10 +1099,16 @@ static unsigned long bdi_max_pause(struct backing_dev_info *bdi,
  * balance_dirty_pages() must be called by processes which are generating dirty
  * data.  It looks at the number of dirty pages in the machine and will force
  * the caller to wait once crossing the (background_thresh + dirty_thresh) / 2.
+=======
+ * balance_dirty_pages() must be called by processes which are generating dirty
+ * data.  It looks at the number of dirty pages in the machine and will force
+ * the caller to perform writeback if the system is over `vm_dirty_ratio'.
+>>>>>>> remotes/gregkh/linux-3.0.y
  * If we're over `background_thresh' then the writeback threads are woken to
  * perform some writeout.
  */
 static void balance_dirty_pages(struct address_space *mapping,
+<<<<<<< HEAD
 				unsigned long pages_dirtied)
 {
 	unsigned long nr_reclaimable;	/* = file_dirty + unstable_nfs */
@@ -1030,6 +1138,31 @@ static void balance_dirty_pages(struct address_space *mapping,
 		nr_reclaimable = global_page_state(NR_FILE_DIRTY) +
 					global_page_state(NR_UNSTABLE_NFS);
 		nr_dirty = nr_reclaimable + global_page_state(NR_WRITEBACK);
+=======
+				unsigned long write_chunk)
+{
+	long nr_reclaimable, bdi_nr_reclaimable;
+	long nr_writeback, bdi_nr_writeback;
+	unsigned long background_thresh;
+	unsigned long dirty_thresh;
+	unsigned long bdi_thresh;
+	unsigned long pages_written = 0;
+	unsigned long pause = 1;
+	bool dirty_exceeded = false;
+	struct backing_dev_info *bdi = mapping->backing_dev_info;
+
+	for (;;) {
+		struct writeback_control wbc = {
+			.sync_mode	= WB_SYNC_NONE,
+			.older_than_this = NULL,
+			.nr_to_write	= write_chunk,
+			.range_cyclic	= 1,
+		};
+
+		nr_reclaimable = global_page_state(NR_FILE_DIRTY) +
+					global_page_state(NR_UNSTABLE_NFS);
+		nr_writeback = global_page_state(NR_WRITEBACK);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		global_dirty_limits(&background_thresh, &dirty_thresh);
 
@@ -1038,6 +1171,7 @@ static void balance_dirty_pages(struct address_space *mapping,
 		 * catch-up. This avoids (excessively) small writeouts
 		 * when the bdi limits are ramping up.
 		 */
+<<<<<<< HEAD
 		freerun = dirty_freerun_ceiling(dirty_thresh,
 						background_thresh);
 		if (nr_dirty <= freerun)
@@ -1060,6 +1194,14 @@ static void balance_dirty_pages(struct address_space *mapping,
 		 *   at some rate <= (write_bw / 2) for bringing down bdi_dirty.
 		 */
 		bdi_thresh = bdi_dirty_limit(bdi, dirty_thresh);
+=======
+		if (nr_reclaimable + nr_writeback <=
+				(background_thresh + dirty_thresh) / 2)
+			break;
+
+		bdi_thresh = bdi_dirty_limit(bdi, dirty_thresh);
+		bdi_thresh = task_dirty_limit(current, bdi_thresh);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		/*
 		 * In order to avoid the stacked BDI deadlock we need
@@ -1071,6 +1213,7 @@ static void balance_dirty_pages(struct address_space *mapping,
 		 * actually dirty; with m+n sitting in the percpu
 		 * deltas.
 		 */
+<<<<<<< HEAD
 		if (bdi_thresh < 2 * bdi_stat_error(bdi)) {
 			bdi_reclaimable = bdi_stat_sum(bdi, BDI_RECLAIMABLE);
 			bdi_dirty = bdi_reclaimable +
@@ -1132,20 +1275,74 @@ pause:
 					  pages_dirtied,
 					  pause,
 					  start_time);
+=======
+		if (bdi_thresh < 2*bdi_stat_error(bdi)) {
+			bdi_nr_reclaimable = bdi_stat_sum(bdi, BDI_RECLAIMABLE);
+			bdi_nr_writeback = bdi_stat_sum(bdi, BDI_WRITEBACK);
+		} else {
+			bdi_nr_reclaimable = bdi_stat(bdi, BDI_RECLAIMABLE);
+			bdi_nr_writeback = bdi_stat(bdi, BDI_WRITEBACK);
+		}
+
+		/*
+		 * The bdi thresh is somehow "soft" limit derived from the
+		 * global "hard" limit. The former helps to prevent heavy IO
+		 * bdi or process from holding back light ones; The latter is
+		 * the last resort safeguard.
+		 */
+		dirty_exceeded =
+			(bdi_nr_reclaimable + bdi_nr_writeback > bdi_thresh)
+			|| (nr_reclaimable + nr_writeback > dirty_thresh);
+
+		if (!dirty_exceeded)
+			break;
+
+		if (!bdi->dirty_exceeded)
+			bdi->dirty_exceeded = 1;
+
+		/* Note: nr_reclaimable denotes nr_dirty + nr_unstable.
+		 * Unstable writes are a feature of certain networked
+		 * filesystems (i.e. NFS) in which data may have been
+		 * written to the server's write cache, but has not yet
+		 * been flushed to permanent storage.
+		 * Only move pages to writeback if this bdi is over its
+		 * threshold otherwise wait until the disk writes catch
+		 * up.
+		 */
+		trace_wbc_balance_dirty_start(&wbc, bdi);
+		if (bdi_nr_reclaimable > bdi_thresh) {
+			writeback_inodes_wb(&bdi->wb, &wbc);
+			pages_written += write_chunk - wbc.nr_to_write;
+			trace_wbc_balance_dirty_written(&wbc, bdi);
+			if (pages_written >= write_chunk)
+				break;		/* We've done our duty */
+		}
+		trace_wbc_balance_dirty_wait(&wbc, bdi);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		__set_current_state(TASK_UNINTERRUPTIBLE);
 		io_schedule_timeout(pause);
 
 		/*
+<<<<<<< HEAD
 		 * This is typically equal to (nr_dirty < dirty_thresh) and can
 		 * also keep "1000+ dd on a slow USB stick" under control.
 		 */
 		if (task_ratelimit)
 			break;
+=======
+		 * Increase the delay for each loop, up to our previous
+		 * default of taking a 100ms nap.
+		 */
+		pause <<= 1;
+		if (pause > HZ / 10)
+			pause = HZ / 10;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 
 	if (!dirty_exceeded && bdi->dirty_exceeded)
 		bdi->dirty_exceeded = 0;
 
+<<<<<<< HEAD
 	current->nr_dirtied = 0;
 	if (pause == 0) { /* in freerun area */
 		current->nr_dirtied_pause =
@@ -1163,6 +1360,8 @@ pause:
 					pages_dirtied - pages_dirtied / 8);
 	}
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (writeback_in_progress(bdi))
 		return;
 
@@ -1174,10 +1373,15 @@ pause:
 	 * In normal mode, we start background writeout at the lower
 	 * background_thresh, to keep the amount of dirty memory low.
 	 */
+<<<<<<< HEAD
 	if (laptop_mode)
 		return;
 
 	if (nr_reclaimable > background_thresh)
+=======
+	if ((laptop_mode && pages_written) ||
+	    (!laptop_mode && (nr_reclaimable > background_thresh)))
+>>>>>>> remotes/gregkh/linux-3.0.y
 		bdi_start_background_writeback(bdi);
 }
 
@@ -1191,7 +1395,11 @@ void set_page_dirty_balance(struct page *page, int page_mkwrite)
 	}
 }
 
+<<<<<<< HEAD
 static DEFINE_PER_CPU(int, bdp_ratelimits);
+=======
+static DEFINE_PER_CPU(unsigned long, bdp_ratelimits) = 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /**
  * balance_dirty_pages_ratelimited_nr - balance dirty memory state
@@ -1210,6 +1418,7 @@ static DEFINE_PER_CPU(int, bdp_ratelimits);
 void balance_dirty_pages_ratelimited_nr(struct address_space *mapping,
 					unsigned long nr_pages_dirtied)
 {
+<<<<<<< HEAD
 	struct backing_dev_info *bdi = mapping->backing_dev_info;
 	int ratelimit;
 	int *p;
@@ -1244,6 +1453,30 @@ void balance_dirty_pages_ratelimited_nr(struct address_space *mapping,
 
 	if (unlikely(current->nr_dirtied >= ratelimit))
 		balance_dirty_pages(mapping, current->nr_dirtied);
+=======
+	unsigned long ratelimit;
+	unsigned long *p;
+
+	ratelimit = ratelimit_pages;
+	if (mapping->backing_dev_info->dirty_exceeded)
+		ratelimit = 8;
+
+	/*
+	 * Check the rate limiting. Also, we do not want to throttle real-time
+	 * tasks in balance_dirty_pages(). Period.
+	 */
+	preempt_disable();
+	p =  &__get_cpu_var(bdp_ratelimits);
+	*p += nr_pages_dirtied;
+	if (unlikely(*p >= ratelimit)) {
+		ratelimit = sync_writeback_pages(*p);
+		*p = 0;
+		preempt_enable();
+		balance_dirty_pages(mapping, ratelimit);
+		return;
+	}
+	preempt_enable();
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 EXPORT_SYMBOL(balance_dirty_pages_ratelimited_nr);
 
@@ -1299,8 +1532,12 @@ void laptop_mode_timer_fn(unsigned long data)
 	 * threshold
 	 */
 	if (bdi_has_dirty_io(&q->backing_dev_info))
+<<<<<<< HEAD
 		bdi_start_writeback(&q->backing_dev_info, nr_pages,
 					WB_REASON_LAPTOP_TIMER);
+=======
+		bdi_start_writeback(&q->backing_dev_info, nr_pages);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 /*
@@ -1339,17 +1576,35 @@ void laptop_sync_completion(void)
  *
  * Here we set ratelimit_pages to a level which ensures that when all CPUs are
  * dirtying in parallel, we cannot go more than 3% (1/32) over the dirty memory
+<<<<<<< HEAD
  * thresholds.
+=======
+ * thresholds before writeback cuts in.
+ *
+ * But the limit should not be set too high.  Because it also controls the
+ * amount of memory which the balance_dirty_pages() caller has to write back.
+ * If this is too large then the caller will block on the IO queue all the
+ * time.  So limit it to four megabytes - the balance_dirty_pages() caller
+ * will write six megabyte chunks, max.
+>>>>>>> remotes/gregkh/linux-3.0.y
  */
 
 void writeback_set_ratelimit(void)
 {
+<<<<<<< HEAD
 	unsigned long background_thresh;
 	unsigned long dirty_thresh;
 	global_dirty_limits(&background_thresh, &dirty_thresh);
 	ratelimit_pages = dirty_thresh / (num_online_cpus() * 32);
 	if (ratelimit_pages < 16)
 		ratelimit_pages = 16;
+=======
+	ratelimit_pages = vm_total_pages / (num_online_cpus() * 32);
+	if (ratelimit_pages < 16)
+		ratelimit_pages = 16;
+	if (ratelimit_pages * PAGE_CACHE_SIZE > 4096 * 1024)
+		ratelimit_pages = (4096 * 1024) / PAGE_CACHE_SIZE;
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static int __cpuinit
@@ -1719,7 +1974,10 @@ void account_page_dirtied(struct page *page, struct address_space *mapping)
 		__inc_zone_page_state(page, NR_FILE_DIRTY);
 		__inc_zone_page_state(page, NR_DIRTIED);
 		__inc_bdi_stat(mapping->backing_dev_info, BDI_RECLAIMABLE);
+<<<<<<< HEAD
 		__inc_bdi_stat(mapping->backing_dev_info, BDI_DIRTIED);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 		task_dirty_inc(current);
 		task_io_account_write(PAGE_CACHE_SIZE);
 	}
@@ -1734,6 +1992,10 @@ EXPORT_SYMBOL(account_page_dirtied);
 void account_page_writeback(struct page *page)
 {
 	inc_zone_page_state(page, NR_WRITEBACK);
+<<<<<<< HEAD
+=======
+	inc_zone_page_state(page, NR_WRITTEN);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 EXPORT_SYMBOL(account_page_writeback);
 
@@ -1950,10 +2212,15 @@ int test_clear_page_writeback(struct page *page)
 	} else {
 		ret = TestClearPageWriteback(page);
 	}
+<<<<<<< HEAD
 	if (ret) {
 		dec_zone_page_state(page, NR_WRITEBACK);
 		inc_zone_page_state(page, NR_WRITTEN);
 	}
+=======
+	if (ret)
+		dec_zone_page_state(page, NR_WRITEBACK);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return ret;
 }
 
@@ -1999,6 +2266,14 @@ EXPORT_SYMBOL(test_set_page_writeback);
  */
 int mapping_tagged(struct address_space *mapping, int tag)
 {
+<<<<<<< HEAD
 	return radix_tree_tagged(&mapping->page_tree, tag);
+=======
+	int ret;
+	rcu_read_lock();
+	ret = radix_tree_tagged(&mapping->page_tree, tag);
+	rcu_read_unlock();
+	return ret;
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 EXPORT_SYMBOL(mapping_tagged);

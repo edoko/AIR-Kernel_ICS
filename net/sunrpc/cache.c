@@ -828,6 +828,11 @@ static ssize_t cache_do_downcall(char *kaddr, const char __user *buf,
 {
 	ssize_t ret;
 
+<<<<<<< HEAD
+=======
+	if (count == 0)
+		return -EINVAL;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (copy_from_user(kaddr, buf, count))
 		return -EFAULT;
 	kaddr[count] = '\0';

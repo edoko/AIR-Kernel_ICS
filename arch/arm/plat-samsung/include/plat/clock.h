@@ -46,7 +46,10 @@ struct clk {
 	unsigned long         ctrlbit;
 
 	struct clk_ops		*ops;
+<<<<<<< HEAD
 	struct device		*dev;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	int		    (*enable)(struct clk *, int enable);
 #if defined(CONFIG_PM_DEBUG) && defined(CONFIG_DEBUG_FS)
 	struct dentry		*dent;	/* For visible tree hierarchy */

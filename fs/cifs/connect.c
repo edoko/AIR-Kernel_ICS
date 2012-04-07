@@ -3004,7 +3004,11 @@ cifs_get_volume_info(char *mount_data, const char *devname)
 int
 cifs_mount(struct cifs_sb_info *cifs_sb, struct smb_vol *volume_info)
 {
+<<<<<<< HEAD
 	int rc = 0;
+=======
+	int rc;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	int xid;
 	struct cifs_ses *pSesInfo;
 	struct cifs_tcon *tcon;
@@ -3033,6 +3037,10 @@ try_mount_again:
 		FreeXid(xid);
 	}
 #endif
+<<<<<<< HEAD
+=======
+	rc = 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	tcon = NULL;
 	pSesInfo = NULL;
 	srvTcp = NULL;

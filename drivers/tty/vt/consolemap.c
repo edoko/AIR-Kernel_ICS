@@ -516,6 +516,10 @@ int con_set_unimap(struct vc_data *vc, ushort ct, struct unipair __user *list)
 	int err = 0, err1, i;
 	struct uni_pagedir *p, *q;
 
+<<<<<<< HEAD
+=======
+	/* Save original vc_unipagdir_loc in case we allocate a new one */
+>>>>>>> remotes/gregkh/linux-3.0.y
 	p = (struct uni_pagedir *)*vc->vc_uni_pagedir_loc;
 	if (p->readonly) return -EIO;
 	
@@ -528,6 +532,7 @@ int con_set_unimap(struct vc_data *vc, ushort ct, struct unipair __user *list)
 		err1 = con_clear_unimap(vc, NULL);
 		if (err1) return err1;
 		
+<<<<<<< HEAD
 		q = (struct uni_pagedir *)*vc->vc_uni_pagedir_loc;
 		for (i = 0, l = 0; i < 32; i++)
 		if ((p1 = p->uni_pgdir[i]))
@@ -535,12 +540,38 @@ int con_set_unimap(struct vc_data *vc, ushort ct, struct unipair __user *list)
 			if ((p2 = p1[j]))
 				for (k = 0; k < 64; k++, l++)
 				if (p2[k] != 0xffff) {
+=======
+		/*
+		 * Since refcount was > 1, con_clear_unimap() allocated a
+		 * a new uni_pagedir for this vc.  Re: p != q
+		 */
+		q = (struct uni_pagedir *)*vc->vc_uni_pagedir_loc;
+
+		/*
+		 * uni_pgdir is a 32*32*64 table with rows allocated
+		 * when its first entry is added.  The unicode value must
+		 * still be incremented for empty rows.  We are copying
+		 * entries from "p" (old) to "q" (new).
+		 */
+		l = 0;		/* unicode value */
+		for (i = 0; i < 32; i++)
+		if ((p1 = p->uni_pgdir[i]))
+			for (j = 0; j < 32; j++)
+			if ((p2 = p1[j])) {
+				for (k = 0; k < 64; k++, l++)
+				if (p2[k] != 0xffff) {
+					/*
+					 * Found one, copy entry for unicode
+					 * l with fontpos value p2[k].
+					 */
+>>>>>>> remotes/gregkh/linux-3.0.y
 					err1 = con_insert_unipair(q, l, p2[k]);
 					if (err1) {
 						p->refcount++;
 						*vc->vc_uni_pagedir_loc = (unsigned long)p;
 						con_release_unimap(q);
 						kfree(q);
+<<<<<<< HEAD
 						return err1; 
 					}
               			}
@@ -548,6 +579,30 @@ int con_set_unimap(struct vc_data *vc, ushort ct, struct unipair __user *list)
 	} else if (p == dflt)
 		dflt = NULL;
 	
+=======
+						return err1;
+					}
+				}
+			} else {
+				/* Account for row of 64 empty entries */
+				l += 64;
+			}
+		else
+			/* Account for empty table */
+			l += 32 * 64;
+
+		/*
+		 * Finished copying font table, set vc_uni_pagedir to new table
+		 */
+		p = q;
+	} else if (p == dflt) {
+		dflt = NULL;
+	}
+
+	/*
+	 * Insert user specified unicode pairs into new table.
+	 */
+>>>>>>> remotes/gregkh/linux-3.0.y
 	while (ct--) {
 		unsigned short unicode, fontpos;
 		__get_user(unicode, &list->unicode);
@@ -557,11 +612,21 @@ int con_set_unimap(struct vc_data *vc, ushort ct, struct unipair __user *list)
 		list++;
 	}
 	
+<<<<<<< HEAD
+=======
+	/*
+	 * Merge with fontmaps of any other virtual consoles.
+	 */
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (con_unify_unimap(vc, p))
 		return err;
 
 	for (i = 0; i <= 3; i++)
+<<<<<<< HEAD
 		set_inverse_transl(vc, p, i); /* Update all inverse translations */
+=======
+		set_inverse_transl(vc, p, i); /* Update inverse translations */
+>>>>>>> remotes/gregkh/linux-3.0.y
 	set_inverse_trans_unicode(vc, p);
   
 	return err;

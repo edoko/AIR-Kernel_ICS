@@ -702,7 +702,10 @@ const char * const vmstat_text[] = {
 	"nr_unstable",
 	"nr_bounce",
 	"nr_vmscan_write",
+<<<<<<< HEAD
 	"nr_vmscan_immediate_reclaim",
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	"nr_writeback_temp",
 	"nr_isolated_anon",
 	"nr_isolated_file",

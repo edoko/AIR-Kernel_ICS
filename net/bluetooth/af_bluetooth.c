@@ -40,6 +40,7 @@
 
 #include <net/bluetooth/bluetooth.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_ANDROID_PARANOID_NETWORK
 #include <linux/android_aid.h>
 #endif
@@ -49,6 +50,8 @@
 #define BT_DBG(D...)
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define VERSION "2.16"
 
 /* Bluetooth sockets */
@@ -134,6 +137,7 @@ int bt_sock_unregister(int proto)
 }
 EXPORT_SYMBOL(bt_sock_unregister);
 
+<<<<<<< HEAD
 #ifdef CONFIG_ANDROID_PARANOID_NETWORK
 static inline int current_has_bt_admin(void)
 {
@@ -156,11 +160,14 @@ static inline int current_has_bt(void)
 }
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int bt_sock_create(struct net *net, struct socket *sock, int proto,
 			  int kern)
 {
 	int err;
 
+<<<<<<< HEAD
 	if (proto == BTPROTO_RFCOMM || proto == BTPROTO_SCO ||
 			proto == BTPROTO_L2CAP) {
 		if (!current_has_bt())
@@ -168,6 +175,8 @@ static int bt_sock_create(struct net *net, struct socket *sock, int proto,
 	} else if (!current_has_bt_admin())
 		return -EPERM;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (net != &init_net)
 		return -EAFNOSUPPORT;
 
@@ -532,8 +541,14 @@ int bt_sock_wait_state(struct sock *sk, int state, unsigned long timeo)
 	BT_DBG("sk %p", sk);
 
 	add_wait_queue(sk_sleep(sk), &wait);
+<<<<<<< HEAD
 	set_current_state(TASK_INTERRUPTIBLE);
 	while (sk->sk_state != state) {
+=======
+	while (sk->sk_state != state) {
+		set_current_state(TASK_INTERRUPTIBLE);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 		if (!timeo) {
 			err = -EINPROGRESS;
 			break;
@@ -547,13 +562,20 @@ int bt_sock_wait_state(struct sock *sk, int state, unsigned long timeo)
 		release_sock(sk);
 		timeo = schedule_timeout(timeo);
 		lock_sock(sk);
+<<<<<<< HEAD
 		set_current_state(TASK_INTERRUPTIBLE);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		err = sock_error(sk);
 		if (err)
 			break;
 	}
+<<<<<<< HEAD
 	__set_current_state(TASK_RUNNING);
+=======
+	set_current_state(TASK_RUNNING);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	remove_wait_queue(sk_sleep(sk), &wait);
 	return err;
 }

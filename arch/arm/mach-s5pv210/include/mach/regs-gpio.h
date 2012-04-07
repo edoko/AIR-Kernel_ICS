@@ -15,6 +15,7 @@
 
 #include <mach/map.h>
 
+<<<<<<< HEAD
 /* Base addresses for each of the banks */
 
 #define S5PV210_GPA0_BASE		(S5P_VA_GPIO + 0x000)
@@ -234,11 +235,17 @@
 #define S5PV210_EXT_INT_SVC_PND		(S5P_VA_GPIO + 0xB0C)
 #define S5PV210_EXT_INT_GRPFIXPRI	(S5P_VA_GPIO + 0xB10)
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define S5PV210_EINT30CON		(S5P_VA_GPIO + 0xE00)
 #define S5P_EINT_CON(x)			(S5PV210_EINT30CON + ((x) * 0x4))
 
 #define S5PV210_EINT30FLTCON0		(S5P_VA_GPIO + 0xE80)
+<<<<<<< HEAD
 #define S5P_EINT_FLTCON(x,y)		(S5PV210_EINT30FLTCON0 + ((x) * 0x8) + ((y) * 0x4))
+=======
+#define S5P_EINT_FLTCON(x)		(S5PV210_EINT30FLTCON0 + ((x) * 0x4))
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #define S5PV210_EINT30MASK		(S5P_VA_GPIO + 0xF00)
 #define S5P_EINT_MASK(x)		(S5PV210_EINT30MASK + ((x) * 0x4))
@@ -248,6 +255,7 @@
 
 #define EINT_REG_NR(x)			(EINT_OFFSET(x) >> 3)
 
+<<<<<<< HEAD
 #define eint_offset(irq)		((irq) < IRQ_EINT16_31 ? ((irq)-IRQ_EINT0)\
 						: (irq-S5P_IRQ_EINT_BASE))
 
@@ -258,6 +266,10 @@
 #define eint_mask_reg(irq)		((eint_offset(irq)) >> 3)
 #define eint_pend_reg(irq)		((eint_offset(irq)) >> 3)
 
+=======
+#define eint_irq_to_bit(irq)		(1 << (EINT_OFFSET(irq) & 0x7))
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define EINT_MODE		S3C_GPIO_SFN(0xf)
 
 #define EINT_GPIO_0(x)		S5PV210_GPH0(x)

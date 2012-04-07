@@ -155,9 +155,12 @@ struct kmem_cache *vm_area_cachep;
 /* SLAB cache for mm_struct structures (tsk->mm) */
 static struct kmem_cache *mm_cachep;
 
+<<<<<<< HEAD
 /* Notifier list called when a task struct is freed */
 static ATOMIC_NOTIFIER_HEAD(task_free_notifier);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static void account_kernel_stack(struct thread_info *ti, int account)
 {
 	struct zone *zone = page_zone(virt_to_page(ti));
@@ -189,6 +192,7 @@ static inline void put_signal_struct(struct signal_struct *sig)
 		free_signal_struct(sig);
 }
 
+<<<<<<< HEAD
 int task_free_register(struct notifier_block *n)
 {
 	return atomic_notifier_chain_register(&task_free_notifier, n);
@@ -201,6 +205,8 @@ int task_free_unregister(struct notifier_block *n)
 }
 EXPORT_SYMBOL(task_free_unregister);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 void __put_task_struct(struct task_struct *tsk)
 {
 	WARN_ON(!tsk->exit_state);
@@ -211,7 +217,10 @@ void __put_task_struct(struct task_struct *tsk)
 	delayacct_tsk_free(tsk);
 	put_signal_struct(tsk->signal);
 
+<<<<<<< HEAD
 	atomic_notifier_call_chain(&task_free_notifier, 0, tsk);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (!profile_handoff_task(tsk))
 		free_task(tsk);
 }
@@ -1032,7 +1041,11 @@ static void rt_mutex_init_task(struct task_struct *p)
 {
 	raw_spin_lock_init(&p->pi_lock);
 #ifdef CONFIG_RT_MUTEXES
+<<<<<<< HEAD
 	plist_head_init(&p->pi_waiters);
+=======
+	plist_head_init_raw(&p->pi_waiters, &p->pi_lock);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	p->pi_blocked_on = NULL;
 #endif
 }
@@ -1307,9 +1320,12 @@ static struct task_struct *copy_process(unsigned long clone_flags,
 	p->pdeath_signal = 0;
 	p->exit_state = 0;
 
+<<<<<<< HEAD
 	p->nr_dirtied = 0;
 	p->nr_dirtied_pause = 128 >> (PAGE_SHIFT - 10);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/*
 	 * Ok, make it visible to the rest of the system.
 	 * We dont wake it up yet.

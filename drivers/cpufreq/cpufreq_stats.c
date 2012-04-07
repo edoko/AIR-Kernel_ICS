@@ -252,10 +252,13 @@ static int cpufreq_stats_create_table(struct cpufreq_policy *policy,
 	spin_lock(&cpufreq_stats_lock);
 	stat->last_time = get_jiffies_64();
 	stat->last_index = freq_table_get_index(stat, policy->cur);
+<<<<<<< HEAD
 #ifdef CONFIG_LIVE_OC
 	if (stat->last_index == -1)
 	    stat->last_index = 0;
 #endif
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	spin_unlock(&cpufreq_stats_lock);
 	cpufreq_cpu_put(data);
 	return 0;
@@ -321,6 +324,7 @@ static int cpufreq_stat_notifier_trans(struct notifier_block *nb,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int cpufreq_stats_create_table_cpu(unsigned int cpu)
 {
 	struct cpufreq_policy *policy;
@@ -342,6 +346,8 @@ out:
 	return ret;
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int __cpuinit cpufreq_stat_cpu_callback(struct notifier_block *nfb,
 					       unsigned long action,
 					       void *hcpu)
@@ -360,10 +366,13 @@ static int __cpuinit cpufreq_stat_cpu_callback(struct notifier_block *nfb,
 	case CPU_DEAD_FROZEN:
 		cpufreq_stats_free_table(cpu);
 		break;
+<<<<<<< HEAD
 	case CPU_DOWN_FAILED:
 	case CPU_DOWN_FAILED_FROZEN:
 		cpufreq_stats_create_table_cpu(cpu);
 		break;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 	return NOTIFY_OK;
 }
@@ -422,6 +431,7 @@ static void __exit cpufreq_stats_exit(void)
 	}
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_LIVE_OC
 void cpufreq_stats_reset(void)
 {
@@ -452,6 +462,8 @@ void cpufreq_stats_reset(void)
 EXPORT_SYMBOL(cpufreq_stats_reset);
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 MODULE_AUTHOR("Zou Nan hai <nanhai.zou@intel.com>");
 MODULE_DESCRIPTION("'cpufreq_stats' - A driver to export cpufreq stats "
 				"through sysfs filesystem");

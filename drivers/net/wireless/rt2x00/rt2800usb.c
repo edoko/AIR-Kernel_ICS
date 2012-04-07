@@ -839,6 +839,10 @@ static struct usb_device_id rt2800usb_device_table[] = {
 	{ USB_DEVICE(0x07d1, 0x3c0f) },
 	{ USB_DEVICE(0x07d1, 0x3c11) },
 	{ USB_DEVICE(0x07d1, 0x3c16) },
+<<<<<<< HEAD
+=======
+	{ USB_DEVICE(0x2001, 0x3c1b) },
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* Draytek */
 	{ USB_DEVICE(0x07fa, 0x7712) },
 	/* Edimax */

@@ -133,12 +133,15 @@ struct pid_entry {
 		NULL, &proc_single_file_operations,	\
 		{ .proc_show = show } )
 
+<<<<<<< HEAD
 /* ANDROID is for special files in /proc. */
 #define ANDROID(NAME, MODE, OTYPE)			\
 	NOD(NAME, (S_IFREG|(MODE)),			\
 		&proc_##OTYPE##_inode_operations,	\
 		&proc_##OTYPE##_operations, {})
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*
  * Count the number of hardlinks for the pid_entry table, excluding the .
  * and .. links.
@@ -211,8 +214,12 @@ static struct mm_struct *mm_access(struct task_struct *task, unsigned int mode)
 
 	mm = get_task_mm(task);
 	if (mm && mm != current->mm &&
+<<<<<<< HEAD
 			!ptrace_may_access(task, mode) &&
 			!capable(CAP_SYS_RESOURCE)) {
+=======
+			!ptrace_may_access(task, mode)) {
+>>>>>>> remotes/gregkh/linux-3.0.y
 		mmput(mm);
 		mm = ERR_PTR(-EACCES);
 	}
@@ -800,7 +807,10 @@ static ssize_t mem_rw(struct file *file, char __user *buf,
 			size_t count, loff_t *ppos, int write)
 {
 	struct mm_struct *mm = file->private_data;
+<<<<<<< HEAD
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	unsigned long addr = *ppos;
 	ssize_t copied;
 	char *page;
@@ -856,7 +866,11 @@ static ssize_t mem_read(struct file *file, char __user *buf,
 }
 
 static ssize_t mem_write(struct file *file, const char __user *buf,
+<<<<<<< HEAD
 		size_t count, loff_t *ppos)
+=======
+			 size_t count, loff_t *ppos)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	return mem_rw(file, (char __user*)buf, count, ppos, 1);
 }
@@ -1068,6 +1082,7 @@ out:
 	return err < 0 ? err : count;
 }
 
+<<<<<<< HEAD
 static int oom_adjust_permission(struct inode *inode, int mask,
 				 unsigned int flags)
 {
@@ -1101,6 +1116,8 @@ static const struct inode_operations proc_oom_adjust_inode_operations = {
 	.permission	= oom_adjust_permission,
 };
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static const struct file_operations proc_oom_adjust_operations = {
 	.read		= oom_adjust_read,
 	.write		= oom_adjust_write,
@@ -2807,7 +2824,11 @@ static const struct pid_entry tgid_base_stuff[] = {
 	REG("cgroup",  S_IRUGO, proc_cgroup_operations),
 #endif
 	INF("oom_score",  S_IRUGO, proc_oom_score),
+<<<<<<< HEAD
 	ANDROID("oom_adj",S_IRUGO|S_IWUSR, oom_adjust),
+=======
+	REG("oom_adj",    S_IRUGO|S_IWUSR, proc_oom_adjust_operations),
+>>>>>>> remotes/gregkh/linux-3.0.y
 	REG("oom_score_adj", S_IRUGO|S_IWUSR, proc_oom_score_adj_operations),
 #ifdef CONFIG_AUDITSYSCALL
 	REG("loginuid",   S_IWUSR|S_IRUGO, proc_loginuid_operations),

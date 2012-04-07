@@ -319,6 +319,7 @@ config TOUCHSCREEN_MK712
 	  To compile this driver as a module, choose M here: the
 	  module will be called mk712.
 
+<<<<<<< HEAD
 config TOUCHSCREEN_MXT224
 	tristate "Atmel MaxTouch 224"
 	depends on I2C
@@ -331,6 +332,8 @@ config TOUCHSCREEN_MXT224
 	  To compile this driver as a module, choose M here: the
 	  module will be called mxt224.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config TOUCHSCREEN_HP600
 	tristate "HP Jornada 6xx touchscreen"
 	depends on SH_HP6XX && SH_ADC
@@ -395,12 +398,15 @@ config TOUCHSCREEN_TNETV107X
 	  To compile this driver as a module, choose M here: the
 	  module will be called tnetv107x-ts.
 
+<<<<<<< HEAD
 config TOUCHSCREEN_SYNAPTICS_I2C_RMI
 	tristate "Synaptics i2c touchscreen"
 	depends on I2C
 	help
 	  This enables support for Synaptics RMI over I2C based touchscreens.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config TOUCHSCREEN_TOUCHRIGHT
 	tristate "Touchright serial touchscreen"
 	select SERIO

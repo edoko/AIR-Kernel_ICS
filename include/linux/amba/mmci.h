@@ -5,6 +5,7 @@
 #define AMBA_MMCI_H
 
 #include <linux/mmc/host.h>
+<<<<<<< HEAD
 #include <linux/mmc/card.h>
 #include <linux/mmc/sdio_func.h>
 
@@ -14,6 +15,8 @@ struct embedded_sdio_data {
         struct sdio_embedded_func *funcs;
         int num_funcs;
 };
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /* Just some dummy forwarding */
 struct dma_chan;
@@ -64,9 +67,12 @@ struct mmci_platform_data {
 	bool (*dma_filter)(struct dma_chan *chan, void *filter_param);
 	void *dma_rx_param;
 	void *dma_tx_param;
+<<<<<<< HEAD
 	unsigned int status_irq;
 	struct embedded_sdio_data *embedded_sdio;
 	int (*register_status_notify)(void (*callback)(int card_present, void *dev_id), void *dev_id);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 #endif

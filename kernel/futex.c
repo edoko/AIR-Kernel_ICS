@@ -2641,6 +2641,19 @@ long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
 	}
 
 	switch (cmd) {
+<<<<<<< HEAD
+=======
+	case FUTEX_LOCK_PI:
+	case FUTEX_UNLOCK_PI:
+	case FUTEX_TRYLOCK_PI:
+	case FUTEX_WAIT_REQUEUE_PI:
+	case FUTEX_CMP_REQUEUE_PI:
+		if (!futex_cmpxchg_enabled)
+			return -ENOSYS;
+	}
+
+	switch (cmd) {
+>>>>>>> remotes/gregkh/linux-3.0.y
 	case FUTEX_WAIT:
 		val3 = FUTEX_BITSET_MATCH_ANY;
 	case FUTEX_WAIT_BITSET:
@@ -2661,6 +2674,7 @@ long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
 		ret = futex_wake_op(uaddr, flags, uaddr2, val, val2, val3);
 		break;
 	case FUTEX_LOCK_PI:
+<<<<<<< HEAD
 		if (futex_cmpxchg_enabled)
 			ret = futex_lock_pi(uaddr, flags, val, timeout, 0);
 		break;
@@ -2671,6 +2685,15 @@ long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
 	case FUTEX_TRYLOCK_PI:
 		if (futex_cmpxchg_enabled)
 			ret = futex_lock_pi(uaddr, flags, 0, timeout, 1);
+=======
+		ret = futex_lock_pi(uaddr, flags, val, timeout, 0);
+		break;
+	case FUTEX_UNLOCK_PI:
+		ret = futex_unlock_pi(uaddr, flags);
+		break;
+	case FUTEX_TRYLOCK_PI:
+		ret = futex_lock_pi(uaddr, flags, 0, timeout, 1);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		break;
 	case FUTEX_WAIT_REQUEUE_PI:
 		val3 = FUTEX_BITSET_MATCH_ANY;
@@ -2739,7 +2762,11 @@ static int __init futex_init(void)
 		futex_cmpxchg_enabled = 1;
 
 	for (i = 0; i < ARRAY_SIZE(futex_queues); i++) {
+<<<<<<< HEAD
 		plist_head_init(&futex_queues[i].chain);
+=======
+		plist_head_init(&futex_queues[i].chain, &futex_queues[i].lock);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		spin_lock_init(&futex_queues[i].lock);
 	}
 

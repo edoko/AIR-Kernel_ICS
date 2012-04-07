@@ -120,8 +120,11 @@ source "drivers/usb/musb/Kconfig"
 
 source "drivers/usb/renesas_usbhs/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/usb/dwc/Kconfig"
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 source "drivers/usb/class/Kconfig"
 
 source "drivers/usb/storage/Kconfig"
@@ -170,6 +173,9 @@ source "drivers/usb/gadget/Kconfig"
 
 source "drivers/usb/otg/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/usb/notify/Kconfig"
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 endif # USB_SUPPORT

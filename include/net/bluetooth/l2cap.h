@@ -37,6 +37,10 @@
 #define L2CAP_DEFAULT_MONITOR_TO	12000   /* 12 seconds */
 #define L2CAP_DEFAULT_MAX_PDU_SIZE	1009    /* Sized for 3-DH5 packet */
 #define L2CAP_DEFAULT_ACK_TO		200
+<<<<<<< HEAD
+=======
+#define L2CAP_LOCAL_BUSY_TRIES		12
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define L2CAP_LE_DEFAULT_MTU		23
 
 #define L2CAP_CONN_TIMEOUT	(40000) /* 40 seconds */
@@ -286,10 +290,13 @@ struct l2cap_chan {
 
 	struct l2cap_conn	*conn;
 
+<<<<<<< HEAD
 	__u8		state;
 
 	atomic_t	refcnt;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	__le16		psm;
 	__u16		dcid;
 	__u16		scid;
@@ -298,7 +305,10 @@ struct l2cap_chan {
 	__u16		omtu;
 	__u16		flush_to;
 	__u8		mode;
+<<<<<<< HEAD
 	__u8		chan_type;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	__le16		sport;
 
@@ -306,7 +316,10 @@ struct l2cap_chan {
 	__u8		role_switch;
 	__u8		force_reliable;
 	__u8		flushable;
+<<<<<<< HEAD
 	__u8		force_active;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	__u8		ident;
 
@@ -323,8 +336,13 @@ struct l2cap_chan {
 	__u16		monitor_timeout;
 	__u16		mps;
 
+<<<<<<< HEAD
 	unsigned long	conf_state;
 	unsigned long	conn_state;
+=======
+	__u8		conf_state;
+	__u16		conn_state;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	__u8		next_tx_seq;
 	__u8		expected_ack_seq;
@@ -344,17 +362,26 @@ struct l2cap_chan {
 	__u8		remote_max_tx;
 	__u16		remote_mps;
 
+<<<<<<< HEAD
 	struct timer_list	chan_timer;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	struct timer_list	retrans_timer;
 	struct timer_list	monitor_timer;
 	struct timer_list	ack_timer;
 	struct sk_buff		*tx_send_head;
 	struct sk_buff_head	tx_q;
 	struct sk_buff_head	srej_q;
+<<<<<<< HEAD
+=======
+	struct sk_buff_head	busy_q;
+	struct work_struct	busy_work;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	struct list_head	srej_l;
 
 	struct list_head list;
 	struct list_head global_l;
+<<<<<<< HEAD
 
 	void		*data;
 	struct l2cap_ops *ops;
@@ -367,6 +394,8 @@ struct l2cap_ops {
 	int			(*recv) (void *data, struct sk_buff *skb);
 	void			(*close) (void *data);
 	void			(*state_change) (void *data, int state);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 struct l2cap_conn {
@@ -392,6 +421,7 @@ struct l2cap_conn {
 
 	__u8		disc_reason;
 
+<<<<<<< HEAD
 	__u8		preq[7]; /* SMP Pairing Request */
 	__u8		prsp[7]; /* SMP Pairing Response */
 	__u8		prnd[16]; /* SMP Pairing Random */
@@ -401,6 +431,8 @@ struct l2cap_conn {
 
 	struct timer_list security_timer;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	struct list_head chan_l;
 	rwlock_t	chan_lock;
 };
@@ -409,16 +441,20 @@ struct l2cap_conn {
 #define L2CAP_INFO_FEAT_MASK_REQ_SENT	0x04
 #define L2CAP_INFO_FEAT_MASK_REQ_DONE	0x08
 
+<<<<<<< HEAD
 #define L2CAP_CHAN_RAW			1
 #define L2CAP_CHAN_CONN_LESS		2
 #define L2CAP_CHAN_CONN_ORIENTED	3
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /* ----- L2CAP socket info ----- */
 #define l2cap_pi(sk) ((struct l2cap_pinfo *) sk)
 
 struct l2cap_pinfo {
 	struct bt_sock	bt;
 	struct l2cap_chan	*chan;
+<<<<<<< HEAD
 	struct sk_buff	*rx_busy_skb;
 };
 
@@ -432,10 +468,23 @@ enum {
 	CONF_NO_FCS_RECV,
 	CONF_STATE2_DEVICE,
 };
+=======
+};
+
+#define L2CAP_CONF_REQ_SENT       0x01
+#define L2CAP_CONF_INPUT_DONE     0x02
+#define L2CAP_CONF_OUTPUT_DONE    0x04
+#define L2CAP_CONF_MTU_DONE       0x08
+#define L2CAP_CONF_MODE_DONE      0x10
+#define L2CAP_CONF_CONNECT_PEND   0x20
+#define L2CAP_CONF_NO_FCS_RECV    0x40
+#define L2CAP_CONF_STATE2_DEVICE  0x80
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #define L2CAP_CONF_MAX_CONF_REQ 2
 #define L2CAP_CONF_MAX_CONF_RSP 2
 
+<<<<<<< HEAD
 enum {
 	CONN_SAR_SDU,
 	CONN_SREJ_SENT,
@@ -460,6 +509,26 @@ enum {
 #define __set_ack_timer(c) l2cap_set_timer(c, &chan->ack_timer, \
 		L2CAP_DEFAULT_ACK_TO);
 #define __clear_ack_timer(c) l2cap_clear_timer(c, &c->ack_timer)
+=======
+#define L2CAP_CONN_SAR_SDU         0x0001
+#define L2CAP_CONN_SREJ_SENT       0x0002
+#define L2CAP_CONN_WAIT_F          0x0004
+#define L2CAP_CONN_SREJ_ACT        0x0008
+#define L2CAP_CONN_SEND_PBIT       0x0010
+#define L2CAP_CONN_REMOTE_BUSY     0x0020
+#define L2CAP_CONN_LOCAL_BUSY      0x0040
+#define L2CAP_CONN_REJ_ACT         0x0080
+#define L2CAP_CONN_SEND_FBIT       0x0100
+#define L2CAP_CONN_RNR_SENT        0x0200
+#define L2CAP_CONN_SAR_RETRY       0x0400
+
+#define __mod_retrans_timer() mod_timer(&chan->retrans_timer, \
+		jiffies +  msecs_to_jiffies(L2CAP_DEFAULT_RETRANS_TO));
+#define __mod_monitor_timer() mod_timer(&chan->monitor_timer, \
+		jiffies + msecs_to_jiffies(L2CAP_DEFAULT_MONITOR_TO));
+#define __mod_ack_timer() mod_timer(&chan->ack_timer, \
+		jiffies + msecs_to_jiffies(L2CAP_DEFAULT_ACK_TO));
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 static inline int l2cap_tx_window_full(struct l2cap_chan *ch)
 {
@@ -484,6 +553,7 @@ extern int disable_ertm;
 int l2cap_init_sockets(void);
 void l2cap_cleanup_sockets(void);
 
+<<<<<<< HEAD
 void __l2cap_connect_rsp_defer(struct l2cap_chan *chan);
 int __l2cap_wait_ack(struct sock *sk);
 
@@ -496,5 +566,34 @@ void l2cap_chan_destroy(struct l2cap_chan *chan);
 int l2cap_chan_connect(struct l2cap_chan *chan);
 int l2cap_chan_send(struct l2cap_chan *chan, struct msghdr *msg, size_t len);
 void l2cap_chan_busy(struct l2cap_chan *chan, int busy);
+=======
+void l2cap_send_cmd(struct l2cap_conn *conn, u8 ident, u8 code, u16 len, void *data);
+void __l2cap_connect_rsp_defer(struct l2cap_chan *chan);
+int __l2cap_wait_ack(struct sock *sk);
+
+struct sk_buff *l2cap_create_connless_pdu(struct l2cap_chan *chan, struct msghdr *msg, size_t len);
+struct sk_buff *l2cap_create_basic_pdu(struct l2cap_chan *chan, struct msghdr *msg, size_t len);
+struct sk_buff *l2cap_create_iframe_pdu(struct l2cap_chan *chan, struct msghdr *msg, size_t len, u16 control, u16 sdulen);
+int l2cap_sar_segment_sdu(struct l2cap_chan *chan, struct msghdr *msg, size_t len);
+void l2cap_do_send(struct l2cap_chan *chan, struct sk_buff *skb);
+void l2cap_streaming_send(struct l2cap_chan *chan);
+int l2cap_ertm_send(struct l2cap_chan *chan);
+
+int l2cap_add_psm(struct l2cap_chan *chan, bdaddr_t *src, __le16 psm);
+int l2cap_add_scid(struct l2cap_chan *chan,  __u16 scid);
+
+void l2cap_sock_set_timer(struct sock *sk, long timeout);
+void l2cap_sock_clear_timer(struct sock *sk);
+void __l2cap_sock_close(struct sock *sk, int reason);
+void l2cap_sock_kill(struct sock *sk);
+void l2cap_sock_init(struct sock *sk, struct sock *parent);
+struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
+							int proto, gfp_t prio);
+void l2cap_send_disconn_req(struct l2cap_conn *conn, struct l2cap_chan *chan, int err);
+struct l2cap_chan *l2cap_chan_create(struct sock *sk);
+void l2cap_chan_del(struct l2cap_chan *chan, int err);
+void l2cap_chan_destroy(struct l2cap_chan *chan);
+int l2cap_chan_connect(struct l2cap_chan *chan);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #endif /* __L2CAP_H */

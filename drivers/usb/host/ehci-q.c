@@ -995,12 +995,15 @@ static void qh_link_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
 	head->qh_next.qh = qh;
 	head->hw->hw_next = dma;
 
+<<<<<<< HEAD
 	/*
 	 * flush qh descriptor into memory immediately,
 	 * see comments in qh_append_tds.
 	 * */
 	ehci_sync_mem();
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	qh_get(qh);
 	qh->xacterrs = 0;
 	qh->qh_state = QH_STATE_LINKED;
@@ -1088,6 +1091,7 @@ static struct ehci_qh *qh_append_tds (
 			wmb ();
 			dummy->hw_token = token;
 
+<<<<<<< HEAD
 			/*
 			 * Writing to dma coherent buffer on ARM may
 			 * be delayed to reach memory, so HC may not see
@@ -1100,6 +1104,8 @@ static struct ehci_qh *qh_append_tds (
 			 * */
 			ehci_sync_mem();
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 			urb->hcpriv = qh_get (qh);
 		}
 	}

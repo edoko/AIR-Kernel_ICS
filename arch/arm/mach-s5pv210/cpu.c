@@ -25,7 +25,10 @@
 #include <asm/mach/map.h>
 #include <asm/mach/irq.h>
 
+<<<<<<< HEAD
 #include <asm/mach-types.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include <asm/proc-fns.h>
 #include <mach/map.h>
 #include <mach/regs-clock.h>
@@ -96,6 +99,7 @@ static struct map_desc s5pv210_iodesc[] __initdata = {
 		.pfn		=__phys_to_pfn(S5PV210_PA_HSPHY),
 		.length		= SZ_4K,
 		.type		= MT_DEVICE,
+<<<<<<< HEAD
 	}, {
 		.virtual	= (unsigned long)S3C_VA_OTG,
 		.pfn		= __phys_to_pfn(S5PV210_PA_OTG),
@@ -121,6 +125,9 @@ static struct map_desc s5pv210_iodesc[] __initdata = {
 		.length		= SZ_1M,
 		.type		= MT_DEVICE,
 	},
+=======
+	}
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 static void s5pv210_idle(void)
@@ -216,8 +223,12 @@ int __init s5pv210_init(void)
 	pm_idle = s5pv210_idle;
 
 	/* set sw_reset function */
+<<<<<<< HEAD
 	if (!machine_is_herring())
 		s5p_reset_hook = s5pv210_sw_reset;
+=======
+	s5p_reset_hook = s5pv210_sw_reset;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	return sysdev_register(&s5pv210_sysdev);
 }

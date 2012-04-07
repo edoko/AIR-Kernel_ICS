@@ -132,6 +132,7 @@ enum {
 
 #define MAX8998_ENRAMP                  (1 << 4)
 
+<<<<<<< HEAD
 /* IRQ1 */
 #define MAX8998_SHIFT_PWRONR	7
 #define MAX8998_SHIFT_PWRONF	6
@@ -273,6 +274,8 @@ enum {
 #define MAX8998_MASK_ENRAMP	(0x1 << MAX8998_SHIFT_ENRAMP)
 #define MAX8998_MASK_RAMP	(0xF << MAX8998_SHIFT_RAMP)
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /**
  * struct max8998_dev - max8998 master device for sub-drivers
  * @dev: master device of the chip (can be used to access platform data)

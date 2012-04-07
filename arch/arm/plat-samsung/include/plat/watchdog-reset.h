@@ -13,18 +13,36 @@
 #include <plat/regs-watchdog.h>
 #include <mach/map.h>
 
+<<<<<<< HEAD
 #include <linux/kernel.h>
 #include <linux/clk.h>
 #include <linux/delay.h>
+=======
+#include <linux/clk.h>
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include <linux/err.h>
 #include <linux/io.h>
 
 static inline void arch_wdt_reset(void)
 {
+<<<<<<< HEAD
+=======
+	struct clk *wdtclk;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	printk("arch_reset: attempting watchdog reset\n");
 
 	__raw_writel(0, S3C2410_WTCON);	  /* disable watchdog, to be safe  */
 
+<<<<<<< HEAD
+=======
+	wdtclk = clk_get(NULL, "watchdog");
+	if (!IS_ERR(wdtclk)) {
+		clk_enable(wdtclk);
+	} else
+		printk(KERN_WARNING "%s: warning: cannot get watchdog clock\n", __func__);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* put initial values into count and data */
 	__raw_writel(0x80, S3C2410_WTCNT);
 	__raw_writel(0x80, S3C2410_WTDAT);

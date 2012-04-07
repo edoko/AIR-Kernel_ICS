@@ -12,12 +12,15 @@ menuconfig INPUT_MISC
 
 if INPUT_MISC
 
+<<<<<<< HEAD
 config GYRO_K3G
 	tristate "K3G driver for s5pc11x"
 	default n
 	help
 	  This option enables gyro sensors using K3G driver
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config INPUT_88PM860X_ONKEY
 	tristate "88PM860x ONKEY support"
 	depends on MFD_88PM860X
@@ -199,6 +202,7 @@ config INPUT_ATI_REMOTE2
 	  To compile this driver as a module, choose M here: the module will be
 	  called ati_remote2.
 
+<<<<<<< HEAD
 config INPUT_KEYCHORD
 	tristate "Key chord input driver support"
 	help
@@ -210,6 +214,8 @@ config INPUT_KEYCHORD
 	  To compile this driver as a module, choose M here: the
 	  module will be called keychord.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config INPUT_KEYSPAN_REMOTE
 	tristate "Keyspan DMR USB remote control (EXPERIMENTAL)"
 	depends on EXPERIMENTAL
@@ -311,11 +317,14 @@ config INPUT_SGI_BTNS
 	  To compile this driver as a module, choose M here: the
 	  module will be called sgi_btns.
 
+<<<<<<< HEAD
 config INPUT_GPIO
 	tristate "GPIO driver support"
 	help
 	  Say Y here if you want to support gpio based keys, wheels etc...
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config HP_SDC_RTC
 	tristate "HP SDC Real Time Clock"
 	depends on (GSC || HP300) && SERIO
@@ -500,6 +509,7 @@ config INPUT_XEN_KBDDEV_FRONTEND
 	  To compile this driver as a module, choose M here: the
 	  module will be called xen-kbdfront.
 
+<<<<<<< HEAD
 config OPTICAL_GP2A
 	depends on I2C && GENERIC_GPIO
 	tristate "GP2A ambient light and proximity input device"
@@ -507,4 +517,6 @@ config OPTICAL_GP2A
 	help
 	  This option enables proximity & light sensors using gp2a driver.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 endif

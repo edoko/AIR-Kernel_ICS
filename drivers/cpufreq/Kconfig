@@ -99,6 +99,7 @@ config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
 	  Be aware that not all cpufreq drivers support the conservative
 	  governor. If unsure have a look at the help section of the
 	  driver. Fallback governor will be the performance governor.
+<<<<<<< HEAD
 
 config CPU_FREQ_DEFAULT_GOV_MINMAX
 	bool "minmax"
@@ -198,6 +199,8 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMANDX
 	help
 	  Use the CPUFreq governor 'lionheart' as default.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -278,6 +281,7 @@ config CPU_FREQ_GOV_CONSERVATIVE
 
 	  If in doubt, say N.
 
+<<<<<<< HEAD
 config CPU_FREQ_GOV_LULZACTIVE
 	tristate "'lulzactive' cpufreq governor"
 	depends on CPU_FREQ
@@ -377,6 +381,8 @@ config CPU_FREQ_GOV_ONDEMANDX
 	tristate "'ondemandx' cpufreq governor"
 	depends on CPU_FREQ
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 menu "x86 CPU frequency scaling drivers"
 depends on X86
 source "drivers/cpufreq/Kconfig.x86"

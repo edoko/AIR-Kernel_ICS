@@ -261,6 +261,7 @@ static inline void ext4_update_inode_fsync_trans(handle_t *handle,
 /* super.c */
 int ext4_force_commit(struct super_block *sb);
 
+<<<<<<< HEAD
 static inline int ext4_should_journal_data(struct inode *inode)
 {
 	if (EXT4_JOURNAL(inode) == NULL)
@@ -272,10 +273,42 @@ static inline int ext4_should_journal_data(struct inode *inode)
 	if (ext4_test_inode_flag(inode, EXT4_INODE_JOURNAL_DATA))
 		return 1;
 	return 0;
+=======
+/*
+ * Ext4 inode journal modes
+ */
+#define EXT4_INODE_JOURNAL_DATA_MODE	0x01 /* journal data mode */
+#define EXT4_INODE_ORDERED_DATA_MODE	0x02 /* ordered data mode */
+#define EXT4_INODE_WRITEBACK_DATA_MODE	0x04 /* writeback data mode */
+
+static inline int ext4_inode_journal_mode(struct inode *inode)
+{
+	if (EXT4_JOURNAL(inode) == NULL)
+		return EXT4_INODE_WRITEBACK_DATA_MODE;	/* writeback */
+	/* We do not support data journalling with delayed allocation */
+	if (!S_ISREG(inode->i_mode) ||
+	    test_opt(inode->i_sb, DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA)
+		return EXT4_INODE_JOURNAL_DATA_MODE;	/* journal data */
+	if (ext4_test_inode_flag(inode, EXT4_INODE_JOURNAL_DATA) &&
+	    !test_opt(inode->i_sb, DELALLOC))
+		return EXT4_INODE_JOURNAL_DATA_MODE;	/* journal data */
+	if (test_opt(inode->i_sb, DATA_FLAGS) == EXT4_MOUNT_ORDERED_DATA)
+		return EXT4_INODE_ORDERED_DATA_MODE;	/* ordered */
+	if (test_opt(inode->i_sb, DATA_FLAGS) == EXT4_MOUNT_WRITEBACK_DATA)
+		return EXT4_INODE_WRITEBACK_DATA_MODE;	/* writeback */
+	else
+		BUG();
+}
+
+static inline int ext4_should_journal_data(struct inode *inode)
+{
+	return ext4_inode_journal_mode(inode) & EXT4_INODE_JOURNAL_DATA_MODE;
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static inline int ext4_should_order_data(struct inode *inode)
 {
+<<<<<<< HEAD
 	if (EXT4_JOURNAL(inode) == NULL)
 		return 0;
 	if (!S_ISREG(inode->i_mode))
@@ -285,10 +318,14 @@ static inline int ext4_should_order_data(struct inode *inode)
 	if (test_opt(inode->i_sb, DATA_FLAGS) == EXT4_MOUNT_ORDERED_DATA)
 		return 1;
 	return 0;
+=======
+	return ext4_inode_journal_mode(inode) & EXT4_INODE_ORDERED_DATA_MODE;
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static inline int ext4_should_writeback_data(struct inode *inode)
 {
+<<<<<<< HEAD
 	if (EXT4_JOURNAL(inode) == NULL)
 		return 1;
 	if (!S_ISREG(inode->i_mode))
@@ -298,6 +335,9 @@ static inline int ext4_should_writeback_data(struct inode *inode)
 	if (test_opt(inode->i_sb, DATA_FLAGS) == EXT4_MOUNT_WRITEBACK_DATA)
 		return 1;
 	return 0;
+=======
+	return ext4_inode_journal_mode(inode) & EXT4_INODE_WRITEBACK_DATA_MODE;
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 /*

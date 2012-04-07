@@ -311,6 +311,10 @@ struct e1000_adapter {
 	u32 txd_cmd;
 
 	bool detect_tx_hung;
+<<<<<<< HEAD
+=======
+	bool tx_hang_recheck;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	u8 tx_timeout_factor;
 
 	u32 tx_int_delay;

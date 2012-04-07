@@ -42,7 +42,10 @@
 
 #ifndef __ASSEMBLY__
 void vic_init(void __iomem *base, unsigned int irq_start, u32 vic_sources, u32 resume_sources);
+<<<<<<< HEAD
 int vic_set_fiq(unsigned int irq, bool enable);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif
 
 #endif

@@ -14,10 +14,13 @@ struct max17040_platform_data {
 	int (*battery_online)(void);
 	int (*charger_online)(void);
 	int (*charger_enable)(void);
+<<<<<<< HEAD
 	int (*power_supply_register)(struct device *parent,
 		struct power_supply *psy);
 	void (*power_supply_unregister)(struct power_supply *psy);
 	u16 rcomp_value;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 #endif

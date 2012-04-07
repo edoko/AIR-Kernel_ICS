@@ -32,7 +32,10 @@
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/onenand.h>
 #include <linux/mtd/partitions.h>
+<<<<<<< HEAD
 #include <linux/clk.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include <asm/io.h>
 
@@ -66,11 +69,19 @@ MODULE_PARM_DESC(otp,	"Corresponding behaviour of OneNAND in OTP"
 			"	   : 2 -> 1st Block lock"
 			"	   : 3 -> BOTH OTP Block and 1st Block lock");
 
+<<<<<<< HEAD
 /**
  *  onenand_oob_128 - oob info for Flex-Onenand with 4KB page
  *  For now, we expose only 64 out of 80 ecc bytes
  */
 static struct nand_ecclayout onenand_oob_128 = {
+=======
+/*
+ * flexonenand_oob_128 - oob info for Flex-Onenand with 4KB page
+ * For now, we expose only 64 out of 80 ecc bytes
+ */
+static struct nand_ecclayout flexonenand_oob_128 = {
+>>>>>>> remotes/gregkh/linux-3.0.y
 	.eccbytes	= 64,
 	.eccpos		= {
 		6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -87,6 +98,38 @@ static struct nand_ecclayout onenand_oob_128 = {
 	}
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * onenand_oob_128 - oob info for OneNAND with 4KB page
+ *
+ * Based on specification:
+ * 4Gb M-die OneNAND Flash (KFM4G16Q4M, KFN8G16Q4M). Rev. 1.3, Apr. 2010
+ *
+ * For eccpos we expose only 64 bytes out of 72 (see struct nand_ecclayout)
+ *
+ * oobfree uses the spare area fields marked as
+ * "Managed by internal ECC logic for Logical Sector Number area"
+ */
+static struct nand_ecclayout onenand_oob_128 = {
+	.eccbytes	= 64,
+	.eccpos		= {
+		7, 8, 9, 10, 11, 12, 13, 14, 15,
+		23, 24, 25, 26, 27, 28, 29, 30, 31,
+		39, 40, 41, 42, 43, 44, 45, 46, 47,
+		55, 56, 57, 58, 59, 60, 61, 62, 63,
+		71, 72, 73, 74, 75, 76, 77, 78, 79,
+		87, 88, 89, 90, 91, 92, 93, 94, 95,
+		103, 104, 105, 106, 107, 108, 109, 110, 111,
+		119
+	},
+	.oobfree	= {
+		{2, 3}, {18, 3}, {34, 3}, {50, 3},
+		{66, 3}, {82, 3}, {98, 3}, {114, 3}
+	}
+};
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 /**
  * onenand_oob_64 - oob info for large (2KB) page
  */
@@ -963,8 +1006,12 @@ static int onenand_get_device(struct mtd_info *mtd, int new_state)
 		schedule();
 		remove_wait_queue(&this->wq, &wait);
 	}
+<<<<<<< HEAD
 	if (this->clk && new_state != FL_PM_SUSPENDED)
 		clk_enable(this->clk);
+=======
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return 0;
 }
 
@@ -978,9 +1025,12 @@ static void onenand_release_device(struct mtd_info *mtd)
 {
 	struct onenand_chip *this = mtd->priv;
 
+<<<<<<< HEAD
 	if (this->clk && this->state != FL_PM_SUSPENDED)
 		clk_disable(this->clk);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (this->state != FL_PM_SUSPENDED && this->disable)
 		this->disable(mtd);
 	/* Release the chip */
@@ -3925,6 +3975,7 @@ static void onenand_resume(struct mtd_info *mtd)
 {
 	struct onenand_chip *this = mtd->priv;
 
+<<<<<<< HEAD
 	if (this->state == FL_PM_SUSPENDED) {
 		onenand_invalidate_bufferram(mtd, 0, -1);
 		onenand_release_device(mtd);
@@ -3932,6 +3983,13 @@ static void onenand_resume(struct mtd_info *mtd)
 		printk(KERN_ERR "%s: resume() called for the chip which is not "
 				"in suspended state\n", __func__);
 	}
+=======
+	if (this->state == FL_PM_SUSPENDED)
+		onenand_release_device(mtd);
+	else
+		printk(KERN_ERR "%s: resume() called for the chip which is not "
+				"in suspended state\n", __func__);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 /**
@@ -4025,8 +4083,18 @@ int onenand_scan(struct mtd_info *mtd, int maxchips)
 	 */
 	switch (mtd->oobsize) {
 	case 128:
+<<<<<<< HEAD
 		this->ecclayout = &onenand_oob_128;
 		mtd->subpage_sft = 0;
+=======
+		if (FLEXONENAND(this)) {
+			this->ecclayout = &flexonenand_oob_128;
+			mtd->subpage_sft = 0;
+		} else {
+			this->ecclayout = &onenand_oob_128;
+			mtd->subpage_sft = 2;
+		}
+>>>>>>> remotes/gregkh/linux-3.0.y
 		break;
 	case 64:
 		this->ecclayout = &onenand_oob_64;

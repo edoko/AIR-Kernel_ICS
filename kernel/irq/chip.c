@@ -61,8 +61,12 @@ int irq_set_irq_type(unsigned int irq, unsigned int type)
 		return -EINVAL;
 
 	type &= IRQ_TYPE_SENSE_MASK;
+<<<<<<< HEAD
 	if (type != IRQ_TYPE_NONE)
 		ret = __irq_set_trigger(desc, irq, type);
+=======
+	ret = __irq_set_trigger(desc, irq, type);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	irq_put_desc_busunlock(desc, flags);
 	return ret;
 }

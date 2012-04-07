@@ -14,7 +14,10 @@
 #include <linux/platform_device.h>
 #include <linux/err.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/notifier.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include <linux/power_supply.h>
 #include <linux/pda_power.h>
 #include <linux/regulator/consumer.h>
@@ -39,8 +42,14 @@ static struct timer_list supply_timer;
 static struct timer_list polling_timer;
 static int polling;
 
+<<<<<<< HEAD
 static struct otg_transceiver *transceiver;
 static struct notifier_block otg_nb;
+=======
+#ifdef CONFIG_USB_OTG_UTILS
+static struct otg_transceiver *transceiver;
+#endif
+>>>>>>> remotes/gregkh/linux-3.0.y
 static struct regulator *ac_draw;
 
 enum {
@@ -222,6 +231,7 @@ static void polling_timer_func(unsigned long unused)
 #ifdef CONFIG_USB_OTG_UTILS
 static int otg_is_usb_online(void)
 {
+<<<<<<< HEAD
 	return (transceiver->last_event == USB_EVENT_VBUS ||
 		transceiver->last_event == USB_EVENT_ENUMERATED);
 }
@@ -258,6 +268,9 @@ static int otg_handle_notification(struct notifier_block *nb,
 		  jiffies + msecs_to_jiffies(pdata->wait_for_status));
 
 	return NOTIFY_OK;
+=======
+	return (transceiver->state == OTG_STATE_B_PERIPHERAL);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 #endif
 
@@ -317,6 +330,7 @@ static int pda_power_probe(struct platform_device *pdev)
 		ret = PTR_ERR(ac_draw);
 	}
 
+<<<<<<< HEAD
 	transceiver = otg_get_transceiver();
 	if (transceiver && !pdata->is_usb_online) {
 		pdata->is_usb_online = otg_is_usb_online;
@@ -325,6 +339,8 @@ static int pda_power_probe(struct platform_device *pdev)
 		pdata->is_ac_online = otg_is_ac_online;
 	}
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (pdata->is_ac_online) {
 		ret = power_supply_register(&pdev->dev, &pda_psy_ac);
 		if (ret) {
@@ -346,6 +362,16 @@ static int pda_power_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_USB_OTG_UTILS
+	transceiver = otg_get_transceiver();
+	if (transceiver && !pdata->is_usb_online) {
+		pdata->is_usb_online = otg_is_usb_online;
+	}
+#endif
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (pdata->is_usb_online) {
 		ret = power_supply_register(&pdev->dev, &pda_psy_usb);
 		if (ret) {
@@ -367,6 +393,7 @@ static int pda_power_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	if (transceiver && pdata->use_otg_notifier) {
 		otg_nb.notifier_call = otg_handle_notification;
 		ret = otg_register_notifier(transceiver, &otg_nb);
@@ -377,6 +404,8 @@ static int pda_power_probe(struct platform_device *pdev)
 		polling = 0;
 	}
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (polling) {
 		dev_dbg(dev, "will poll for status\n");
 		setup_timer(&polling_timer, polling_timer_func, 0);
@@ -389,17 +418,27 @@ static int pda_power_probe(struct platform_device *pdev)
 
 	return 0;
 
+<<<<<<< HEAD
 otg_reg_notifier_failed:
 	if (pdata->is_usb_online && usb_irq)
 		free_irq(usb_irq->start, &pda_psy_usb);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 usb_irq_failed:
 	if (pdata->is_usb_online)
 		power_supply_unregister(&pda_psy_usb);
 usb_supply_failed:
 	if (pdata->is_ac_online && ac_irq)
 		free_irq(ac_irq->start, &pda_psy_ac);
+<<<<<<< HEAD
 	if (transceiver)
 		otg_put_transceiver(transceiver);
+=======
+#ifdef CONFIG_USB_OTG_UTILS
+	if (transceiver)
+		otg_put_transceiver(transceiver);
+#endif
+>>>>>>> remotes/gregkh/linux-3.0.y
 ac_irq_failed:
 	if (pdata->is_ac_online)
 		power_supply_unregister(&pda_psy_ac);

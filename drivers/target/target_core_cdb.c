@@ -106,7 +106,11 @@ target_emulate_inquiry_std(struct se_cmd *cmd)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	buf[7] = 0x32; /* Sync=1 and CmdQue=1 */
+=======
+	buf[7] = 0x2; /* CmdQue=1 */
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/*
 	 * Do not include vendor, product, reversion info in INQUIRY

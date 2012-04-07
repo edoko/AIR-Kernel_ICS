@@ -23,6 +23,7 @@
 #include <plat/regs-sdhci.h>
 #include <plat/sdhci.h>
 
+<<<<<<< HEAD
 #include "herring.h"
 
 void s5pv210_setup_sdhci0_cfg_gpio(struct platform_device *dev, int width)
@@ -64,11 +65,35 @@ void s5pv210_setup_sdhci0_cfg_gpio(struct platform_device *dev, int width)
 	if (machine_is_herring()) {
 		gpio_direction_output(S5PV210_GPJ2(7), 1);
 		s3c_gpio_setpull(S5PV210_GPJ2(7), S3C_GPIO_PULL_NONE);
+=======
+void s5pv210_setup_sdhci0_cfg_gpio(struct platform_device *dev, int width)
+{
+	struct s3c_sdhci_platdata *pdata = dev->dev.platform_data;
+
+	/* Set all the necessary GPG0/GPG1 pins to special-function 2 */
+	s3c_gpio_cfgrange_nopull(S5PV210_GPG0(0), 2, S3C_GPIO_SFN(2));
+
+	switch (width) {
+	case 8:
+		/* GPG1[3:6] special-function 3 */
+		s3c_gpio_cfgrange_nopull(S5PV210_GPG1(3), 4, S3C_GPIO_SFN(3));
+	case 4:
+		/* GPG0[3:6] special-function 2 */
+		s3c_gpio_cfgrange_nopull(S5PV210_GPG0(3), 4, S3C_GPIO_SFN(2));
+	default:
+		break;
+	}
+
+	if (pdata->cd_type == S3C_SDHCI_CD_INTERNAL) {
+		s3c_gpio_setpull(S5PV210_GPG0(2), S3C_GPIO_PULL_UP);
+		s3c_gpio_cfgpin(S5PV210_GPG0(2), S3C_GPIO_SFN(2));
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 }
 
 void s5pv210_setup_sdhci1_cfg_gpio(struct platform_device *dev, int width)
 {
+<<<<<<< HEAD
 	unsigned int gpio;
 
 	switch (width) {
@@ -87,11 +112,25 @@ void s5pv210_setup_sdhci1_cfg_gpio(struct platform_device *dev, int width)
 		break;
 	default:
 		printk(KERN_ERR "Wrong SD/MMC bus width : %d\n", width);
+=======
+	struct s3c_sdhci_platdata *pdata = dev->dev.platform_data;
+
+	/* Set all the necessary GPG1[0:1] pins to special-function 2 */
+	s3c_gpio_cfgrange_nopull(S5PV210_GPG1(0), 2, S3C_GPIO_SFN(2));
+
+	/* Data pin GPG1[3:6] to special-function 2 */
+	s3c_gpio_cfgrange_nopull(S5PV210_GPG1(3), 4, S3C_GPIO_SFN(2));
+
+	if (pdata->cd_type == S3C_SDHCI_CD_INTERNAL) {
+		s3c_gpio_setpull(S5PV210_GPG1(2), S3C_GPIO_PULL_UP);
+		s3c_gpio_cfgpin(S5PV210_GPG1(2), S3C_GPIO_SFN(2));
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 }
 
 void s5pv210_setup_sdhci2_cfg_gpio(struct platform_device *dev, int width)
 {
+<<<<<<< HEAD
 	unsigned int gpio;
 
 	switch (width) {
@@ -120,11 +159,33 @@ void s5pv210_setup_sdhci2_cfg_gpio(struct platform_device *dev, int width)
 		break;
 	default:
 		printk(KERN_ERR "Wrong SD/MMC bus width : %d\n", width);
+=======
+	struct s3c_sdhci_platdata *pdata = dev->dev.platform_data;
+
+	/* Set all the necessary GPG2[0:1] pins to special-function 2 */
+	s3c_gpio_cfgrange_nopull(S5PV210_GPG2(0), 2, S3C_GPIO_SFN(2));
+
+	switch (width) {
+	case 8:
+		/* Data pin GPG3[3:6] to special-function 3 */
+		s3c_gpio_cfgrange_nopull(S5PV210_GPG3(3), 4, S3C_GPIO_SFN(3));
+	case 4:
+		/* Data pin GPG2[3:6] to special-function 2 */
+		s3c_gpio_cfgrange_nopull(S5PV210_GPG2(3), 4, S3C_GPIO_SFN(2));
+	default:
+		break;
+	}
+
+	if (pdata->cd_type == S3C_SDHCI_CD_INTERNAL) {
+		s3c_gpio_setpull(S5PV210_GPG2(2), S3C_GPIO_PULL_UP);
+		s3c_gpio_cfgpin(S5PV210_GPG2(2), S3C_GPIO_SFN(2));
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 }
 
 void s5pv210_setup_sdhci3_cfg_gpio(struct platform_device *dev, int width)
 {
+<<<<<<< HEAD
 	unsigned int gpio;
 
 	switch (width) {
@@ -143,5 +204,18 @@ void s5pv210_setup_sdhci3_cfg_gpio(struct platform_device *dev, int width)
 		break;
 	default:
 		printk(KERN_ERR "Wrong SD/MMC bus width : %d\n", width);
+=======
+	struct s3c_sdhci_platdata *pdata = dev->dev.platform_data;
+
+	/* Set all the necessary GPG3[0:1] pins to special-function 2 */
+	s3c_gpio_cfgrange_nopull(S5PV210_GPG3(0), 2, S3C_GPIO_SFN(2));
+
+	/* Data pin GPG3[3:6] to special-function 2 */
+	s3c_gpio_cfgrange_nopull(S5PV210_GPG3(3), 4, S3C_GPIO_SFN(2));
+
+	if (pdata->cd_type == S3C_SDHCI_CD_INTERNAL) {
+		s3c_gpio_setpull(S5PV210_GPG3(2), S3C_GPIO_PULL_UP);
+		s3c_gpio_cfgpin(S5PV210_GPG3(2), S3C_GPIO_SFN(2));
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 }

@@ -57,6 +57,7 @@ config FILE_LOCKING
           for filesystems like NFS and for the flock() system
           call. Disabling this option saves about 11k.
 
+<<<<<<< HEAD
 config FSYNC
 	bool "Enable fsync()"
 	default y
@@ -64,6 +65,8 @@ config FSYNC
 	  This option is unstable.
 	  But, system speeds up.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 source "fs/notify/Kconfig"
 
 source "fs/quota/Kconfig"
@@ -199,10 +202,13 @@ source "fs/hfsplus/Kconfig"
 source "fs/befs/Kconfig"
 source "fs/bfs/Kconfig"
 source "fs/efs/Kconfig"
+<<<<<<< HEAD
 
 # Patched by YAFFS
 source "fs/yaffs2/Kconfig"
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 source "fs/jffs2/Kconfig"
 # UBIFS File system configuration
 source "fs/ubifs/Kconfig"

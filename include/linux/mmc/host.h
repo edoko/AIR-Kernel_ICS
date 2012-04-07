@@ -12,7 +12,10 @@
 
 #include <linux/leds.h>
 #include <linux/sched.h>
+<<<<<<< HEAD
 #include <linux/wakelock.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include <linux/mmc/core.h>
 #include <linux/mmc/pm.h>
@@ -133,7 +136,10 @@ struct mmc_host_ops {
 	int	(*get_cd)(struct mmc_host *host);
 
 	void	(*enable_sdio_irq)(struct mmc_host *host, int enable);
+<<<<<<< HEAD
 	void	(*adjust_cfg)(struct mmc_host *host, int rw);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/* optional callback for HC quirks */
 	void	(*init_card)(struct mmc_host *host, struct mmc_card *card);
@@ -263,15 +269,21 @@ struct mmc_host {
 	int			claim_cnt;	/* "claim" nesting count */
 
 	struct delayed_work	detect;
+<<<<<<< HEAD
 	struct wake_lock	detect_wake_lock;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	const struct mmc_bus_ops *bus_ops;	/* current bus driver */
 	unsigned int		bus_refs;	/* reference counter */
 
+<<<<<<< HEAD
 	unsigned int		bus_resume_flags;
 #define MMC_BUSRESUME_MANUAL_RESUME	(1 << 0)
 #define MMC_BUSRESUME_NEEDS_RESUME	(1 << 1)
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	unsigned int		sdio_irqs;
 	struct task_struct	*sdio_irq_thread;
 	atomic_t		sdio_irq_thread_abort;
@@ -288,6 +300,7 @@ struct mmc_host {
 
 	struct dentry		*debugfs_root;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_EMBEDDED_SDIO
 	struct {
 		struct sdio_cis			*cis;
@@ -297,6 +310,8 @@ struct mmc_host {
 	} embedded_sdio_data;
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	unsigned long		private[0] ____cacheline_aligned;
 };
 
@@ -305,6 +320,7 @@ extern int mmc_add_host(struct mmc_host *);
 extern void mmc_remove_host(struct mmc_host *);
 extern void mmc_free_host(struct mmc_host *);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_EMBEDDED_SDIO
 extern void mmc_set_embedded_sdio_data(struct mmc_host *host,
 				       struct sdio_cis *cis,
@@ -313,6 +329,8 @@ extern void mmc_set_embedded_sdio_data(struct mmc_host *host,
 				       int num_funcs);
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static inline void *mmc_priv(struct mmc_host *host)
 {
 	return (void *)host->private;
@@ -323,6 +341,7 @@ static inline void *mmc_priv(struct mmc_host *host)
 #define mmc_dev(x)	((x)->parent)
 #define mmc_classdev(x)	(&(x)->class_dev)
 #define mmc_hostname(x)	(dev_name(&(x)->class_dev))
+<<<<<<< HEAD
 #define mmc_bus_needs_resume(host) ((host)->bus_resume_flags & MMC_BUSRESUME_NEEDS_RESUME)
 #define mmc_bus_manual_resume(host) ((host)->bus_resume_flags & MMC_BUSRESUME_MANUAL_RESUME)
 
@@ -335,6 +354,8 @@ static inline void mmc_set_bus_resume_policy(struct mmc_host *host, int manual)
 }
 
 extern int mmc_resume_bus(struct mmc_host *host);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 extern int mmc_suspend_host(struct mmc_host *);
 extern int mmc_resume_host(struct mmc_host *);

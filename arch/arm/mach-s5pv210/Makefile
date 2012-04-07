@@ -1,7 +1,11 @@
 # arch/arm/mach-s5pv210/Makefile
 #
 # Copyright (c) 2010 Samsung Electronics Co., Ltd.
+<<<<<<< HEAD
 #		http://www.samsung.com/
+=======
+# 		http://www.samsung.com/
+>>>>>>> remotes/gregkh/linux-3.0.y
 #
 # Licensed under GPLv2
 
@@ -17,9 +21,12 @@ obj-$(CONFIG_CPU_S5PV210)	+= setup-i2c0.o
 obj-$(CONFIG_S5PV210_PM)	+= pm.o sleep.o
 obj-$(CONFIG_CPU_FREQ)		+= cpufreq.o
 
+<<<<<<< HEAD
 obj-$(CONFIG_S5PV210_POWER_DOMAIN)	+= power-domain.o
 obj-$(CONFIG_S5PV210_CORESIGHT) += coresight.o
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 # machine support
 
 obj-$(CONFIG_MACH_AQUILA)	+= mach-aquila.o
@@ -27,6 +34,7 @@ obj-$(CONFIG_MACH_SMDKV210)	+= mach-smdkv210.o
 obj-$(CONFIG_MACH_SMDKC110)	+= mach-smdkc110.o
 obj-$(CONFIG_MACH_GONI)		+= mach-goni.o
 obj-$(CONFIG_MACH_TORBRECK)	+= mach-torbreck.o
+<<<<<<< HEAD
 obj-$(CONFIG_MACH_HERRING)	+= mach-herring.o herring-rfkill.o
 obj-$(CONFIG_MACH_HERRING)	+= herring-vibrator.o
 obj-$(CONFIG_MACH_HERRING)	+= herring-btlpm.o
@@ -37,10 +45,13 @@ obj-$(CONFIG_MACH_HERRING)	+= herring-touchkey-led.o
 obj-$(CONFIG_MACH_HERRING)	+= dev-herring-phone.o
 
 obj-$(CONFIG_FORCE_FAST_CHARGE)	+= fastchg.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 # device support
 
 obj-y				+= dev-audio.o
+<<<<<<< HEAD
 obj-y				+= dev-fiqdbg.o
 obj-$(CONFIG_S3C64XX_DEV_SPI)	+= dev-spi.o
 
@@ -48,6 +59,11 @@ obj-$(CONFIG_S3C64XX_DEV_SPI)	+= dev-spi.o
 obj-$(CONFIG_S5P_ADC) += adc.o
 
 obj-$(CONFIG_S5PV210_SETUP_FB)		+= setup-fb.o
+=======
+obj-$(CONFIG_S3C64XX_DEV_SPI)	+= dev-spi.o
+
+obj-$(CONFIG_S5PV210_SETUP_FB_24BPP)	+= setup-fb-24bpp.o
+>>>>>>> remotes/gregkh/linux-3.0.y
 obj-$(CONFIG_S5PV210_SETUP_FIMC)	+= setup-fimc.o
 obj-$(CONFIG_S5PV210_SETUP_I2C1) 	+= setup-i2c1.o
 obj-$(CONFIG_S5PV210_SETUP_I2C2) 	+= setup-i2c2.o
@@ -55,6 +71,7 @@ obj-$(CONFIG_S5PV210_SETUP_IDE)		+= setup-ide.o
 obj-$(CONFIG_S5PV210_SETUP_KEYPAD)	+= setup-keypad.o
 obj-$(CONFIG_S5PV210_SETUP_SDHCI)       += setup-sdhci.o
 obj-$(CONFIG_S5PV210_SETUP_SDHCI_GPIO)	+= setup-sdhci-gpio.o
+<<<<<<< HEAD
 obj-$(CONFIG_S5PV210_SETUP_FIMC0)	+= setup-fimc0.o
 obj-$(CONFIG_S5PV210_SETUP_FIMC1)	+= setup-fimc1.o
 obj-$(CONFIG_S5PV210_SETUP_FIMC2)	+= setup-fimc2.o
@@ -63,3 +80,5 @@ obj-$(CONFIG_CPU_IDLE)		+= cpuidle.o
 obj-$(CONFIG_CPU_FREQ)		+= dev-cpufreq.o
 obj-$(CONFIG_CPU_DIDLE)		+= didle.o
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

@@ -53,10 +53,13 @@ void asmlinkage __attribute__((weak)) early_printk(const char *fmt, ...)
 
 #define __LOG_BUF_LEN	(1 << CONFIG_LOG_BUF_SHIFT)
 
+<<<<<<< HEAD
 #ifdef        CONFIG_DEBUG_LL
 extern void printascii(char *);
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /* printk's without a loglevel use this.. */
 #define DEFAULT_MESSAGE_LOGLEVEL CONFIG_DEFAULT_MESSAGE_LOGLEVEL
 
@@ -294,6 +297,7 @@ static inline void boot_delay_msec(void)
 }
 #endif
 
+<<<<<<< HEAD
 /*
  * Return the number of unread characters in the log buffer.
  */
@@ -341,6 +345,8 @@ int log_buf_copy(char *dest, int idx, int len)
 	return ret;
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #ifdef CONFIG_SECURITY_DMESG_RESTRICT
 int dmesg_restrict = 1;
 #else
@@ -925,10 +931,13 @@ asmlinkage int vprintk(const char *fmt, va_list args)
 	printed_len += vscnprintf(printk_buf + printed_len,
 				  sizeof(printk_buf) - printed_len, fmt, args);
 
+<<<<<<< HEAD
 #ifdef	CONFIG_DEBUG_LL
 	printascii(printk_buf);
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	p = printk_buf;
 
 	/* Read log level and handle special printk prefix */
@@ -1203,6 +1212,10 @@ static int __cpuinit console_cpu_notify(struct notifier_block *self,
 	switch (action) {
 	case CPU_ONLINE:
 	case CPU_DEAD:
+<<<<<<< HEAD
+=======
+	case CPU_DYING:
+>>>>>>> remotes/gregkh/linux-3.0.y
 	case CPU_DOWN_FAILED:
 	case CPU_UP_CANCELED:
 		console_lock();

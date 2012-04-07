@@ -27,6 +27,7 @@ config MMC_CLKGATE
 	  support handling this in order for it to be of any use.
 
 	  If unsure, say N.
+<<<<<<< HEAD
 
 config MMC_EMBEDDED_SDIO
 	boolean "MMC embedded SDIO device support (EXPERIMENTAL)"
@@ -44,3 +45,5 @@ config MMC_PARANOID_SD_INIT
 	  about re-trying SD init requests. This can be a useful
 	  work-around for buggy controllers and hardware. Enable
 	  if you are experiencing issues with SD detection.
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

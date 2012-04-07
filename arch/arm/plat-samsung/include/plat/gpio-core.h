@@ -69,7 +69,11 @@ struct s3c_gpio_chip {
 	int			group;
 	spinlock_t		 lock;
 #ifdef CONFIG_PM
+<<<<<<< HEAD
 	u32			pm_save[7];
+=======
+	u32			pm_save[4];
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif
 };
 

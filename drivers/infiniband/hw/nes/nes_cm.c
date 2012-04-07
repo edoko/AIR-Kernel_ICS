@@ -1153,7 +1153,11 @@ static int nes_addr_resolve_neigh(struct nes_vnic *nesvnic, u32 dst_ip, int arpi
 	if ((neigh == NULL) || (!(neigh->nud_state & NUD_VALID))) {
 		rcu_read_lock();
 		neigh_event_send(dst_get_neighbour(&rt->dst), NULL);
+<<<<<<< HEAD
 		rcu_read_unlock();	
+=======
+		rcu_read_unlock();
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 	ip_rt_put(rt);
 	return rc;

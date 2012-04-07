@@ -9,7 +9,10 @@
 
 #include "xz_private.h"
 #include "xz_stream.h"
+<<<<<<< HEAD
 #include <linux/kernel.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /* Hash used to validate the Index field */
 struct xz_dec_hash {

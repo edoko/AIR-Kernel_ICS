@@ -20,7 +20,11 @@
 
 static struct s3c24xx_uart_clksrc s5pv210_serial_clocks[] = {
 	[0] = {
+<<<<<<< HEAD
 		.name		= "sclk",
+=======
+		.name		= "pclk",
+>>>>>>> remotes/gregkh/linux-3.0.y
 		.divisor	= 1,
 		.min_baud	= 0,
 		.max_baud	= 0,

@@ -365,10 +365,15 @@ static int magicmouse_raw_event(struct hid_device *hdev,
 	return 1;
 }
 
+<<<<<<< HEAD
 static int magicmouse_setup_input(struct hid_device *hdev, struct hid_input *hi)
 {
 	struct input_dev *input = hi->input;
 
+=======
+static void magicmouse_setup_input(struct input_dev *input, struct hid_device *hdev)
+{
+>>>>>>> remotes/gregkh/linux-3.0.y
 	__set_bit(EV_KEY, input->evbit);
 
 	if (input->id.product == USB_DEVICE_ID_APPLE_MAGICMOUSE) {
@@ -428,8 +433,11 @@ static int magicmouse_setup_input(struct hid_device *hdev, struct hid_input *hi)
 		__set_bit(EV_MSC, input->evbit);
 		__set_bit(MSC_RAW, input->mscbit);
 	}
+<<<<<<< HEAD
 
 	return 0;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static int magicmouse_input_mapping(struct hid_device *hdev,
@@ -482,6 +490,15 @@ static int magicmouse_probe(struct hid_device *hdev,
 		goto err_free;
 	}
 
+<<<<<<< HEAD
+=======
+	/* We do this after hid-input is done parsing reports so that
+	 * hid-input uses the most natural button and axis IDs.
+	 */
+	if (msc->input)
+		magicmouse_setup_input(msc->input, hdev);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE)
 		report = hid_register_report(hdev, HID_INPUT_REPORT,
 			MOUSE_REPORT_ID);
@@ -546,7 +563,10 @@ static struct hid_driver magicmouse_driver = {
 	.remove = magicmouse_remove,
 	.raw_event = magicmouse_raw_event,
 	.input_mapping = magicmouse_input_mapping,
+<<<<<<< HEAD
 	.input_register = magicmouse_setup_input,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 static int __init magicmouse_init(void)

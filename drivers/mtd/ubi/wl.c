@@ -386,7 +386,11 @@ static struct ubi_wl_entry *find_wl_entry(struct rb_root *root, int max)
  */
 int ubi_wl_get_peb(struct ubi_device *ubi, int dtype)
 {
+<<<<<<< HEAD
 	int err, medium_ec;
+=======
+	int err;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	struct ubi_wl_entry *e, *first, *last;
 
 	ubi_assert(dtype == UBI_LONGTERM || dtype == UBI_SHORTTERM ||
@@ -424,7 +428,11 @@ retry:
 		 * For unknown data we pick a physical eraseblock with medium
 		 * erase counter. But we by no means can pick a physical
 		 * eraseblock with erase counter greater or equivalent than the
+<<<<<<< HEAD
 		 * lowest erase counter plus %WL_FREE_MAX_DIFF.
+=======
+		 * lowest erase counter plus %WL_FREE_MAX_DIFF/2.
+>>>>>>> remotes/gregkh/linux-3.0.y
 		 */
 		first = rb_entry(rb_first(&ubi->free), struct ubi_wl_entry,
 					u.rb);
@@ -433,10 +441,15 @@ retry:
 		if (last->ec - first->ec < WL_FREE_MAX_DIFF)
 			e = rb_entry(ubi->free.rb_node,
 					struct ubi_wl_entry, u.rb);
+<<<<<<< HEAD
 		else {
 			medium_ec = (first->ec + WL_FREE_MAX_DIFF)/2;
 			e = find_wl_entry(&ubi->free, medium_ec);
 		}
+=======
+		else
+			e = find_wl_entry(&ubi->free, WL_FREE_MAX_DIFF/2);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		break;
 	case UBI_SHORTTERM:
 		/*

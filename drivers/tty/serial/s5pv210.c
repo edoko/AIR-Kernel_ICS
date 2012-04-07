@@ -35,7 +35,11 @@ static int s5pv210_serial_setsource(struct uart_port *port,
 
 	if (strcmp(clk->name, "pclk") == 0)
 		ucon &= ~S5PV210_UCON_CLKMASK;
+<<<<<<< HEAD
 	else if (strcmp(clk->name, "sclk") == 0)
+=======
+	else if (strcmp(clk->name, "uclk1") == 0)
+>>>>>>> remotes/gregkh/linux-3.0.y
 		ucon |= S5PV210_UCON_CLKMASK;
 	else {
 		printk(KERN_ERR "unknown clock source %s\n", clk->name);
@@ -63,7 +67,11 @@ static int s5pv210_serial_getsource(struct uart_port *port,
 		clk->name = "pclk";
 		break;
 	case S5PV210_UCON_UCLK:
+<<<<<<< HEAD
 		clk->name = "sclk";
+=======
+		clk->name = "uclk1";
+>>>>>>> remotes/gregkh/linux-3.0.y
 		break;
 	}
 

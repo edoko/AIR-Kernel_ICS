@@ -113,6 +113,7 @@ config IP_NF_TARGET_REJECT
 
 	  To compile it as a module, choose M here.  If unsure, say N.
 
+<<<<<<< HEAD
 config IP_NF_TARGET_REJECT_SKERR
 	bool "Force socket error when rejecting with icmp*"
 	depends on IP_NF_TARGET_REJECT
@@ -125,6 +126,8 @@ config IP_NF_TARGET_REJECT_SKERR
 
 	  If unsure, say N.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config IP_NF_TARGET_LOG
 	tristate "LOG target support"
 	default m if NETFILTER_ADVANCED=n

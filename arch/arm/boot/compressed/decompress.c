@@ -44,10 +44,13 @@ extern void error(char *);
 #include "../../../../lib/decompress_unlzma.c"
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_KERNEL_XZ
 #include "../../../../lib/decompress_unxz.c"
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 int do_decompress(u8 *input, int len, u8 *output, void (*error)(char *x))
 {
 	return decompress(input, len, NULL, NULL, output, NULL, error);

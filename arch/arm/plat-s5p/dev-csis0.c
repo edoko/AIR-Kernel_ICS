@@ -11,9 +11,12 @@
 #include <linux/kernel.h>
 #include <linux/interrupt.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 
 #include <plat/csis.h>
 #include <plat/mipi_csis.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include <mach/map.h>
 
 static struct resource s5p_mipi_csis0_resource[] = {
@@ -35,6 +38,7 @@ struct platform_device s5p_device_mipi_csis0 = {
 	.num_resources	  = ARRAY_SIZE(s5p_mipi_csis0_resource),
 	.resource	  = s5p_mipi_csis0_resource,
 };
+<<<<<<< HEAD
 
 static struct s3c_platform_csis default_csis_data __initdata = {
 	.srclk_name	= "mout_mpll",
@@ -58,3 +62,5 @@ void __init s3c_csis_set_platdata(struct s3c_platform_csis *pd)
 
 	s5p_device_mipi_csis0.dev.platform_data = npd;
 }
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

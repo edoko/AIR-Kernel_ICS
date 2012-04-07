@@ -9,7 +9,10 @@ obj-$(CONFIG_USB)		+= core/
 obj-$(CONFIG_USB_MON)		+= mon/
 
 obj-$(CONFIG_PCI)		+= host/
+<<<<<<< HEAD
 obj-$(CONFIG_USB_S3C_OTG_HOST)	+= host/
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 obj-$(CONFIG_USB_EHCI_HCD)	+= host/
 obj-$(CONFIG_USB_ISP116X_HCD)	+= host/
 obj-$(CONFIG_USB_OHCI_HCD)	+= host/
@@ -51,7 +54,11 @@ obj-$(CONFIG_USB_SPEEDTOUCH)	+= atm/
 obj-$(CONFIG_USB_MUSB_HDRC)	+= musb/
 obj-$(CONFIG_USB_RENESAS_USBHS)	+= renesas_usbhs/
 obj-$(CONFIG_USB_OTG_UTILS)	+= otg/
+<<<<<<< HEAD
 obj-$(CONFIG_USB_DWC_OTG)	+= dwc/
 obj-$(CONFIG_USB_GADGET)	+= gadget/
 
 obj-$(CONFIG_USB_HOST_NOTIFY)   += notify/
+=======
+obj-$(CONFIG_USB_GADGET)	+= gadget/
+>>>>>>> remotes/gregkh/linux-3.0.y

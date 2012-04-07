@@ -177,7 +177,10 @@ struct crypt_config {
 
 #define MIN_IOS        16
 #define MIN_POOL_PAGES 32
+<<<<<<< HEAD
 #define MIN_BIO_PAGES  8
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 static struct kmem_cache *_crypt_io_pool;
 
@@ -849,12 +852,20 @@ static struct bio *crypt_alloc_buffer(struct dm_crypt_io *io, unsigned size,
 		}
 
 		/*
+<<<<<<< HEAD
 		 * if additional pages cannot be allocated without waiting,
 		 * return a partially allocated bio, the caller will then try
 		 * to allocate additional bios while submitting this partial bio
 		 */
 		if (i == (MIN_BIO_PAGES - 1))
 			gfp_mask = (gfp_mask | __GFP_NOWARN) & ~__GFP_WAIT;
+=======
+		 * If additional pages cannot be allocated without waiting,
+		 * return a partially-allocated bio.  The caller will then try
+		 * to allocate more bios while submitting this partial bio.
+		 */
+		gfp_mask = (gfp_mask | __GFP_NOWARN) & ~__GFP_WAIT;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		len = (size > PAGE_SIZE) ? PAGE_SIZE : size;
 
@@ -1047,16 +1058,26 @@ static void kcryptd_queue_io(struct dm_crypt_io *io)
 	queue_work(cc->io_queue, &io->work);
 }
 
+<<<<<<< HEAD
 static void kcryptd_crypt_write_io_submit(struct dm_crypt_io *io,
 					  int error, int async)
+=======
+static void kcryptd_crypt_write_io_submit(struct dm_crypt_io *io, int async)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	struct bio *clone = io->ctx.bio_out;
 	struct crypt_config *cc = io->target->private;
 
+<<<<<<< HEAD
 	if (unlikely(error < 0)) {
 		crypt_free_buffer_pages(cc, clone);
 		bio_put(clone);
 		io->error = -EIO;
+=======
+	if (unlikely(io->error < 0)) {
+		crypt_free_buffer_pages(cc, clone);
+		bio_put(clone);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		crypt_dec_pending(io);
 		return;
 	}
@@ -1107,12 +1128,24 @@ static void kcryptd_crypt_write_convert(struct dm_crypt_io *io)
 		sector += bio_sectors(clone);
 
 		crypt_inc_pending(io);
+<<<<<<< HEAD
 		r = crypt_convert(cc, &io->ctx);
+=======
+
+		r = crypt_convert(cc, &io->ctx);
+		if (r < 0)
+			io->error = -EIO;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 		crypt_finished = atomic_dec_and_test(&io->ctx.pending);
 
 		/* Encryption was already finished, submit io now */
 		if (crypt_finished) {
+<<<<<<< HEAD
 			kcryptd_crypt_write_io_submit(io, r, 0);
+=======
+			kcryptd_crypt_write_io_submit(io, 0);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 			/*
 			 * If there was an error, do not try next fragments.
@@ -1163,11 +1196,16 @@ static void kcryptd_crypt_write_convert(struct dm_crypt_io *io)
 	crypt_dec_pending(io);
 }
 
+<<<<<<< HEAD
 static void kcryptd_crypt_read_done(struct dm_crypt_io *io, int error)
 {
 	if (unlikely(error < 0))
 		io->error = -EIO;
 
+=======
+static void kcryptd_crypt_read_done(struct dm_crypt_io *io)
+{
+>>>>>>> remotes/gregkh/linux-3.0.y
 	crypt_dec_pending(io);
 }
 
@@ -1182,9 +1220,17 @@ static void kcryptd_crypt_read_convert(struct dm_crypt_io *io)
 			   io->sector);
 
 	r = crypt_convert(cc, &io->ctx);
+<<<<<<< HEAD
 
 	if (atomic_dec_and_test(&io->ctx.pending))
 		kcryptd_crypt_read_done(io, r);
+=======
+	if (r < 0)
+		io->error = -EIO;
+
+	if (atomic_dec_and_test(&io->ctx.pending))
+		kcryptd_crypt_read_done(io);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	crypt_dec_pending(io);
 }
@@ -1205,15 +1251,27 @@ static void kcryptd_async_done(struct crypto_async_request *async_req,
 	if (!error && cc->iv_gen_ops && cc->iv_gen_ops->post)
 		error = cc->iv_gen_ops->post(cc, iv_of_dmreq(cc, dmreq), dmreq);
 
+<<<<<<< HEAD
+=======
+	if (error < 0)
+		io->error = -EIO;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mempool_free(req_of_dmreq(cc, dmreq), cc->req_pool);
 
 	if (!atomic_dec_and_test(&ctx->pending))
 		return;
 
 	if (bio_data_dir(io->base_bio) == READ)
+<<<<<<< HEAD
 		kcryptd_crypt_read_done(io, error);
 	else
 		kcryptd_crypt_write_io_submit(io, error, 1);
+=======
+		kcryptd_crypt_read_done(io);
+	else
+		kcryptd_crypt_write_io_submit(io, 1);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static void kcryptd_crypt(struct work_struct *work)

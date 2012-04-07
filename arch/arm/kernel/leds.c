@@ -9,8 +9,11 @@
  */
 #include <linux/module.h>
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/notifier.h>
 #include <linux/cpu.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include <linux/sysdev.h>
 #include <linux/syscore_ops.h>
 
@@ -103,6 +106,7 @@ static struct syscore_ops leds_syscore_ops = {
 	.resume		= leds_resume,
 };
 
+<<<<<<< HEAD
 static int leds_idle_notifier(struct notifier_block *nb, unsigned long val,
                                 void *data)
 {
@@ -122,6 +126,8 @@ static struct notifier_block leds_idle_nb = {
 	.notifier_call = leds_idle_notifier,
 };
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int __init leds_init(void)
 {
 	int ret;
@@ -130,12 +136,17 @@ static int __init leds_init(void)
 		ret = sysdev_register(&leds_device);
 	if (ret == 0)
 		ret = sysdev_create_file(&leds_device, &attr_event);
+<<<<<<< HEAD
 
 	if (ret == 0) {
 		register_syscore_ops(&leds_syscore_ops);
 		idle_notifier_register(&leds_idle_nb);
 	}
 
+=======
+	if (ret == 0)
+		register_syscore_ops(&leds_syscore_ops);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return ret;
 }
 

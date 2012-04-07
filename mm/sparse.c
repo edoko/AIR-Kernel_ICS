@@ -353,6 +353,7 @@ static void __init sparse_early_usemaps_alloc_node(unsigned long**usemap_map,
 
 	usemap = sparse_early_usemaps_alloc_pgdat_section(NODE_DATA(nodeid),
 								 usemap_count);
+<<<<<<< HEAD
 	if (usemap) {
 		for (pnum = pnum_begin; pnum < pnum_end; pnum++) {
 			if (!present_section_nr(pnum))
@@ -376,6 +377,23 @@ static void __init sparse_early_usemaps_alloc_node(unsigned long**usemap_map,
 	}
 
 	printk(KERN_WARNING "%s: allocation failed\n", __func__);
+=======
+	if (!usemap) {
+		usemap = alloc_bootmem_node(NODE_DATA(nodeid), size * usemap_count);
+		if (!usemap) {
+			printk(KERN_WARNING "%s: allocation failed\n", __func__);
+			return;
+		}
+	}
+
+	for (pnum = pnum_begin; pnum < pnum_end; pnum++) {
+		if (!present_section_nr(pnum))
+			continue;
+		usemap_map[pnum] = usemap;
+		usemap += size;
+		check_usemap_section_nr(nodeid, usemap_map[pnum]);
+	}
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 #ifndef CONFIG_SPARSEMEM_VMEMMAP

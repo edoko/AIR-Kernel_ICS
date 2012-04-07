@@ -177,7 +177,10 @@ static int sco_connect(struct sock *sk)
 {
 	bdaddr_t *src = &bt_sk(sk)->src;
 	bdaddr_t *dst = &bt_sk(sk)->dst;
+<<<<<<< HEAD
 	__u16 pkt_type = sco_pi(sk)->pkt_type;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	struct sco_conn *conn;
 	struct hci_conn *hcon;
 	struct hci_dev  *hdev;
@@ -193,12 +196,19 @@ static int sco_connect(struct sock *sk)
 
 	if (lmp_esco_capable(hdev) && !disable_esco)
 		type = ESCO_LINK;
+<<<<<<< HEAD
 	else {
 		type = SCO_LINK;
 		pkt_type &= SCO_ESCO_MASK;
 	}
 
 	hcon = hci_connect(hdev, type, pkt_type, dst, BT_SECURITY_LOW, HCI_AT_NO_BONDING);
+=======
+	else
+		type = SCO_LINK;
+
+	hcon = hci_connect(hdev, type, dst, BT_SECURITY_LOW, HCI_AT_NO_BONDING);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (IS_ERR(hcon)) {
 		err = PTR_ERR(hcon);
 		goto done;
@@ -463,6 +473,7 @@ static int sco_sock_create(struct net *net, struct socket *sock, int protocol,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int sco_sock_bind(struct socket *sock, struct sockaddr *addr, int alen)
 {
 	struct sockaddr_sco sa;
@@ -471,14 +482,27 @@ static int sco_sock_bind(struct socket *sock, struct sockaddr *addr, int alen)
 	int len, err = 0;
 
 	BT_DBG("sk %p %s", sk, batostr(&sa.sco_bdaddr));
+=======
+static int sco_sock_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
+{
+	struct sockaddr_sco *sa = (struct sockaddr_sco *) addr;
+	struct sock *sk = sock->sk;
+	bdaddr_t *src = &sa->sco_bdaddr;
+	int err = 0;
+
+	BT_DBG("sk %p %s", sk, batostr(&sa->sco_bdaddr));
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	if (!addr || addr->sa_family != AF_BLUETOOTH)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	memset(&sa, 0, sizeof(sa));
 	len = min_t(unsigned int, sizeof(sa), alen);
 	memcpy(&sa, addr, len);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	lock_sock(sk);
 
 	if (sk->sk_state != BT_OPEN) {
@@ -492,8 +516,12 @@ static int sco_sock_bind(struct socket *sock, struct sockaddr *addr, int alen)
 		err = -EADDRINUSE;
 	} else {
 		/* Save source address */
+<<<<<<< HEAD
 		bacpy(&bt_sk(sk)->src, &sa.sco_bdaddr);
 		sco_pi(sk)->pkt_type = sa.sco_pkt_type;
+=======
+		bacpy(&bt_sk(sk)->src, &sa->sco_bdaddr);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		sk->sk_state = BT_BOUND;
 	}
 
@@ -506,6 +534,7 @@ done:
 
 static int sco_sock_connect(struct socket *sock, struct sockaddr *addr, int alen, int flags)
 {
+<<<<<<< HEAD
 	struct sock *sk = sock->sk;
 	struct sockaddr_sco sa;
 	int len, err = 0;
@@ -534,6 +563,29 @@ static int sco_sock_connect(struct socket *sock, struct sockaddr *addr, int alen
 	/* Set destination address and psm */
 	bacpy(&bt_sk(sk)->dst, &sa.sco_bdaddr);
 	sco_pi(sk)->pkt_type = sa.sco_pkt_type;
+=======
+	struct sockaddr_sco *sa = (struct sockaddr_sco *) addr;
+	struct sock *sk = sock->sk;
+	int err = 0;
+
+
+	BT_DBG("sk %p", sk);
+
+	if (alen < sizeof(struct sockaddr_sco) ||
+	    addr->sa_family != AF_BLUETOOTH)
+		return -EINVAL;
+
+	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND)
+		return -EBADFD;
+
+	if (sk->sk_type != SOCK_SEQPACKET)
+		return -EINVAL;
+
+	lock_sock(sk);
+
+	/* Set destination address and psm */
+	bacpy(&bt_sk(sk)->dst, &sa->sco_bdaddr);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	err = sco_connect(sk);
 	if (err)
@@ -579,12 +631,21 @@ static int sco_sock_accept(struct socket *sock, struct socket *newsock, int flag
 
 	lock_sock(sk);
 
+<<<<<<< HEAD
+=======
+	if (sk->sk_state != BT_LISTEN) {
+		err = -EBADFD;
+		goto done;
+	}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	timeo = sock_rcvtimeo(sk, flags & O_NONBLOCK);
 
 	BT_DBG("sk %p timeo %ld", sk, timeo);
 
 	/* Wait for an incoming connection. (wake-one). */
 	add_wait_queue_exclusive(sk_sleep(sk), &wait);
+<<<<<<< HEAD
 	while (1) {
 		set_current_state(TASK_INTERRUPTIBLE);
 
@@ -599,6 +660,21 @@ static int sco_sock_accept(struct socket *sock, struct socket *newsock, int flag
 
 		if (!timeo) {
 			err = -EAGAIN;
+=======
+	while (!(ch = bt_accept_dequeue(sk, newsock))) {
+		set_current_state(TASK_INTERRUPTIBLE);
+		if (!timeo) {
+			err = -EAGAIN;
+			break;
+		}
+
+		release_sock(sk);
+		timeo = schedule_timeout(timeo);
+		lock_sock(sk);
+
+		if (sk->sk_state != BT_LISTEN) {
+			err = -EBADFD;
+>>>>>>> remotes/gregkh/linux-3.0.y
 			break;
 		}
 
@@ -606,12 +682,17 @@ static int sco_sock_accept(struct socket *sock, struct socket *newsock, int flag
 			err = sock_intr_errno(timeo);
 			break;
 		}
+<<<<<<< HEAD
 
 		release_sock(sk);
 		timeo = schedule_timeout(timeo);
 		lock_sock(sk);
 	}
 	__set_current_state(TASK_RUNNING);
+=======
+	}
+	set_current_state(TASK_RUNNING);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	remove_wait_queue(sk_sleep(sk), &wait);
 
 	if (err)
@@ -640,7 +721,10 @@ static int sco_sock_getname(struct socket *sock, struct sockaddr *addr, int *len
 		bacpy(&sa->sco_bdaddr, &bt_sk(sk)->dst);
 	else
 		bacpy(&sa->sco_bdaddr, &bt_sk(sk)->src);
+<<<<<<< HEAD
 	sa->sco_pkt_type = sco_pi(sk)->pkt_type;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	return 0;
 }
@@ -948,7 +1032,11 @@ static int sco_connect_cfm(struct hci_conn *hcon, __u8 status)
 		if (conn)
 			sco_conn_ready(conn);
 	} else
+<<<<<<< HEAD
 		sco_conn_del(hcon, bt_to_errno(status));
+=======
+		sco_conn_del(hcon, bt_err(status));
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	return 0;
 }
@@ -960,7 +1048,11 @@ static int sco_disconn_cfm(struct hci_conn *hcon, __u8 reason)
 	if (hcon->type != SCO_LINK && hcon->type != ESCO_LINK)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	sco_conn_del(hcon, bt_to_errno(reason));
+=======
+	sco_conn_del(hcon, bt_err(reason));
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	return 0;
 }

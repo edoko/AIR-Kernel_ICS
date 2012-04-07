@@ -284,8 +284,11 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
 
 	spin_lock_init(&host->lock);
 	init_waitqueue_head(&host->wq);
+<<<<<<< HEAD
 	wake_lock_init(&host->detect_wake_lock, WAKE_LOCK_SUSPEND,
 		kasprintf(GFP_KERNEL, "%s_detect", mmc_hostname(host)));
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	INIT_DELAYED_WORK(&host->detect, mmc_rescan);
 	INIT_DELAYED_WORK_DEFERRABLE(&host->disable, mmc_host_deeper_disable);
 #ifdef CONFIG_PM
@@ -338,8 +341,12 @@ int mmc_add_host(struct mmc_host *host)
 #endif
 
 	mmc_start_host(host);
+<<<<<<< HEAD
 	if (!(host->pm_flags & MMC_PM_IGNORE_PM_NOTIFY))
 		register_pm_notifier(&host->pm_notify);
+=======
+	register_pm_notifier(&host->pm_notify);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	return 0;
 }
@@ -356,9 +363,13 @@ EXPORT_SYMBOL(mmc_add_host);
  */
 void mmc_remove_host(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	if (!(host->pm_flags & MMC_PM_IGNORE_PM_NOTIFY))
 		unregister_pm_notifier(&host->pm_notify);
 
+=======
+	unregister_pm_notifier(&host->pm_notify);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mmc_stop_host(host);
 
 #ifdef CONFIG_DEBUG_FS
@@ -385,7 +396,10 @@ void mmc_free_host(struct mmc_host *host)
 	spin_lock(&mmc_host_lock);
 	idr_remove(&mmc_host_idr, host->index);
 	spin_unlock(&mmc_host_lock);
+<<<<<<< HEAD
 	wake_lock_destroy(&host->detect_wake_lock);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	put_device(&host->class_dev);
 }

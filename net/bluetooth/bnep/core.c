@@ -484,11 +484,17 @@ static int bnep_session(void *arg)
 
 	init_waitqueue_entry(&wait, current);
 	add_wait_queue(sk_sleep(sk), &wait);
+<<<<<<< HEAD
 	while (1) {
 		set_current_state(TASK_INTERRUPTIBLE);
 
 		if (atomic_read(&s->terminate))
 			break;
+=======
+	while (!kthread_should_stop()) {
+		set_current_state(TASK_INTERRUPTIBLE);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 		/* RX */
 		while ((skb = skb_dequeue(&sk->sk_receive_queue))) {
 			skb_orphan(skb);
@@ -506,7 +512,11 @@ static int bnep_session(void *arg)
 
 		schedule();
 	}
+<<<<<<< HEAD
 	__set_current_state(TASK_RUNNING);
+=======
+	set_current_state(TASK_RUNNING);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	remove_wait_queue(sk_sleep(sk), &wait);
 
 	/* Cleanup session */
@@ -642,10 +652,16 @@ int bnep_del_connection(struct bnep_conndel_req *req)
 	down_read(&bnep_session_sem);
 
 	s = __bnep_get_session(req->dst);
+<<<<<<< HEAD
 	if (s) {
 		atomic_inc(&s->terminate);
 		wake_up_process(s->task);
 	} else
+=======
+	if (s)
+		kthread_stop(s->task);
+	else
+>>>>>>> remotes/gregkh/linux-3.0.y
 		err = -ENOENT;
 
 	up_read(&bnep_session_sem);

@@ -174,6 +174,7 @@ config IP6_NF_TARGET_REJECT
 
 	  To compile it as a module, choose M here.  If unsure, say N.
 
+<<<<<<< HEAD
 config IP6_NF_TARGET_REJECT_SKERR
 	bool "Force socket error when rejecting with icmp*"
 	depends on IP6_NF_TARGET_REJECT
@@ -186,6 +187,8 @@ config IP6_NF_TARGET_REJECT_SKERR
 
 	  If unsure, say N.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config IP6_NF_MANGLE
 	tristate "Packet mangling"
 	default m if NETFILTER_ADVANCED=n

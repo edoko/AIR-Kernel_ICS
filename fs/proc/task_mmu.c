@@ -407,6 +407,12 @@ static int smaps_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
 	} else {
 		spin_unlock(&walk->mm->page_table_lock);
 	}
+<<<<<<< HEAD
+=======
+
+	if (pmd_trans_unstable(pmd))
+		return 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/*
 	 * The mmap_sem held all the way back in m_start() is what
 	 * keeps khugepaged out of here and from collapsing things
@@ -505,6 +511,11 @@ static int clear_refs_pte_range(pmd_t *pmd, unsigned long addr,
 	struct page *page;
 
 	split_huge_page_pmd(walk->mm, pmd);
+<<<<<<< HEAD
+=======
+	if (pmd_trans_unstable(pmd))
+		return 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
 	for (; addr != end; pte++, addr += PAGE_SIZE) {
@@ -668,6 +679,11 @@ static int pagemap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
 	int err = 0;
 
 	split_huge_page_pmd(walk->mm, pmd);
+<<<<<<< HEAD
+=======
+	if (pmd_trans_unstable(pmd))
+		return 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/* find the first VMA at or above 'addr' */
 	vma = find_vma(walk->mm, addr);
@@ -959,6 +975,11 @@ static int gather_pte_stats(pmd_t *pmd, unsigned long addr,
 		spin_unlock(&walk->mm->page_table_lock);
 	}
 
+<<<<<<< HEAD
+=======
+	if (pmd_trans_unstable(pmd))
+		return 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	orig_pte = pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
 	do {
 		struct page *page = can_gather_numa_stats(*pte, md->vma, addr);
@@ -1113,4 +1134,8 @@ const struct file_operations proc_numa_maps_operations = {
 	.llseek		= seq_lseek,
 	.release	= seq_release_private,
 };
+<<<<<<< HEAD
 #endif /* CONFIG_NUMA */ 
+=======
+#endif /* CONFIG_NUMA */
+>>>>>>> remotes/gregkh/linux-3.0.y

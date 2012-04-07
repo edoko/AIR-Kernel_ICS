@@ -71,7 +71,10 @@
 #include <linux/ctype.h>
 #include <linux/ftrace.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/cpuacct.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include <asm/tlb.h>
 #include <asm/irq_regs.h>
@@ -7925,7 +7928,11 @@ static void init_rt_rq(struct rt_rq *rt_rq, struct rq *rq)
 #ifdef CONFIG_SMP
 	rt_rq->rt_nr_migratory = 0;
 	rt_rq->overloaded = 0;
+<<<<<<< HEAD
 	plist_head_init(&rt_rq->pushable_tasks);
+=======
+	plist_head_init_raw(&rt_rq->pushable_tasks, &rq->lock);
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif
 
 	rt_rq->rt_time = 0;
@@ -8130,7 +8137,11 @@ void __init sched_init(void)
 #endif
 
 #ifdef CONFIG_RT_MUTEXES
+<<<<<<< HEAD
 	plist_head_init(&init_task.pi_waiters);
+=======
+	plist_head_init_raw(&init_task.pi_waiters, &init_task.pi_lock);
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif
 
 	/*
@@ -8181,6 +8192,7 @@ static inline int preempt_count_equals(int preempt_offset)
 	return (nested == preempt_offset);
 }
 
+<<<<<<< HEAD
 static int __might_sleep_init_called;
 int __init __might_sleep_init(void)
 {
@@ -8189,16 +8201,22 @@ int __init __might_sleep_init(void)
 }
 early_initcall(__might_sleep_init);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 void __might_sleep(const char *file, int line, int preempt_offset)
 {
 #ifdef in_atomic
 	static unsigned long prev_jiffy;	/* ratelimiting */
 
 	if ((preempt_count_equals(preempt_offset) && !irqs_disabled()) ||
+<<<<<<< HEAD
 	    oops_in_progress)
 		return;
 	if (system_state != SYSTEM_RUNNING &&
 	    (!__might_sleep_init_called || system_state != SYSTEM_BOOTING))
+=======
+	    system_state != SYSTEM_RUNNING || oops_in_progress)
+>>>>>>> remotes/gregkh/linux-3.0.y
 		return;
 	if (time_before(jiffies, prev_jiffy + HZ) && prev_jiffy)
 		return;
@@ -8942,6 +8960,7 @@ cpu_cgroup_destroy(struct cgroup_subsys *ss, struct cgroup *cgrp)
 }
 
 static int
+<<<<<<< HEAD
 cpu_cgroup_allow_attach(struct cgroup *cgrp, struct task_struct *tsk)
 {
 	const struct cred *cred = current_cred(), *tcred;
@@ -8956,6 +8975,8 @@ cpu_cgroup_allow_attach(struct cgroup *cgrp, struct task_struct *tsk)
 }
 
 static int
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 cpu_cgroup_can_attach_task(struct cgroup *cgrp, struct task_struct *tsk)
 {
 #ifdef CONFIG_RT_GROUP_SCHED
@@ -9060,7 +9081,10 @@ struct cgroup_subsys cpu_cgroup_subsys = {
 	.name		= "cpu",
 	.create		= cpu_cgroup_create,
 	.destroy	= cpu_cgroup_destroy,
+<<<<<<< HEAD
 	.allow_attach	= cpu_cgroup_allow_attach,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	.can_attach_task = cpu_cgroup_can_attach_task,
 	.attach_task	= cpu_cgroup_attach_task,
 	.exit		= cpu_cgroup_exit,
@@ -9087,6 +9111,7 @@ struct cpuacct {
 	u64 __percpu *cpuusage;
 	struct percpu_counter cpustat[CPUACCT_STAT_NSTATS];
 	struct cpuacct *parent;
+<<<<<<< HEAD
 	struct cpuacct_charge_calls *cpufreq_fn;
 	void *cpuacct_data;
 };
@@ -9111,6 +9136,10 @@ int cpuacct_register_cpufreq(struct cpuacct_charge_calls *fn)
 	return 0;
 }
 
+=======
+};
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 struct cgroup_subsys cpuacct_subsys;
 
 /* return cpu accounting group corresponding to this container */
@@ -9145,6 +9174,7 @@ static struct cgroup_subsys_state *cpuacct_create(
 		if (percpu_counter_init(&ca->cpustat[i], 0))
 			goto out_free_counters;
 
+<<<<<<< HEAD
 	ca->cpufreq_fn = cpuacct_cpufreq;
 
 	/* If available, have platform code initalize cpu frequency table */
@@ -9155,6 +9185,10 @@ static struct cgroup_subsys_state *cpuacct_create(
 		ca->parent = cgroup_ca(cgrp->parent);
 	else
 		cpuacct_root = ca;
+=======
+	if (cgrp->parent)
+		ca->parent = cgroup_ca(cgrp->parent);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	return &ca->css;
 
@@ -9282,6 +9316,7 @@ static int cpuacct_stats_show(struct cgroup *cgrp, struct cftype *cft,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int cpuacct_cpufreq_show(struct cgroup *cgrp, struct cftype *cft,
 		struct cgroup_map_cb *cb)
 {
@@ -9308,6 +9343,8 @@ static u64 cpuacct_powerusage_read(struct cgroup *cgrp, struct cftype *cft)
 	return totalpower;
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static struct cftype files[] = {
 	{
 		.name = "usage",
@@ -9322,6 +9359,7 @@ static struct cftype files[] = {
 		.name = "stat",
 		.read_map = cpuacct_stats_show,
 	},
+<<<<<<< HEAD
 	{
 		.name =  "cpufreq",
 		.read_map = cpuacct_cpufreq_show,
@@ -9330,6 +9368,8 @@ static struct cftype files[] = {
 		.name = "power",
 		.read_u64 = cpuacct_powerusage_read
 	},
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 static int cpuacct_populate(struct cgroup_subsys *ss, struct cgroup *cgrp)
@@ -9359,10 +9399,13 @@ static void cpuacct_charge(struct task_struct *tsk, u64 cputime)
 	for (; ca; ca = ca->parent) {
 		u64 *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
 		*cpuusage += cputime;
+<<<<<<< HEAD
 
 		/* Call back into platform code to account for CPU speeds */
 		if (ca->cpufreq_fn && ca->cpufreq_fn->charge)
 			ca->cpufreq_fn->charge(ca->cpuacct_data, cputime, cpu);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 
 	rcu_read_unlock();

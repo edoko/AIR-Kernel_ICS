@@ -345,6 +345,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
 		jbd_debug(3, "superblock not updated\n");
 	}
 
+<<<<<<< HEAD
 	if (journal->j_running_transaction == NULL) {
 		/* If we're going to trigger the J_ASSERT below, let's
 		   print some debugging information to figure out why
@@ -354,6 +355,8 @@ void jbd2_journal_commit_transaction(journal_t *journal)
 		       journal->j_commit_request);
 	}
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	J_ASSERT(journal->j_running_transaction != NULL);
 	J_ASSERT(journal->j_committing_transaction == NULL);
 

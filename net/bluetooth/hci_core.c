@@ -42,7 +42,10 @@
 #include <linux/notifier.h>
 #include <linux/rfkill.h>
 #include <linux/timer.h>
+<<<<<<< HEAD
 #include <linux/crypto.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include <net/sock.h>
 
 #include <asm/system.h>
@@ -146,7 +149,11 @@ static int __hci_request(struct hci_dev *hdev, void (*req)(struct hci_dev *hdev,
 
 	switch (hdev->req_status) {
 	case HCI_REQ_DONE:
+<<<<<<< HEAD
 		err = -bt_to_errno(hdev->req_result);
+=======
+		err = -bt_err(hdev->req_result);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		break;
 
 	case HCI_REQ_CANCELED:
@@ -540,7 +547,11 @@ int hci_dev_open(__u16 dev)
 		ret = __hci_request(hdev, hci_init_req, 0,
 					msecs_to_jiffies(HCI_INIT_TIMEOUT));
 
+<<<<<<< HEAD
 		if (lmp_host_le_capable(hdev))
+=======
+		if (lmp_le_capable(hdev))
+>>>>>>> remotes/gregkh/linux-3.0.y
 			ret = __hci_request(hdev, hci_le_init_req, 0,
 					msecs_to_jiffies(HCI_INIT_TIMEOUT));
 
@@ -1057,6 +1068,7 @@ static int hci_persistent_key(struct hci_dev *hdev, struct hci_conn *conn,
 	return 0;
 }
 
+<<<<<<< HEAD
 struct link_key *hci_find_ltk(struct hci_dev *hdev, __le16 ediv, u8 rand[8])
 {
 	struct link_key *k;
@@ -1093,6 +1105,8 @@ struct link_key *hci_find_link_key_type(struct hci_dev *hdev,
 }
 EXPORT_SYMBOL(hci_find_link_key_type);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 int hci_add_link_key(struct hci_dev *hdev, struct hci_conn *conn, int new_key,
 				bdaddr_t *bdaddr, u8 *val, u8 type, u8 pin_len)
 {
@@ -1148,6 +1162,7 @@ int hci_add_link_key(struct hci_dev *hdev, struct hci_conn *conn, int new_key,
 	return 0;
 }
 
+<<<<<<< HEAD
 int hci_add_ltk(struct hci_dev *hdev, int new_key, bdaddr_t *bdaddr,
 			u8 key_size, __le16 ediv, u8 rand[8], u8 ltk[16])
 {
@@ -1186,6 +1201,8 @@ int hci_add_ltk(struct hci_dev *hdev, int new_key, bdaddr_t *bdaddr,
 	return 0;
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 int hci_remove_link_key(struct hci_dev *hdev, bdaddr_t *bdaddr)
 {
 	struct link_key *key;
@@ -1209,6 +1226,10 @@ static void hci_cmd_timer(unsigned long arg)
 
 	BT_ERR("%s command tx timeout", hdev->name);
 	atomic_set(&hdev->cmd_cnt, 1);
+<<<<<<< HEAD
+=======
+	clear_bit(HCI_RESET, &hdev->flags);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	tasklet_schedule(&hdev->cmd_task);
 }
 
@@ -1276,6 +1297,7 @@ int hci_add_remote_oob_data(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 *hash,
 	return 0;
 }
 
+<<<<<<< HEAD
 struct bdaddr_list *hci_blacklist_lookup(struct hci_dev *hdev,
 						bdaddr_t *bdaddr)
 {
@@ -1439,6 +1461,8 @@ int hci_add_adv_entry(struct hci_dev *hdev,
 	return 0;
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /* Register HCI device */
 int hci_register_dev(struct hci_dev *hdev)
 {
@@ -1505,10 +1529,13 @@ int hci_register_dev(struct hci_dev *hdev)
 
 	INIT_LIST_HEAD(&hdev->remote_oob_data);
 
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&hdev->adv_entries);
 	setup_timer(&hdev->adv_timer, hci_clear_adv_cache,
 						(unsigned long) hdev);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	INIT_WORK(&hdev->power_on, hci_power_on);
 	INIT_WORK(&hdev->power_off, hci_power_off);
 	setup_timer(&hdev->off_timer, hci_auto_off, (unsigned long) hdev);
@@ -1523,11 +1550,14 @@ int hci_register_dev(struct hci_dev *hdev)
 	if (!hdev->workqueue)
 		goto nomem;
 
+<<<<<<< HEAD
 	hdev->tfm = crypto_alloc_blkcipher("ecb(aes)", 0, CRYPTO_ALG_ASYNC);
 	if (IS_ERR(hdev->tfm))
 		BT_INFO("Failed to load transform for ecb(aes): %ld",
 							PTR_ERR(hdev->tfm));
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	hci_register_sysfs(hdev);
 
 	hdev->rfkill = rfkill_alloc(hdev->name, &hdev->dev,
@@ -1576,9 +1606,12 @@ int hci_unregister_dev(struct hci_dev *hdev)
 					!test_bit(HCI_SETUP, &hdev->flags))
 		mgmt_index_removed(hdev->id);
 
+<<<<<<< HEAD
 	if (!IS_ERR(hdev->tfm))
 		crypto_free_blkcipher(hdev->tfm);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	hci_notify(hdev, HCI_DEV_UNREG);
 
 	if (hdev->rfkill) {
@@ -1589,7 +1622,10 @@ int hci_unregister_dev(struct hci_dev *hdev)
 	hci_unregister_sysfs(hdev);
 
 	hci_del_off_timer(hdev);
+<<<<<<< HEAD
 	del_timer(&hdev->adv_timer);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	destroy_workqueue(hdev->workqueue);
 
@@ -1598,7 +1634,10 @@ int hci_unregister_dev(struct hci_dev *hdev)
 	hci_uuids_clear(hdev);
 	hci_link_keys_clear(hdev);
 	hci_remote_oob_data_clear(hdev);
+<<<<<<< HEAD
 	hci_adv_entries_clear(hdev);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	hci_dev_unlock_bh(hdev);
 
 	__hci_dev_put(hdev);
@@ -2142,7 +2181,11 @@ static inline void hci_sched_acl(struct hci_dev *hdev)
 		while (quote-- && (skb = skb_dequeue(&conn->data_q))) {
 			BT_DBG("skb %p len %d", skb, skb->len);
 
+<<<<<<< HEAD
 			hci_conn_enter_active_mode(conn, bt_cb(skb)->force_active);
+=======
+			hci_conn_enter_active_mode(conn);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 			hci_send_frame(skb);
 			hdev->acl_last_tx = jiffies;
@@ -2281,7 +2324,11 @@ static inline void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
 	if (conn) {
 		register struct hci_proto *hp;
 
+<<<<<<< HEAD
 		hci_conn_enter_active_mode(conn, bt_cb(skb)->force_active);
+=======
+		hci_conn_enter_active_mode(conn);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		/* Send to upper protocol */
 		hp = hci_proto[HCI_PROTO_L2CAP];
@@ -2407,10 +2454,14 @@ static void hci_cmd_task(unsigned long arg)
 		if (hdev->sent_cmd) {
 			atomic_dec(&hdev->cmd_cnt);
 			hci_send_frame(skb);
+<<<<<<< HEAD
 			if (test_bit(HCI_RESET, &hdev->flags))
 				del_timer(&hdev->cmd_timer);
 			else
 				mod_timer(&hdev->cmd_timer,
+=======
+			mod_timer(&hdev->cmd_timer,
+>>>>>>> remotes/gregkh/linux-3.0.y
 				  jiffies + msecs_to_jiffies(HCI_CMD_TIMEOUT));
 		} else {
 			skb_queue_head(&hdev->cmd_q, skb);

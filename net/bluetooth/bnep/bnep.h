@@ -155,7 +155,10 @@ struct bnep_session {
 	unsigned int  role;
 	unsigned long state;
 	unsigned long flags;
+<<<<<<< HEAD
 	atomic_t      terminate;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	struct task_struct *task;
 
 	struct ethhdr eh;

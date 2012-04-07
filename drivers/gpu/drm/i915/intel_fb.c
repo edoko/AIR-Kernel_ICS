@@ -257,6 +257,19 @@ void intel_fbdev_fini(struct drm_device *dev)
 	kfree(dev_priv->fbdev);
 	dev_priv->fbdev = NULL;
 }
+<<<<<<< HEAD
+=======
+
+void intel_fbdev_set_suspend(struct drm_device *dev, int state)
+{
+	drm_i915_private_t *dev_priv = dev->dev_private;
+	if (!dev_priv->fbdev)
+		return;
+
+	fb_set_suspend(dev_priv->fbdev->helper.fbdev, state);
+}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 MODULE_LICENSE("GPL and additional rights");
 
 void intel_fb_output_poll_changed(struct drm_device *dev)

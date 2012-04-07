@@ -1532,7 +1532,11 @@ static int page_cache_read(struct file *file, pgoff_t offset)
 		page_cache_release(page);
 
 	} while (ret == AOP_TRUNCATED_PAGE);
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return ret;
 }
 
@@ -2444,7 +2448,11 @@ generic_file_buffered_write(struct kiocb *iocb, const struct iovec *iov,
 		written += status;
 		*ppos = pos + status;
   	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return written ? written : status;
 }
 EXPORT_SYMBOL(generic_file_buffered_write);

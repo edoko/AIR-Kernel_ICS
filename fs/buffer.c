@@ -285,7 +285,11 @@ static void free_more_memory(void)
 	struct zone *zone;
 	int nid;
 
+<<<<<<< HEAD
 	wakeup_flusher_threads(1024, WB_REASON_FREE_MORE_MEM);
+=======
+	wakeup_flusher_threads(1024);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	yield();
 
 	for_each_online_node(nid) {

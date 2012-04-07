@@ -397,7 +397,11 @@ outnl:
 static ssize_t wdm_read
 (struct file *file, char __user *buffer, size_t count, loff_t *ppos)
 {
+<<<<<<< HEAD
 	int rv, cntr = 0;
+=======
+	int rv, cntr;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	int i = 0;
 	struct wdm_device *desc = file->private_data;
 
@@ -406,7 +410,12 @@ static ssize_t wdm_read
 	if (rv < 0)
 		return -ERESTARTSYS;
 
+<<<<<<< HEAD
 	if (desc->length == 0) {
+=======
+	cntr = ACCESS_ONCE(desc->length);
+	if (cntr == 0) {
+>>>>>>> remotes/gregkh/linux-3.0.y
 		desc->read = 0;
 retry:
 		if (test_bit(WDM_DISCONNECTING, &desc->flags)) {
@@ -456,17 +465,27 @@ retry:
 			spin_unlock_irq(&desc->iuspin);
 			goto retry;
 		}
+<<<<<<< HEAD
 		clear_bit(WDM_READ, &desc->flags);
 		spin_unlock_irq(&desc->iuspin);
 	}
 
 	cntr = count > desc->length ? desc->length : count;
+=======
+		cntr = desc->length;
+		spin_unlock_irq(&desc->iuspin);
+	}
+
+	if (cntr > count)
+		cntr = count;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	rv = copy_to_user(buffer, desc->ubuf, cntr);
 	if (rv > 0) {
 		rv = -EFAULT;
 		goto err;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < desc->length - cntr; i++)
 		desc->ubuf[i] = desc->ubuf[i + cntr];
 
@@ -476,6 +495,20 @@ retry:
 	/* in case we had outstanding data */
 	if (!desc->length)
 		clear_bit(WDM_READ, &desc->flags);
+=======
+	spin_lock_irq(&desc->iuspin);
+
+	for (i = 0; i < desc->length - cntr; i++)
+		desc->ubuf[i] = desc->ubuf[i + cntr];
+
+	desc->length -= cntr;
+	/* in case we had outstanding data */
+	if (!desc->length)
+		clear_bit(WDM_READ, &desc->flags);
+
+	spin_unlock_irq(&desc->iuspin);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	rv = cntr;
 
 err:

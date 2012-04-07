@@ -1,11 +1,21 @@
 /* linux/arch/arm/plat-s3c/dev-i2c2.c
  *
+<<<<<<< HEAD
  * Copyright 2008-2009 Simtec Electronics
  *	Ben Dooks <ben@simtec.co.uk>
  *	http://armlinux.simtec.co.uk/
  *
  * S3C series device definition for i2c device 2
  *
+=======
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd.
+ *		http://www.samsung.com/
+ *
+ * S3C series device definition for i2c device 2
+ *
+ * Based on plat-samsung/dev-i2c0.c
+ *
+>>>>>>> remotes/gregkh/linux-3.0.y
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
@@ -15,8 +25,11 @@
 #include <linux/kernel.h>
 #include <linux/string.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/err.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include <mach/irqs.h>
 #include <mach/map.h>
@@ -26,8 +39,11 @@
 #include <plat/devs.h>
 #include <plat/cpu.h>
 
+<<<<<<< HEAD
 #include <asm/io.h>
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static struct resource s3c_i2c_resource[] = {
 	[0] = {
 		.start = S3C_PA_IIC2,
@@ -52,8 +68,13 @@ static struct s3c2410_platform_i2c default_i2c_data2 __initdata = {
 	.flags		= 0,
 	.bus_num	= 2,
 	.slave_addr	= 0x10,
+<<<<<<< HEAD
 	.frequency	= 400*1000,
 	.sda_delay	= S3C2410_IICLC_SDA_DELAY5 | S3C2410_IICLC_FILTER_ON,
+=======
+	.frequency	= 100*1000,
+	.sda_delay	= 100,
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 void __init s3c_i2c2_set_platdata(struct s3c2410_platform_i2c *pd)
@@ -71,6 +92,7 @@ void __init s3c_i2c2_set_platdata(struct s3c2410_platform_i2c *pd)
 
 	s3c_device_i2c2.dev.platform_data = npd;
 }
+<<<<<<< HEAD
 
 void s3c_i2c2_force_stop()
 {
@@ -99,3 +121,5 @@ void s3c_i2c2_force_stop()
 }
 EXPORT_SYMBOL(s3c_i2c2_force_stop);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

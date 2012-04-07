@@ -70,8 +70,11 @@ source "drivers/staging/rts_pstor/Kconfig"
 
 source "drivers/staging/frontier/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/staging/android/Kconfig"
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 source "drivers/staging/pohmelfs/Kconfig"
 
 source "drivers/staging/phison/Kconfig"

@@ -132,9 +132,13 @@ static unsigned long s3c2410_gettimeoffset (void)
 static irqreturn_t
 s3c2410_timer_interrupt(int irq, void *dev_id)
 {
+<<<<<<< HEAD
 #ifndef CONFIG_GENERIC_CLOCKEVENTS
 	timer_tick();
 #endif
+=======
+	timer_tick();
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return IRQ_HANDLED;
 }
 

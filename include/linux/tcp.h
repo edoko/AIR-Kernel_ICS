@@ -378,10 +378,13 @@ struct tcp_sock {
 	u32	snd_cwnd_clamp; /* Do not allow snd_cwnd to grow above this */
 	u32	snd_cwnd_used;
 	u32	snd_cwnd_stamp;
+<<<<<<< HEAD
 	u32	prior_cwnd;	/* Congestion window at start of Recovery. */
 	u32	prr_delivered;	/* Number of newly delivered packets to
 				 * receiver in Recovery. */
 	u32	prr_out;	/* Total number of pkts sent during Recovery. */
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
  	u32	rcv_wnd;	/* Current receiver window		*/
 	u32	write_seq;	/* Tail(+1) of data held in tcp send buffer */

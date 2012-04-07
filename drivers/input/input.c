@@ -28,10 +28,13 @@
 #include <linux/rcupdate.h>
 #include "input-compat.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_TOUCH_WAKE
 #include <linux/touch_wake.h>
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 MODULE_AUTHOR("Vojtech Pavlik <vojtech@suse.cz>");
 MODULE_DESCRIPTION("Input core");
 MODULE_LICENSE("GPL");
@@ -247,6 +250,7 @@ static void input_handle_event(struct input_dev *dev,
 		if (is_event_supported(code, dev->keybit, KEY_MAX) &&
 		    !!test_bit(code, dev->key) != value) {
 
+<<<<<<< HEAD
 #ifdef CONFIG_TOUCH_WAKE
  		        if (code == KEY_POWER && !device_is_suspended())
 			    {
@@ -261,6 +265,8 @@ static void input_handle_event(struct input_dev *dev,
 			    }
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 			if (value != 2) {
 				__change_bit(code, dev->key);
 				if (value)

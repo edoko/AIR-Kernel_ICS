@@ -50,6 +50,7 @@ config MMC_BLOCK_BOUNCE
 
 	  If unsure, say Y here.
 
+<<<<<<< HEAD
 config MMC_BLOCK_DEFERRED_RESUME
 	bool "Deferr MMC layer resume until I/O is requested"
 	depends on MMC_BLOCK
@@ -59,6 +60,8 @@ config MMC_BLOCK_DEFERRED_RESUME
 	  is requested. This will reduce overall resume latency and
 	  save power when theres an SD card inserted but not being used.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config SDIO_UART
 	tristate "SDIO UART/GPS class support"
 	help

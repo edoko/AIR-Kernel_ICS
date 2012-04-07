@@ -69,9 +69,15 @@ static struct usb_device_descriptor device_desc = {
 	/* .bDeviceClass =		USB_CLASS_COMM, */
 	/* .bDeviceSubClass =	0, */
 	/* .bDeviceProtocol =	0, */
+<<<<<<< HEAD
 	.bDeviceClass =		0xEF,
 	.bDeviceSubClass =	2,
 	.bDeviceProtocol =	1,
+=======
+	.bDeviceClass =		USB_CLASS_PER_INTERFACE,
+	.bDeviceSubClass =	0,
+	.bDeviceProtocol =	0,
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* .bMaxPacketSize0 = f(hardware) */
 
 	/* Vendor and product id can be overridden by module parameters.  */

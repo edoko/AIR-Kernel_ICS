@@ -23,16 +23,22 @@
 #include <linux/mtd/partitions.h>
 #include <linux/dma-mapping.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/clk.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include <asm/mach/flash.h>
 #include <plat/regs-onenand.h>
 
 #include <linux/io.h>
 
+<<<<<<< HEAD
 #include <asm/setup.h>
 #include <linux/string.h>
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 enum soc_type {
 	TYPE_S3C6400,
 	TYPE_S3C6410,
@@ -40,6 +46,7 @@ enum soc_type {
 	TYPE_S5PC110,
 };
 
+<<<<<<< HEAD
 struct mtd_partition s3c_partition_info[] = {
 	{
 		.name		= "misc",
@@ -79,6 +86,8 @@ struct mtd_partition s3c_partition_info[] = {
 	}
 };
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define ONENAND_ERASE_STATUS		0x00
 #define ONENAND_MULTI_ERASE_SET		0x01
 #define ONENAND_ERASE_START		0x03
@@ -236,6 +245,7 @@ static void s3c_dump_reg(void)
 }
 #endif
 
+<<<<<<< HEAD
 struct slsi_ptbl_entry {
 	char name[16];
 	__u32 offset;
@@ -286,6 +296,8 @@ static int __init parse_tag_partition(const struct tag *tag)
 }
 __tagtable(ATAG_SLSI_PARTITION, parse_tag_partition);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static unsigned int s3c64xx_cmd_map(unsigned type, unsigned val)
 {
 	return (type << S3C64XX_CMD_MAP_SHIFT) | val;
@@ -1009,6 +1021,7 @@ static int s3c_onenand_probe(struct platform_device *pdev)
 		err = -EFAULT;
 		goto ioremap_failed;
 	}
+<<<<<<< HEAD
 
 	this->clk = clk_get(&pdev->dev, "onenand");
 
@@ -1020,6 +1033,8 @@ static int s3c_onenand_probe(struct platform_device *pdev)
 
 	clk_enable(this->clk);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* Set onenand_chip also */
 	this->base = onenand->base;
 
@@ -1121,6 +1136,7 @@ static int s3c_onenand_probe(struct platform_device *pdev)
 	if (s3c_read_reg(MEM_CFG_OFFSET) & ONENAND_SYS_CFG1_SYNC_READ)
 		dev_info(&onenand->pdev->dev, "OneNAND Sync. Burst Read enabled\n");
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTD_CMDLINE_PARTS
 	err = parse_mtd_partitions(mtd, part_probes, &onenand->parts, 0);
 	if (err > 0)
@@ -1142,6 +1158,8 @@ static int s3c_onenand_probe(struct platform_device *pdev)
 
 
 /*
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	err = parse_mtd_partitions(mtd, part_probes, &onenand->parts, 0);
 	if (err > 0)
 		mtd_device_register(mtd, onenand->parts, err);
@@ -1149,11 +1167,17 @@ static int s3c_onenand_probe(struct platform_device *pdev)
 		mtd_device_register(mtd, pdata->parts, pdata->nr_parts);
 	else
 		err = mtd_device_register(mtd, NULL, 0);
+<<<<<<< HEAD
 */
 
 	platform_set_drvdata(pdev, mtd);
 
 	clk_disable(this->clk);
+=======
+
+	platform_set_drvdata(pdev, mtd);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return 0;
 
 scan_failed:
@@ -1176,9 +1200,12 @@ ahb_ioremap_failed:
 dma_resource_failed:
 ahb_resource_failed:
 	iounmap(onenand->base);
+<<<<<<< HEAD
 	clk_disable(this->clk);
 	clk_put(this->clk);
 clk_failed:
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 ioremap_failed:
 	if (onenand->base_res)
 		release_mem_region(onenand->base_res->start,
@@ -1193,7 +1220,10 @@ onenand_fail:
 static int __devexit s3c_onenand_remove(struct platform_device *pdev)
 {
 	struct mtd_info *mtd = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 	struct onenand_chip *this = mtd->priv;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	onenand_release(mtd);
 	if (onenand->ahb_addr)
@@ -1214,25 +1244,49 @@ static int __devexit s3c_onenand_remove(struct platform_device *pdev)
 	platform_set_drvdata(pdev, NULL);
 	kfree(onenand->oob_buf);
 	kfree(onenand->page_buf);
+<<<<<<< HEAD
 	clk_put(this->clk);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	kfree(onenand);
 	kfree(mtd);
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int s3c_pm_ops_suspend(struct device *dev)
+{
+	struct platform_device *pdev = to_platform_device(dev);
+	struct mtd_info *mtd = platform_get_drvdata(pdev);
+	struct onenand_chip *this = mtd->priv;
+
+	this->wait(mtd, FL_PM_SUSPENDED);
+	return 0;
+}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 static  int s3c_pm_ops_resume(struct device *dev)
 {
 	struct platform_device *pdev = to_platform_device(dev);
 	struct mtd_info *mtd = platform_get_drvdata(pdev);
 	struct onenand_chip *this = mtd->priv;
 
+<<<<<<< HEAD
 	clk_enable(this->clk);
 	this->unlock_all(mtd);
 	clk_disable(this->clk);
+=======
+	this->unlock_all(mtd);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return 0;
 }
 
 static const struct dev_pm_ops s3c_pm_ops = {
+<<<<<<< HEAD
+=======
+	.suspend	= s3c_pm_ops_suspend,
+>>>>>>> remotes/gregkh/linux-3.0.y
 	.resume		= s3c_pm_ops_resume,
 };
 

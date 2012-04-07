@@ -271,7 +271,11 @@ static int tosa_lcd_resume(struct spi_device *spi)
 }
 #else
 #define tosa_lcd_suspend	NULL
+<<<<<<< HEAD
 #define tosa_lcd_reume NULL
+=======
+#define tosa_lcd_resume NULL
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif
 
 static struct spi_driver tosa_lcd_driver = {

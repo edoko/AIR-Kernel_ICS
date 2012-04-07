@@ -96,8 +96,11 @@ source "drivers/leds/Kconfig"
 
 source "drivers/nfc/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/switch/Kconfig"
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 source "drivers/accessibility/Kconfig"
 
 source "drivers/infiniband/Kconfig"

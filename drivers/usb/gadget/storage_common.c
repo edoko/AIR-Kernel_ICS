@@ -763,16 +763,22 @@ static ssize_t fsg_store_file(struct device *dev, struct device_attribute *attr,
 	struct rw_semaphore	*filesem = dev_get_drvdata(dev);
 	int		rc = 0;
 
+<<<<<<< HEAD
 
 #ifndef CONFIG_USB_ANDROID_MASS_STORAGE
 	/* disabled in android because we need to allow closing the backing file
 	 * if the media was removed
 	 */
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (curlun->prevent_medium_removal && fsg_lun_is_open(curlun)) {
 		LDBG(curlun, "eject attempt prevented\n");
 		return -EBUSY;				/* "Door is locked" */
 	}
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/* Remove a trailing newline */
 	if (count > 0 && buf[count-1] == '\n')

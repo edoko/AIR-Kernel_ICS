@@ -523,6 +523,13 @@ void rtl92c_dm_write_dig(struct ieee80211_hw *hw)
 		  dm_digtable.cur_igvalue, dm_digtable.pre_igvalue,
 		  dm_digtable.backoff_val));
 
+<<<<<<< HEAD
+=======
+	dm_digtable.cur_igvalue += 2;
+	if (dm_digtable.cur_igvalue > 0x3f)
+		dm_digtable.cur_igvalue = 0x3f;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (dm_digtable.pre_igvalue != dm_digtable.cur_igvalue) {
 		rtl_set_bbreg(hw, ROFDM0_XAAGCCORE1, 0x7f,
 			      dm_digtable.cur_igvalue);
@@ -1218,13 +1225,27 @@ static void rtl92c_dm_refresh_rate_adaptive_mask(struct ieee80211_hw *hw)
 				 ("PreState = %d, CurState = %d\n",
 				  p_ra->pre_ratr_state, p_ra->ratr_state));
 
+<<<<<<< HEAD
 			rcu_read_lock();
 			sta = ieee80211_find_sta(mac->vif, mac->bssid);
+=======
+			/* Only the PCI card uses sta in the update rate table
+			 * callback routine */
+			if (rtlhal->interface == INTF_PCI) {
+				rcu_read_lock();
+				sta = ieee80211_find_sta(mac->vif, mac->bssid);
+			}
+>>>>>>> remotes/gregkh/linux-3.0.y
 			rtlpriv->cfg->ops->update_rate_tbl(hw, sta,
 					p_ra->ratr_state);
 
 			p_ra->pre_ratr_state = p_ra->ratr_state;
+<<<<<<< HEAD
 			rcu_read_unlock();
+=======
+			if (rtlhal->interface == INTF_PCI)
+				rcu_read_unlock();
+>>>>>>> remotes/gregkh/linux-3.0.y
 		}
 	}
 }

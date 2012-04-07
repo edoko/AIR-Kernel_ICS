@@ -23,7 +23,10 @@
 #include <linux/log2.h>
 #include <linux/regulator/consumer.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <linux/wakelock.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include <linux/mmc/card.h>
 #include <linux/mmc/host.h>
@@ -1122,6 +1125,7 @@ static inline void mmc_bus_put(struct mmc_host *host)
 	spin_unlock_irqrestore(&host->lock, flags);
 }
 
+<<<<<<< HEAD
 int mmc_resume_bus(struct mmc_host *host)
 {
 	unsigned long flags;
@@ -1152,6 +1156,8 @@ int mmc_resume_bus(struct mmc_host *host)
 
 EXPORT_SYMBOL(mmc_resume_bus);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*
  * Assign a mmc bus handler to a host. Only one bus handler may control a
  * host at any given time.
@@ -1217,7 +1223,10 @@ void mmc_detect_change(struct mmc_host *host, unsigned long delay)
 	spin_unlock_irqrestore(&host->lock, flags);
 #endif
 
+<<<<<<< HEAD
 	wake_lock(&host->detect_wake_lock);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mmc_schedule_delayed_work(&host->detect, delay);
 }
 
@@ -1624,7 +1633,10 @@ void mmc_rescan(struct work_struct *work)
 	struct mmc_host *host =
 		container_of(work, struct mmc_host, detect.work);
 	int i;
+<<<<<<< HEAD
 	bool extend_wakelock = false;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	if (host->rescan_disable)
 		return;
@@ -1639,12 +1651,15 @@ void mmc_rescan(struct work_struct *work)
 	    && !(host->caps & MMC_CAP_NONREMOVABLE))
 		host->bus_ops->detect(host);
 
+<<<<<<< HEAD
 	/* If the card was removed the bus will be marked
 	 * as dead - extend the wakelock so userspace
 	 * can respond */
 	if (host->bus_dead)
 		extend_wakelock = 1;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/*
 	 * Let mmc_bus_put() free the bus/bus_ops if we've found that
 	 * the card is no longer present.
@@ -1669,16 +1684,22 @@ void mmc_rescan(struct work_struct *work)
 
 	mmc_claim_host(host);
 	for (i = 0; i < ARRAY_SIZE(freqs); i++) {
+<<<<<<< HEAD
 		if (!mmc_rescan_try_freq(host, max(freqs[i], host->f_min))) {
 			extend_wakelock = true;
 			break;
 		}
+=======
+		if (!mmc_rescan_try_freq(host, max(freqs[i], host->f_min)))
+			break;
+>>>>>>> remotes/gregkh/linux-3.0.y
 		if (freqs[i] <= host->f_min)
 			break;
 	}
 	mmc_release_host(host);
 
  out:
+<<<<<<< HEAD
 	if (extend_wakelock)
 		wake_lock_timeout(&host->detect_wake_lock, HZ / 2);
 	else
@@ -1687,6 +1708,10 @@ void mmc_rescan(struct work_struct *work)
 		wake_lock(&host->detect_wake_lock);
 		mmc_schedule_delayed_work(&host->detect, HZ);
 	}
+=======
+	if (host->caps & MMC_CAP_NEEDS_POLL)
+		mmc_schedule_delayed_work(&host->detect, HZ);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 void mmc_start_host(struct mmc_host *host)
@@ -1706,8 +1731,12 @@ void mmc_stop_host(struct mmc_host *host)
 
 	if (host->caps & MMC_CAP_DISABLE)
 		cancel_delayed_work(&host->disable);
+<<<<<<< HEAD
 	if (cancel_delayed_work_sync(&host->detect))
 		wake_unlock(&host->detect_wake_lock);
+=======
+	cancel_delayed_work_sync(&host->detect);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mmc_flush_scheduled_work();
 
 	/* clear pm flags now and let card drivers set them as needed */
@@ -1824,6 +1853,7 @@ int mmc_suspend_host(struct mmc_host *host)
 {
 	int err = 0;
 
+<<<<<<< HEAD
 	if (mmc_bus_needs_resume(host))
 		return 0;
 
@@ -1831,6 +1861,11 @@ int mmc_suspend_host(struct mmc_host *host)
 		cancel_delayed_work(&host->disable);
 	if (cancel_delayed_work(&host->detect))
 		wake_unlock(&host->detect_wake_lock);
+=======
+	if (host->caps & MMC_CAP_DISABLE)
+		cancel_delayed_work(&host->disable);
+	cancel_delayed_work(&host->detect);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mmc_flush_scheduled_work();
 
 	mmc_bus_get(host);
@@ -1871,12 +1906,15 @@ int mmc_resume_host(struct mmc_host *host)
 	int err = 0;
 
 	mmc_bus_get(host);
+<<<<<<< HEAD
 	if (mmc_bus_manual_resume(host)) {
 		host->bus_resume_flags |= MMC_BUSRESUME_NEEDS_RESUME;
 		mmc_bus_put(host);
 		return 0;
 	}
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (host->bus_ops && !host->bus_dead) {
 		if (!mmc_card_keep_power(host)) {
 			mmc_power_up(host);
@@ -1927,6 +1965,7 @@ int mmc_pm_notify(struct notifier_block *notify_block,
 	case PM_SUSPEND_PREPARE:
 
 		spin_lock_irqsave(&host->lock, flags);
+<<<<<<< HEAD
 		if (mmc_bus_needs_resume(host)) {
 			spin_unlock_irqrestore(&host->lock, flags);
 			break;
@@ -1935,6 +1974,11 @@ int mmc_pm_notify(struct notifier_block *notify_block,
 		spin_unlock_irqrestore(&host->lock, flags);
 		if (cancel_delayed_work_sync(&host->detect))
 			wake_unlock(&host->detect_wake_lock);
+=======
+		host->rescan_disable = 1;
+		spin_unlock_irqrestore(&host->lock, flags);
+		cancel_delayed_work_sync(&host->detect);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		if (!host->bus_ops || host->bus_ops->suspend)
 			break;
@@ -1955,10 +1999,13 @@ int mmc_pm_notify(struct notifier_block *notify_block,
 	case PM_POST_RESTORE:
 
 		spin_lock_irqsave(&host->lock, flags);
+<<<<<<< HEAD
 		if (mmc_bus_manual_resume(host)) {
 			spin_unlock_irqrestore(&host->lock, flags);
 			break;
 		}
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 		host->rescan_disable = 0;
 		spin_unlock_irqrestore(&host->lock, flags);
 		mmc_detect_change(host, 0);
@@ -1969,6 +2016,7 @@ int mmc_pm_notify(struct notifier_block *notify_block,
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_EMBEDDED_SDIO
 void mmc_set_embedded_sdio_data(struct mmc_host *host,
 				struct sdio_cis *cis,
@@ -1985,6 +2033,8 @@ void mmc_set_embedded_sdio_data(struct mmc_host *host,
 EXPORT_SYMBOL(mmc_set_embedded_sdio_data);
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int __init mmc_init(void)
 {
 	int ret;

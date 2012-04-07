@@ -27,7 +27,10 @@
 #include <linux/sched.h>
 #include <linux/async.h>
 #include <linux/suspend.h>
+<<<<<<< HEAD
 #include <linux/timer.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include "../base.h"
 #include "power.h"
@@ -50,12 +53,15 @@ LIST_HEAD(dpm_noirq_list);
 static DEFINE_MUTEX(dpm_list_mtx);
 static pm_message_t pm_transition;
 
+<<<<<<< HEAD
 static void dpm_drv_timeout(unsigned long data);
 struct dpm_drv_wd_data {
 	struct device *dev;
 	struct task_struct *tsk;
 };
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int async_error;
 
 /**
@@ -591,6 +597,7 @@ static bool is_async(struct device *dev)
 }
 
 /**
+<<<<<<< HEAD
  *	dpm_drv_timeout - Driver suspend / resume watchdog handler
  *	@data: struct device which timed out
  *
@@ -615,6 +622,8 @@ static void dpm_drv_timeout(unsigned long data)
 }
 
 /**
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
  * dpm_resume - Execute "resume" callbacks for non-sysdev devices.
  * @state: PM transition of the system being carried out.
  *
@@ -872,6 +881,7 @@ static int legacy_suspend(struct device *dev, pm_message_t state,
 static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 {
 	int error = 0;
+<<<<<<< HEAD
 	struct timer_list timer;
 	struct dpm_drv_wd_data data;
 
@@ -885,6 +895,10 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 	timer.data = (unsigned long)&data;
 	add_timer(&timer);
 
+=======
+
+	dpm_wait_for_children(dev, async);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	device_lock(dev);
 
 	if (async_error)
@@ -934,10 +948,13 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 
  Unlock:
 	device_unlock(dev);
+<<<<<<< HEAD
 
 	del_timer_sync(&timer);
 	destroy_timer_on_stack(&timer);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	complete_all(&dev->power.completion);
 
 	if (error)

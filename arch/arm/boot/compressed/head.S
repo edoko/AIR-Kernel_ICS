@@ -656,8 +656,11 @@ proc_types:
 @		b	__arm6_mmu_cache_off
 @		b	__armv3_mmu_cache_flush
 
+<<<<<<< HEAD
 #if !defined(CONFIG_CPU_V7)
 		/* This collides with some V7 IDs, preventing correct detection */
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 		.word	0x00000000		@ old ARM ID
 		.word	0x0000f000
 		mov	pc, lr
@@ -666,7 +669,10 @@ proc_types:
  THUMB(		nop				)
 		mov	pc, lr
  THUMB(		nop				)
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		.word	0x41007000		@ ARM7/710
 		.word	0xfff8fe00

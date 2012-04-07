@@ -11,7 +11,10 @@ if WIMAX
 menu "WiMAX Wireless Broadband devices"
 
 source "drivers/net/wimax/i2400m/Kconfig"
+<<<<<<< HEAD
 source "drivers/net/wimax/cmc7xx/Kconfig"
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 endmenu
 

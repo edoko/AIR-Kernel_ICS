@@ -172,6 +172,10 @@ static void mark_screen_rdonly(struct mm_struct *mm)
 	spinlock_t *ptl;
 	int i;
 
+<<<<<<< HEAD
+=======
+	down_write(&mm->mmap_sem);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	pgd = pgd_offset(mm, 0xA0000);
 	if (pgd_none_or_clear_bad(pgd))
 		goto out;
@@ -190,6 +194,10 @@ static void mark_screen_rdonly(struct mm_struct *mm)
 	}
 	pte_unmap_unlock(pte, ptl);
 out:
+<<<<<<< HEAD
+=======
+	up_write(&mm->mmap_sem);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	flush_tlb();
 }
 

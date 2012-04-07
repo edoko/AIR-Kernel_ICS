@@ -43,6 +43,7 @@ config CFQ_GROUP_IOSCHED
 	---help---
 	  Enable group IO scheduling in CFQ.
 
+<<<<<<< HEAD
 config DEBUG_CFQ_IOSCHED
        bool "Debug CFQ Scheduling"
        depends on CFQ_GROUP_IOSCHED
@@ -69,6 +70,8 @@ config IOSCHED_VR
 	  Requests are chosen according to SSTF with a penalty of rev_penalty
  	  for switching head direction.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 choice
 	prompt "Default I/O scheduler"
 	default DEFAULT_CFQ
@@ -85,12 +88,15 @@ choice
 	config DEFAULT_NOOP
 		bool "No-op"
 
+<<<<<<< HEAD
 	config DEFAULT_SIO
                bool "SIO" if IOSCHED_SIO=y
 
 	config DEFAULT_VR
 		bool "V(R)" if IOSCHED_VR=y
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 endchoice
 
 config DEFAULT_IOSCHED
@@ -98,8 +104,11 @@ config DEFAULT_IOSCHED
 	default "deadline" if DEFAULT_DEADLINE
 	default "cfq" if DEFAULT_CFQ
 	default "noop" if DEFAULT_NOOP
+<<<<<<< HEAD
 	default "sio" if DEFAULT_SIO
 	default "vr" if DEFAULT_VR
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 endmenu
 

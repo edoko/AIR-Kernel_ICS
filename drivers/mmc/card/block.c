@@ -126,7 +126,15 @@ static struct mmc_blk_data *mmc_blk_get(struct gendisk *disk)
 
 static inline int mmc_get_devidx(struct gendisk *disk)
 {
+<<<<<<< HEAD
 	int devidx = disk->first_minor / perdev_minors;
+=======
+	int devmaj = MAJOR(disk_devt(disk));
+	int devidx = MINOR(disk_devt(disk)) / perdev_minors;
+
+	if (!devmaj)
+		devidx = disk->first_minor / perdev_minors;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return devidx;
 }
 
@@ -529,6 +537,7 @@ static u32 mmc_sd_num_wr_blocks(struct mmc_card *card)
 	return result;
 }
 
+<<<<<<< HEAD
 static int send_stop(struct mmc_card *card, u32 *status)
 {
 	struct mmc_command cmd = {0};
@@ -543,6 +552,9 @@ static int send_stop(struct mmc_card *card, u32 *status)
 }
 
 static int get_card_status(struct mmc_card *card, u32 *status, int retries)
+=======
+static u32 get_card_status(struct mmc_card *card, struct request *req)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	struct mmc_command cmd = {0};
 	int err;
@@ -551,6 +563,7 @@ static int get_card_status(struct mmc_card *card, u32 *status, int retries)
 	if (!mmc_host_is_spi(card->host))
 		cmd.arg = card->rca << 16;
 	cmd.flags = MMC_RSP_SPI_R2 | MMC_RSP_R1 | MMC_CMD_AC;
+<<<<<<< HEAD
 	err = mmc_wait_for_cmd(card->host, &cmd, retries);
 	if (err == 0)
 		*status = cmd.resp[0];
@@ -690,6 +703,13 @@ static int mmc_blk_cmd_recovery(struct mmc_card *card, struct request *req,
 		brq->stop.error = 0;
 	}
 	return ERR_CONTINUE;
+=======
+	err = mmc_wait_for_cmd(card->host, &cmd, 0);
+	if (err)
+		printk(KERN_ERR "%s: error %d sending status command",
+		       req->rq_disk->disk_name, err);
+	return cmd.resp[0];
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static int mmc_blk_issue_discard_rq(struct mmc_queue *mq, struct request *req)
@@ -820,6 +840,7 @@ static inline void mmc_apply_rel_rw(struct mmc_blk_request *brq,
 	}
 }
 
+<<<<<<< HEAD
 #define CMD_ERRORS							\
 	(R1_OUT_OF_RANGE |	/* Command argument out of range */	\
 	 R1_ADDRESS_ERROR |	/* Misaligned address */		\
@@ -828,12 +849,18 @@ static inline void mmc_apply_rel_rw(struct mmc_blk_request *brq,
 	 R1_CC_ERROR |		/* Card controller error */		\
 	 R1_ERROR)		/* General/unknown error */
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int mmc_blk_issue_rw_rq(struct mmc_queue *mq, struct request *req)
 {
 	struct mmc_blk_data *md = mq->data;
 	struct mmc_card *card = md->queue.card;
 	struct mmc_blk_request brq;
+<<<<<<< HEAD
 	int ret = 1, disable_multi = 0, retry = 0;
+=======
+	int ret = 1, disable_multi = 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/*
 	 * Reliable writes are used to implement Forced Unit Access and
@@ -845,7 +872,12 @@ static int mmc_blk_issue_rw_rq(struct mmc_queue *mq, struct request *req)
 		(md->flags & MMC_BLK_REL_WR);
 
 	do {
+<<<<<<< HEAD
 		u32 readcmd, writecmd;
+=======
+		struct mmc_command cmd = {0};
+		u32 readcmd, writecmd, status = 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		memset(&brq, 0, sizeof(struct mmc_blk_request));
 		brq.mrq.cmd = &brq.cmd;
@@ -962,6 +994,7 @@ static int mmc_blk_issue_rw_rq(struct mmc_queue *mq, struct request *req)
 		mmc_queue_bounce_post(mq);
 
 		/*
+<<<<<<< HEAD
 		 * sbc.error indicates a problem with the set block count
 		 * command.  No data will have been transferred.
 		 *
@@ -1003,6 +1036,64 @@ static int mmc_blk_issue_rw_rq(struct mmc_queue *mq, struct request *req)
 			u32 status;
 			do {
 				int err = get_card_status(card, &status, 5);
+=======
+		 * Check for errors here, but don't jump to cmd_err
+		 * until later as we need to wait for the card to leave
+		 * programming mode even when things go wrong.
+		 */
+		if (brq.sbc.error || brq.cmd.error ||
+		    brq.data.error || brq.stop.error) {
+			if (brq.data.blocks > 1 && rq_data_dir(req) == READ) {
+				/* Redo read one sector at a time */
+				printk(KERN_WARNING "%s: retrying using single "
+				       "block read\n", req->rq_disk->disk_name);
+				disable_multi = 1;
+				continue;
+			}
+			status = get_card_status(card, req);
+		}
+
+		if (brq.sbc.error) {
+			printk(KERN_ERR "%s: error %d sending SET_BLOCK_COUNT "
+			       "command, response %#x, card status %#x\n",
+			       req->rq_disk->disk_name, brq.sbc.error,
+			       brq.sbc.resp[0], status);
+		}
+
+		if (brq.cmd.error) {
+			printk(KERN_ERR "%s: error %d sending read/write "
+			       "command, response %#x, card status %#x\n",
+			       req->rq_disk->disk_name, brq.cmd.error,
+			       brq.cmd.resp[0], status);
+		}
+
+		if (brq.data.error) {
+			if (brq.data.error == -ETIMEDOUT && brq.mrq.stop)
+				/* 'Stop' response contains card status */
+				status = brq.mrq.stop->resp[0];
+			printk(KERN_ERR "%s: error %d transferring data,"
+			       " sector %u, nr %u, card status %#x\n",
+			       req->rq_disk->disk_name, brq.data.error,
+			       (unsigned)blk_rq_pos(req),
+			       (unsigned)blk_rq_sectors(req), status);
+		}
+
+		if (brq.stop.error) {
+			printk(KERN_ERR "%s: error %d sending stop command, "
+			       "response %#x, card status %#x\n",
+			       req->rq_disk->disk_name, brq.stop.error,
+			       brq.stop.resp[0], status);
+		}
+
+		if (!mmc_host_is_spi(card->host) && rq_data_dir(req) != READ) {
+			do {
+				int err;
+
+				cmd.opcode = MMC_SEND_STATUS;
+				cmd.arg = card->rca << 16;
+				cmd.flags = MMC_RSP_R1 | MMC_CMD_AC;
+				err = mmc_wait_for_cmd(card->host, &cmd, 5);
+>>>>>>> remotes/gregkh/linux-3.0.y
 				if (err) {
 					printk(KERN_ERR "%s: error %d requesting status\n",
 					       req->rq_disk->disk_name, err);
@@ -1013,6 +1104,7 @@ static int mmc_blk_issue_rw_rq(struct mmc_queue *mq, struct request *req)
 				 * so make sure to check both the busy
 				 * indication and the card state.
 				 */
+<<<<<<< HEAD
 			} while (!(status & R1_READY_FOR_DATA) ||
 				 (R1_CURRENT_STATE(status) == R1_STATE_PRG));
 		}
@@ -1033,6 +1125,22 @@ static int mmc_blk_issue_rw_rq(struct mmc_queue *mq, struct request *req)
 					continue;
 				}
 
+=======
+			} while (!(cmd.resp[0] & R1_READY_FOR_DATA) ||
+				(R1_CURRENT_STATE(cmd.resp[0]) == 7));
+
+#if 0
+			if (cmd.resp[0] & ~0x00000900)
+				printk(KERN_ERR "%s: status = %08x\n",
+				       req->rq_disk->disk_name, cmd.resp[0]);
+			if (mmc_decode_status(cmd.resp))
+				goto cmd_err;
+#endif
+		}
+
+		if (brq.cmd.error || brq.stop.error || brq.data.error) {
+			if (rq_data_dir(req) == READ) {
+>>>>>>> remotes/gregkh/linux-3.0.y
 				/*
 				 * After an error, we redo I/O one sector at a
 				 * time, so we only reach here after trying to
@@ -1042,9 +1150,14 @@ static int mmc_blk_issue_rw_rq(struct mmc_queue *mq, struct request *req)
 				ret = __blk_end_request(req, -EIO, brq.data.blksz);
 				spin_unlock_irq(&md->lock);
 				continue;
+<<<<<<< HEAD
 			} else {
 				goto cmd_err;
 			}
+=======
+			}
+			goto cmd_err;
+>>>>>>> remotes/gregkh/linux-3.0.y
 		}
 
 		/*
@@ -1081,7 +1194,10 @@ static int mmc_blk_issue_rw_rq(struct mmc_queue *mq, struct request *req)
 		spin_unlock_irq(&md->lock);
 	}
 
+<<<<<<< HEAD
  cmd_abort:
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	spin_lock_irq(&md->lock);
 	while (ret)
 		ret = __blk_end_request(req, -EIO, blk_rq_cur_bytes(req));
@@ -1090,15 +1206,19 @@ static int mmc_blk_issue_rw_rq(struct mmc_queue *mq, struct request *req)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int
 mmc_blk_set_blksize(struct mmc_blk_data *md, struct mmc_card *card);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 {
 	int ret;
 	struct mmc_blk_data *md = mq->data;
 	struct mmc_card *card = md->queue.card;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_BLOCK_DEFERRED_RESUME
 	if (mmc_bus_needs_resume(card->host)) {
 		mmc_resume_bus(card->host);
@@ -1106,6 +1226,8 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 	}
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mmc_claim_host(card->host);
 	ret = mmc_blk_part_switch(card, md);
 	if (ret) {
@@ -1199,7 +1321,10 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
 	md->disk->queue = md->queue.queue;
 	md->disk->driverfs_dev = parent;
 	set_disk_ro(md->disk, md->read_only || default_ro);
+<<<<<<< HEAD
 	md->disk->flags = GENHD_FL_EXT_DEVT;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/*
 	 * As discussed on lkml, GENHD_FL_REMOVABLE should:
@@ -1439,9 +1564,12 @@ static int mmc_blk_probe(struct mmc_card *card)
 	mmc_set_drvdata(card, md);
 	mmc_fixup_device(card, blk_fixups);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_BLOCK_DEFERRED_RESUME
 	mmc_set_bus_resume_policy(card->host, 1);
 #endif
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (mmc_add_disk(md))
 		goto out;
 
@@ -1467,9 +1595,12 @@ static void mmc_blk_remove(struct mmc_card *card)
 	mmc_release_host(card->host);
 	mmc_blk_remove_req(md);
 	mmc_set_drvdata(card, NULL);
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_BLOCK_DEFERRED_RESUME
 	mmc_set_bus_resume_policy(card->host, 0);
 #endif
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 #ifdef CONFIG_PM
@@ -1493,9 +1624,13 @@ static int mmc_blk_resume(struct mmc_card *card)
 	struct mmc_blk_data *md = mmc_get_drvdata(card);
 
 	if (md) {
+<<<<<<< HEAD
 #ifndef CONFIG_MMC_BLOCK_DEFERRED_RESUME
 		mmc_blk_set_blksize(md, card);
 #endif
+=======
+		mmc_blk_set_blksize(md, card);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		/*
 		 * Resume involves the card going into idle state,

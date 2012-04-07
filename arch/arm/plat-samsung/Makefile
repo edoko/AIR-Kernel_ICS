@@ -12,9 +12,13 @@ obj-				:=
 # Objects we always build independent of SoC choice
 
 obj-y				+= init.o
+<<<<<<< HEAD
 ifndef CONFIG_S5P_HIGH_RES_TIMERS
 obj-$(CONFIG_ARCH_USES_GETTIMEOFFSET)   += time.o
 endif
+=======
+obj-$(CONFIG_ARCH_USES_GETTIMEOFFSET)   += time.o
+>>>>>>> remotes/gregkh/linux-3.0.y
 obj-y				+= clock.o
 obj-y				+= pwm-clock.o
 obj-y				+= gpio.o

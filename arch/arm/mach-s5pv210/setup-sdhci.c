@@ -15,7 +15,10 @@
 #include <linux/interrupt.h>
 #include <linux/platform_device.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/irq.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include <linux/mmc/card.h>
 #include <linux/mmc/host.h>
@@ -23,6 +26,7 @@
 #include <plat/regs-sdhci.h>
 #include <plat/sdhci.h>
 
+<<<<<<< HEAD
 #include <plat/gpio-cfg.h>
 #include <plat/devs.h>
 #include <mach/regs-gpio.h>
@@ -30,6 +34,8 @@
 
 #include "herring.h"
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /* clock sources for the mmc bus clock, order as for the ctrl2[5..4] */
 
 char *s5pv210_hsmmc_clksrcs[4] = {
@@ -39,6 +45,7 @@ char *s5pv210_hsmmc_clksrcs[4] = {
 	/* [3] = NULL,		- reserved */
 };
 
+<<<<<<< HEAD
 #define S3C_SDHCI_CTRL3_FCSELTX_INVERT  (0)
 #define S3C_SDHCI_CTRL3_FCSELTX_BASIC \
 	(S3C_SDHCI_CTRL3_FCSEL3 | S3C_SDHCI_CTRL3_FCSEL2)
@@ -46,18 +53,29 @@ char *s5pv210_hsmmc_clksrcs[4] = {
 #define S3C_SDHCI_CTRL3_FCSELRX_BASIC \
 	(S3C_SDHCI_CTRL3_FCSEL1 | S3C_SDHCI_CTRL3_FCSEL0)
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 void s5pv210_setup_sdhci_cfg_card(struct platform_device *dev,
 				    void __iomem *r,
 				    struct mmc_ios *ios,
 				    struct mmc_card *card)
 {
+<<<<<<< HEAD
 	u32 ctrl2;
 	u32 ctrl3;
+=======
+	u32 ctrl2, ctrl3;
+
+	/* don't need to alter anything according to card-type */
+
+	writel(S3C64XX_SDHCI_CONTROL4_DRIVE_9mA, r + S3C64XX_SDHCI_CONTROL4);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	ctrl2 = readl(r + S3C_SDHCI_CONTROL2);
 	ctrl2 &= S3C_SDHCI_CTRL2_SELBASECLK_MASK;
 	ctrl2 |= (S3C64XX_SDHCI_CTRL2_ENSTAASYNCCLR |
 		  S3C64XX_SDHCI_CTRL2_ENCMDCNFMSK |
+<<<<<<< HEAD
 		  S3C_SDHCI_CTRL2_DFCNT_NONE |
 		  S3C_SDHCI_CTRL2_ENCLKOUTHOLD);
 
@@ -137,10 +155,24 @@ void s5pv210_adjust_sdhci_cfg_card(struct s3c_sdhci_platdata *pdata,
 		printk(KERN_ERR "%s, unknown value rw:%d\n", __func__, rw);
 		return;
 	}
+=======
+		  S3C_SDHCI_CTRL2_ENFBCLKRX |
+		  S3C_SDHCI_CTRL2_DFCNT_NONE |
+		  S3C_SDHCI_CTRL2_ENCLKOUTHOLD);
+
+	if (ios->clock < 25 * 1000000)
+		ctrl3 = (S3C_SDHCI_CTRL3_FCSEL3 |
+			 S3C_SDHCI_CTRL3_FCSEL2 |
+			 S3C_SDHCI_CTRL3_FCSEL1 |
+			 S3C_SDHCI_CTRL3_FCSEL0);
+	else
+		ctrl3 = (S3C_SDHCI_CTRL3_FCSEL1 | S3C_SDHCI_CTRL3_FCSEL0);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	writel(ctrl2, r + S3C_SDHCI_CONTROL2);
 	writel(ctrl3, r + S3C_SDHCI_CONTROL3);
 }
+<<<<<<< HEAD
 
 void universal_sdhci2_cfg_ext_cd(void)
 {
@@ -261,3 +293,5 @@ void s3c_sdhci_set_platdata(void)
 	s3c_sdhci3_set_platdata(&hsmmc3_platdata);
 #endif
 };
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

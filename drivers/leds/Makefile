@@ -54,4 +54,7 @@ obj-$(CONFIG_LEDS_TRIGGER_HEARTBEAT)	+= ledtrig-heartbeat.o
 obj-$(CONFIG_LEDS_TRIGGER_BACKLIGHT)	+= ledtrig-backlight.o
 obj-$(CONFIG_LEDS_TRIGGER_GPIO)		+= ledtrig-gpio.o
 obj-$(CONFIG_LEDS_TRIGGER_DEFAULT_ON)	+= ledtrig-default-on.o
+<<<<<<< HEAD
 obj-$(CONFIG_LEDS_TRIGGER_SLEEP)	+= ledtrig-sleep.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

@@ -356,9 +356,12 @@ config SND_SOC_WM8993
 config SND_SOC_WM8994
 	tristate
 
+<<<<<<< HEAD
 config SND_SOC_WM8994_SAMSUNG
 	tristate
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config SND_SOC_WM8995
 	tristate
 

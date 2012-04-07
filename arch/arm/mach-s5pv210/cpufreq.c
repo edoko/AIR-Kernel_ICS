@@ -16,6 +16,7 @@
 #include <linux/err.h>
 #include <linux/clk.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/suspend.h>
 #include <linux/reboot.h>
 #include <linux/regulator/consumer.h>
@@ -25,11 +26,18 @@
 #include <mach/map.h>
 #include <mach/regs-clock.h>
 #include <mach/cpu-freq-v210.h>
+=======
+#include <linux/cpufreq.h>
+
+#include <mach/map.h>
+#include <mach/regs-clock.h>
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 static struct clk *cpu_clk;
 static struct clk *dmc0_clk;
 static struct clk *dmc1_clk;
 static struct cpufreq_freqs freqs;
+<<<<<<< HEAD
 static DEFINE_MUTEX(set_freq_lock);
 
 /* Use 1.2Ghz,1Ghz,800MHz */
@@ -52,6 +60,12 @@ enum cpufreq_access {
 	ENABLE_FURTHER_CPUFREQ = 0x20,
 };
 static bool no_cpufreq_access;
+=======
+
+/* APLL M,P,S values for 1G/800Mhz */
+#define APLL_VAL_1000	((1 << 31) | (125 << 16) | (3 << 8) | 1)
+#define APLL_VAL_800	((1 << 31) | (100 << 16) | (3 << 8) | 1)
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /*
  * DRAM configurations to calculate refresh counter for changing
@@ -66,7 +80,11 @@ struct dram_conf {
 static struct dram_conf s5pv210_dram_conf[2];
 
 enum perf_level {
+<<<<<<< HEAD
 	L0, L1, L2, L3, L4, L5, L6
+=======
+	L0, L1, L2, L3, L4,
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 enum s5pv210_mem_type {
@@ -81,6 +99,7 @@ enum s5pv210_dmc_port {
 };
 
 static struct cpufreq_frequency_table s5pv210_freq_table[] = {
+<<<<<<< HEAD
 	{L0, 1400*1000},
 	{L1, 1200*1000},
 	{L2, 1000*1000},
@@ -179,6 +198,40 @@ static unsigned long original_fclk[] = {1400000, 1200000, 1000000, 800000, 80000
 static u32 apll_values[sizeof(original_fclk) / sizeof(unsigned long)];
 #endif
 
+=======
+	{L0, 1000*1000},
+	{L1, 800*1000},
+	{L2, 400*1000},
+	{L3, 200*1000},
+	{L4, 100*1000},
+	{0, CPUFREQ_TABLE_END},
+};
+
+static u32 clkdiv_val[5][11] = {
+	/*
+	 * Clock divider value for following
+	 * { APLL, A2M, HCLK_MSYS, PCLK_MSYS,
+	 *   HCLK_DSYS, PCLK_DSYS, HCLK_PSYS, PCLK_PSYS,
+	 *   ONEDRAM, MFC, G3D }
+	 */
+
+	/* L0 : [1000/200/100][166/83][133/66][200/200] */
+	{0, 4, 4, 1, 3, 1, 4, 1, 3, 0, 0},
+
+	/* L1 : [800/200/100][166/83][133/66][200/200] */
+	{0, 3, 3, 1, 3, 1, 4, 1, 3, 0, 0},
+
+	/* L2 : [400/200/100][166/83][133/66][200/200] */
+	{1, 3, 1, 1, 3, 1, 4, 1, 3, 0, 0},
+
+	/* L3 : [200/200/100][166/83][133/66][200/200] */
+	{3, 3, 1, 1, 3, 1, 4, 1, 3, 0, 0},
+
+	/* L4 : [100/100/100][83/83][66/66][100/100] */
+	{7, 7, 0, 0, 7, 0, 9, 0, 7, 0, 0},
+};
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*
  * This function set DRAM refresh counter
  * accoriding to operating frequency of DRAM
@@ -207,6 +260,7 @@ static void s5pv210_set_refresh(enum s5pv210_dmc_port ch, unsigned long freq)
 	tmp1 = s5pv210_dram_conf[ch].refresh;
 
 	do_div(tmp1, tmp);
+<<<<<<< HEAD
 #ifdef CONFIG_LIVE_OC
 	if (ch == DMC1)
 	    __raw_writel((tmp1 * oc_value) / 100, reg);
@@ -215,6 +269,10 @@ static void s5pv210_set_refresh(enum s5pv210_dmc_port ch, unsigned long freq)
 #else
 	__raw_writel(tmp1, reg);
 #endif
+=======
+
+	__raw_writel(tmp1, reg);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 int s5pv210_verify_speed(struct cpufreq_policy *policy)
@@ -238,6 +296,7 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 			  unsigned int relation)
 {
 	unsigned long reg;
+<<<<<<< HEAD
 	unsigned int index;
 	unsigned int pll_changing = 0;
 	unsigned int bus_speed_changing = 0;
@@ -259,19 +318,30 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 	if (relation & DISABLE_FURTHER_CPUFREQ)
 		no_cpufreq_access = true;
 	relation &= ~(ENABLE_FURTHER_CPUFREQ | DISABLE_FURTHER_CPUFREQ);
+=======
+	unsigned int index, priv_index;
+	unsigned int pll_changing = 0;
+	unsigned int bus_speed_changing = 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	freqs.old = s5pv210_getspeed(0);
 
 	if (cpufreq_frequency_table_target(policy, s5pv210_freq_table,
+<<<<<<< HEAD
 					   target_freq, relation, &index)) {
 		ret = -EINVAL;
 		goto out;
 	}
+=======
+					   target_freq, relation, &index))
+		return -EINVAL;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	freqs.new = s5pv210_freq_table[index].frequency;
 	freqs.cpu = 0;
 
 	if (freqs.new == freqs.old)
+<<<<<<< HEAD
 		goto out;
 
 
@@ -310,6 +380,28 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 		pllbus_changing = false;
 	}
 #endif
+=======
+		return 0;
+
+	/* Finding current running level index */
+	if (cpufreq_frequency_table_target(policy, s5pv210_freq_table,
+					   freqs.old, relation, &priv_index))
+		return -EINVAL;
+
+	cpufreq_notify_transition(&freqs, CPUFREQ_PRECHANGE);
+
+	if (freqs.new > freqs.old) {
+		/* Voltage up: will be implemented */
+	}
+
+	/* Check if there need to change PLL */
+	if ((index == L0) || (priv_index == L0))
+		pll_changing = 1;
+
+	/* Check if there need to change System bus clock */
+	if ((index == L4) || (priv_index == L4))
+		bus_speed_changing = 1;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	if (bus_speed_changing) {
 		/*
@@ -362,7 +454,11 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 		} while (reg & ((1 << 7) | (1 << 3)));
 
 		/*
+<<<<<<< HEAD
 		 * 3. DMC1 refresh count for 133Mhz if (index == L7) is
+=======
+		 * 3. DMC1 refresh count for 133Mhz if (index == L4) is
+>>>>>>> remotes/gregkh/linux-3.0.y
 		 * true refresh counter is already programed in upper
 		 * code. 0x287@83Mhz
 		 */
@@ -407,7 +503,11 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 	/* ARM MCS value changed */
 	reg = __raw_readl(S5P_ARM_MCS_CON);
 	reg &= ~0x3;
+<<<<<<< HEAD
 	if (index >= L5)
+=======
+	if (index >= L3)
+>>>>>>> remotes/gregkh/linux-3.0.y
 		reg |= 0x3;
 	else
 		reg |= 0x1;
@@ -423,6 +523,7 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 		 * 6-1. Set PMS values
 		 * 6-2. Wait untile the PLL is locked
 		 */
+<<<<<<< HEAD
         
 #ifdef CONFIG_LIVE_OC
 		__raw_writel(apll_values[index], S5P_APLL_CON);
@@ -448,6 +549,17 @@ static int s5pv210_target(struct cpufreq_policy *policy,
         do {
             reg = __raw_readl(S5P_APLL_CON);
         } while (!(reg & (0x1 << 29)));
+=======
+		if (index == L0)
+			__raw_writel(APLL_VAL_1000, S5P_APLL_CON);
+		else
+			__raw_writel(APLL_VAL_800, S5P_APLL_CON);
+
+		do {
+			reg = __raw_readl(S5P_APLL_CON);
+		} while (!(reg & (0x1 << 29)));
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 		/*
 		 * 7. Change souce clock from SCLKMPLL(667Mhz)
 		 * to SCLKA2M(200Mhz) in MFC_MUX and G3D MUX
@@ -490,7 +602,11 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 
 		/*
 		 * 10. DMC1 refresh counter
+<<<<<<< HEAD
 		 * L7 : DMC1 = 100Mhz 7.8us/(1/100) = 0x30c
+=======
+		 * L4 : DMC1 = 100Mhz 7.8us/(1/100) = 0x30c
+>>>>>>> remotes/gregkh/linux-3.0.y
 		 * Others : DMC1 = 200Mhz 7.8us/(1/200) = 0x618
 		 */
 		if (!bus_speed_changing)
@@ -498,7 +614,11 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * L7 level need to change memory bus speed, hence onedram clock divier
+=======
+	 * L4 level need to change memory bus speed, hence onedram clock divier
+>>>>>>> remotes/gregkh/linux-3.0.y
 	 * and memory refresh parameter should be changed
 	 */
 	if (bus_speed_changing) {
@@ -512,7 +632,11 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 		} while (reg & (1 << 15));
 
 		/* Reconfigure DRAM refresh counter value */
+<<<<<<< HEAD
 		if (index != L6) {
+=======
+		if (index != L4) {
+>>>>>>> remotes/gregkh/linux-3.0.y
 			/*
 			 * DMC0 : 166Mhz
 			 * DMC1 : 200Mhz
@@ -529,6 +653,7 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 		}
 	}
 
+<<<<<<< HEAD
 	cpufreq_notify_transition(&freqs, CPUFREQ_POSTCHANGE);
 
 	if (freqs.new < freqs.old) {
@@ -546,6 +671,17 @@ static int s5pv210_target(struct cpufreq_policy *policy,
 out:
 	mutex_unlock(&set_freq_lock);
 	return ret;
+=======
+	if (freqs.new < freqs.old) {
+		/* Voltage down: will be implemented */
+	}
+
+	cpufreq_notify_transition(&freqs, CPUFREQ_POSTCHANGE);
+
+	printk(KERN_DEBUG "Perf changed[L%d]\n", index);
+
+	return 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 #ifdef CONFIG_PM
@@ -570,6 +706,7 @@ static int check_mem_type(void __iomem *dmc_reg)
 	return val >> 8;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_LIVE_OC
 static int find_divider(int freq)
 {
@@ -775,6 +912,11 @@ static int __init s5pv210_cpu_init(struct cpufreq_policy *policy)
 	unsigned long mem_type;
     
     int ret;
+=======
+static int __init s5pv210_cpu_init(struct cpufreq_policy *policy)
+{
+	unsigned long mem_type;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	cpu_clk = clk_get(NULL, "armclk");
 	if (IS_ERR(cpu_clk))
@@ -819,6 +961,7 @@ static int __init s5pv210_cpu_init(struct cpufreq_policy *policy)
 	cpufreq_frequency_table_get_attr(s5pv210_freq_table, policy->cpu);
 
 	policy->cpuinfo.transition_latency = 40000;
+<<<<<<< HEAD
     
     
 #ifdef CONFIG_LIVE_OC
@@ -903,6 +1046,12 @@ static struct freq_attr *s5pv210_cpufreq_attr[] = {
 	NULL,
 };
 
+=======
+
+	return cpufreq_frequency_table_cpuinfo(policy, s5pv210_freq_table);
+}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 static struct cpufreq_driver s5pv210_driver = {
 	.flags		= CPUFREQ_STICKY,
 	.verify		= s5pv210_verify_speed,
@@ -910,13 +1059,17 @@ static struct cpufreq_driver s5pv210_driver = {
 	.get		= s5pv210_getspeed,
 	.init		= s5pv210_cpu_init,
 	.name		= "s5pv210",
+<<<<<<< HEAD
     .attr		= s5pv210_cpufreq_attr,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #ifdef CONFIG_PM
 	.suspend	= s5pv210_cpufreq_suspend,
 	.resume		= s5pv210_cpufreq_resume,
 #endif
 };
 
+<<<<<<< HEAD
 static struct notifier_block s5pv210_cpufreq_notifier = {
 	.notifier_call = s5pv210_cpufreq_notifier_event,
 };
@@ -982,6 +1135,11 @@ static int __init s5pv210_cpufreq_init(void)
 		pr_info("%s: S5PV210 cpu-freq driver\n", __func__);
 
 	return ret;
+=======
+static int __init s5pv210_cpufreq_init(void)
+{
+	return cpufreq_register_driver(&s5pv210_driver);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 late_initcall(s5pv210_cpufreq_init);

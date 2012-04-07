@@ -500,9 +500,12 @@ static int pcie_aspm_sanity_check(struct pci_dev *pdev)
 	int pos;
 	u32 reg32;
 
+<<<<<<< HEAD
 	if (aspm_disabled)
 		return 0;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/*
 	 * Some functions in a slot might not all be PCIe functions,
 	 * very strange. Disable ASPM for the whole slot
@@ -511,6 +514,19 @@ static int pcie_aspm_sanity_check(struct pci_dev *pdev)
 		pos = pci_pcie_cap(child);
 		if (!pos)
 			return -EINVAL;
+<<<<<<< HEAD
+=======
+
+		/*
+		 * If ASPM is disabled then we're not going to change
+		 * the BIOS state. It's safe to continue even if it's a
+		 * pre-1.1 device
+		 */
+
+		if (aspm_disabled)
+			continue;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 		/*
 		 * Disable ASPM for pre-1.1 PCIe device, we follow MS to use
 		 * RBER bit to determine if a function is 1.1 version device
@@ -964,7 +980,10 @@ static int __init pcie_aspm_disable(char *str)
 
 __setup("pcie_aspm=", pcie_aspm_disable);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 void pcie_no_aspm(void)
 {
 	/*

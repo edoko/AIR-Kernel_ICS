@@ -15,7 +15,10 @@ xhci-hcd-y := xhci.o xhci-mem.o xhci-pci.o
 xhci-hcd-y += xhci-ring.o xhci-hub.o xhci-dbg.o
 
 obj-$(CONFIG_USB_WHCI_HCD)	+= whci/
+<<<<<<< HEAD
 obj-$(CONFIG_USB_S3C_OTG_HOST)	+= s3c-otg/
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 obj-$(CONFIG_PCI)		+= pci-quirks.o
 

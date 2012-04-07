@@ -14,7 +14,11 @@
 #ifndef __ASM_PLAT_MAP_H
 #define __ASM_PLAT_MAP_H __FILE__
 
+<<<<<<< HEAD
 /* Fit all our registers in at 0xFC000000 upwards, trying to use as
+=======
+/* Fit all our registers in at 0xF6000000 upwards, trying to use as
+>>>>>>> remotes/gregkh/linux-3.0.y
  * little of the VA space as possible so vmalloc and friends have a
  * better chance of getting memory.
  *
@@ -22,7 +26,11 @@
  * an single MOVS instruction (ie, only 8 bits of set data)
  */
 
+<<<<<<< HEAD
 #define S3C_ADDR_BASE	(0xFC000000)
+=======
+#define S3C_ADDR_BASE	0xF6000000
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #ifndef __ASSEMBLY__
 #define S3C_ADDR(x)	((void __iomem __force *)S3C_ADDR_BASE + (x))
@@ -35,8 +43,11 @@
 #define S3C_VA_MEM	S3C_ADDR(0x00200000)	/* memory control */
 #define S3C_VA_TIMER	S3C_ADDR(0x00300000)	/* timer block */
 #define S3C_VA_WATCHDOG	S3C_ADDR(0x00400000)	/* watchdog */
+<<<<<<< HEAD
 #define S3C_VA_OTG	S3C_ADDR(0x00E00000)	/* OTG */
 #define S3C_VA_OTGSFR	S3C_ADDR(0x00F00000)	/* OTG PHY */
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define S3C_VA_UART	S3C_ADDR(0x01000000)	/* UART */
 
 /* This is used for the CPU specific mappings that may be needed, so that

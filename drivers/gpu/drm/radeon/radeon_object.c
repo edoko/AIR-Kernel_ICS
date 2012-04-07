@@ -204,7 +204,12 @@ void radeon_bo_unref(struct radeon_bo **bo)
 		*bo = NULL;
 }
 
+<<<<<<< HEAD
 int radeon_bo_pin(struct radeon_bo *bo, u32 domain, u64 *gpu_addr)
+=======
+int radeon_bo_pin_restricted(struct radeon_bo *bo, u32 domain, u64 max_offset,
+			     u64 *gpu_addr)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	int r, i;
 
@@ -212,6 +217,10 @@ int radeon_bo_pin(struct radeon_bo *bo, u32 domain, u64 *gpu_addr)
 		bo->pin_count++;
 		if (gpu_addr)
 			*gpu_addr = radeon_bo_gpu_offset(bo);
+<<<<<<< HEAD
+=======
+		WARN_ON_ONCE(max_offset != 0);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		return 0;
 	}
 	radeon_ttm_placement_from_domain(bo, domain);
@@ -219,6 +228,18 @@ int radeon_bo_pin(struct radeon_bo *bo, u32 domain, u64 *gpu_addr)
 		/* force to pin into visible video ram */
 		bo->placement.lpfn = bo->rdev->mc.visible_vram_size >> PAGE_SHIFT;
 	}
+<<<<<<< HEAD
+=======
+	if (max_offset) {
+		u64 lpfn = max_offset >> PAGE_SHIFT;
+
+		if (!bo->placement.lpfn)
+			bo->placement.lpfn = bo->rdev->mc.gtt_size >> PAGE_SHIFT;
+
+		if (lpfn < bo->placement.lpfn)
+			bo->placement.lpfn = lpfn;
+	}
+>>>>>>> remotes/gregkh/linux-3.0.y
 	for (i = 0; i < bo->placement.num_placement; i++)
 		bo->placements[i] |= TTM_PL_FLAG_NO_EVICT;
 	r = ttm_bo_validate(&bo->tbo, &bo->placement, false, false, false);
@@ -232,6 +253,14 @@ int radeon_bo_pin(struct radeon_bo *bo, u32 domain, u64 *gpu_addr)
 	return r;
 }
 
+<<<<<<< HEAD
+=======
+int radeon_bo_pin(struct radeon_bo *bo, u32 domain, u64 *gpu_addr)
+{
+	return radeon_bo_pin_restricted(bo, domain, 0, gpu_addr);
+}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 int radeon_bo_unpin(struct radeon_bo *bo)
 {
 	int r, i;

@@ -9,6 +9,7 @@ obj-$(CONFIG_CPU_FREQ_GOV_POWERSAVE)	+= cpufreq_powersave.o
 obj-$(CONFIG_CPU_FREQ_GOV_USERSPACE)	+= cpufreq_userspace.o
 obj-$(CONFIG_CPU_FREQ_GOV_ONDEMAND)	+= cpufreq_ondemand.o
 obj-$(CONFIG_CPU_FREQ_GOV_CONSERVATIVE)	+= cpufreq_conservative.o
+<<<<<<< HEAD
 obj-$(CONFIG_CPU_FREQ_GOV_MINMAX)	+= cpufreq_minmax.o
 obj-$(CONFIG_CPU_FREQ_GOV_SMARTASS2)	+= cpufreq_smartass2.o
 obj-$(CONFIG_CPU_FREQ_GOV_SMARTASS)	+= cpufreq_smartass.o
@@ -23,6 +24,8 @@ obj-$(CONFIG_CPU_FREQ_GOV_LIONHEART)	+= cpufreq_lionheart.o
 obj-$(CONFIG_CPU_FREQ_GOV_WHEATLEY)	+= cpufreq_wheatley.o
 obj-$(CONFIG_CPU_FREQ_GOV_SAVAGEDZEN)	+= cpufreq_savagedzen.o
 obj-$(CONFIG_CPU_FREQ_GOV_ONDEMANDX)	+= cpufreq_ondemandx.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 # CPUfreq cross-arch helpers
 obj-$(CONFIG_CPU_FREQ_TABLE)		+= freq_table.o

@@ -127,6 +127,7 @@ void pm_restrict_gfp_mask(void)
 	saved_gfp_mask = gfp_allowed_mask;
 	gfp_allowed_mask &= ~GFP_IOFS;
 }
+<<<<<<< HEAD
 
 static bool pm_suspending(void)
 {
@@ -141,6 +142,8 @@ static bool pm_suspending(void)
 {
 	return false;
 }
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif /* CONFIG_PM_SLEEP */
 
 #ifdef CONFIG_HUGETLB_PAGE_SIZE_VARIABLE
@@ -190,7 +193,10 @@ static char * const zone_names[MAX_NR_ZONES] = {
 };
 
 int min_free_kbytes = 1024;
+<<<<<<< HEAD
 int min_free_order_shift = 1;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 static unsigned long __meminitdata nr_kernel_pages;
 static unsigned long __meminitdata nr_all_pages;
@@ -668,8 +674,11 @@ static bool free_pages_prepare(struct page *page, unsigned int order)
 	int i;
 	int bad = 0;
 
+<<<<<<< HEAD
 	unsigned long index = 1UL << order;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	trace_mm_page_free_direct(page, order);
 	kmemcheck_free_shadow(page, order);
 
@@ -685,10 +694,13 @@ static bool free_pages_prepare(struct page *page, unsigned int order)
 		debug_check_no_obj_freed(page_address(page),
 					   PAGE_SIZE << order);
 	}
+<<<<<<< HEAD
 
 	for (; index; --index)
 		sanitize_highpage(page + index - 1);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	arch_free_page(page, order);
 	kernel_map_pages(page, 1 << order, 0);
 
@@ -1508,7 +1520,11 @@ static bool __zone_watermark_ok(struct zone *z, int order, unsigned long mark,
 		free_pages -= z->free_area[o].nr_free << o;
 
 		/* Require fewer higher order pages to be free */
+<<<<<<< HEAD
 		min >>= min_free_order_shift;
+=======
+		min >>= 1;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 		if (free_pages <= min)
 			return false;
@@ -2246,6 +2262,7 @@ rebalance:
 
 			goto restart;
 		}
+<<<<<<< HEAD
 
 		/*
 		 * Suspend converts GFP_KERNEL to __GFP_WAIT which can
@@ -2254,6 +2271,8 @@ rebalance:
 		 */
 		if (pm_suspending())
 			goto nopage;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 
 	/* Check if we should retry the allocation */

@@ -33,6 +33,7 @@ void vfp_support_entry(void);
 void vfp_null_entry(void);
 
 void (*vfp_vector)(void) = vfp_null_entry;
+<<<<<<< HEAD
 
 /*
  * The pointer to the vfpstate structure of the thread which currently
@@ -40,6 +41,9 @@ void (*vfp_vector)(void) = vfp_null_entry;
  * context is invalid.
  */
 union vfp_state *vfp_current_hw_state[NR_CPUS];
+=======
+union vfp_state *last_VFP_context[NR_CPUS];
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /*
  * Dual-use variable.
@@ -63,12 +67,21 @@ static void vfp_thread_flush(struct thread_info *thread)
 
 	/*
 	 * Disable VFP to ensure we initialize it first.  We must ensure
+<<<<<<< HEAD
 	 * that the modification of vfp_current_hw_state[] and hardware disable
 	 * are done for the same CPU and without preemption.
 	 */
 	cpu = get_cpu();
 	if (vfp_current_hw_state[cpu] == vfp)
 		vfp_current_hw_state[cpu] = NULL;
+=======
+	 * that the modification of last_VFP_context[] and hardware disable
+	 * are done for the same CPU and without preemption.
+	 */
+	cpu = get_cpu();
+	if (last_VFP_context[cpu] == vfp)
+		last_VFP_context[cpu] = NULL;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	fmxr(FPEXC, fmrx(FPEXC) & ~FPEXC_EN);
 	put_cpu();
 }
@@ -79,8 +92,13 @@ static void vfp_thread_exit(struct thread_info *thread)
 	union vfp_state *vfp = &thread->vfpstate;
 	unsigned int cpu = get_cpu();
 
+<<<<<<< HEAD
 	if (vfp_current_hw_state[cpu] == vfp)
 		vfp_current_hw_state[cpu] = NULL;
+=======
+	if (last_VFP_context[cpu] == vfp)
+		last_VFP_context[cpu] = NULL;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	put_cpu();
 }
 
@@ -135,9 +153,15 @@ static int vfp_notifier(struct notifier_block *self, unsigned long cmd, void *v)
 		 * case the thread migrates to a different CPU. The
 		 * restoring is done lazily.
 		 */
+<<<<<<< HEAD
 		if ((fpexc & FPEXC_EN) && vfp_current_hw_state[cpu]) {
 			vfp_save_state(vfp_current_hw_state[cpu], fpexc);
 			vfp_current_hw_state[cpu]->hard.cpu = cpu;
+=======
+		if ((fpexc & FPEXC_EN) && last_VFP_context[cpu]) {
+			vfp_save_state(last_VFP_context[cpu], fpexc);
+			last_VFP_context[cpu]->hard.cpu = cpu;
+>>>>>>> remotes/gregkh/linux-3.0.y
 		}
 		/*
 		 * Thread migration, just force the reloading of the
@@ -145,7 +169,11 @@ static int vfp_notifier(struct notifier_block *self, unsigned long cmd, void *v)
 		 * contain stale data.
 		 */
 		if (thread->vfpstate.hard.cpu != cpu)
+<<<<<<< HEAD
 			vfp_current_hw_state[cpu] = NULL;
+=======
+			last_VFP_context[cpu] = NULL;
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif
 
 		/*
@@ -418,6 +446,7 @@ static int vfp_pm_suspend(void)
 
 		/* disable, just in case */
 		fmxr(FPEXC, fmrx(FPEXC) & ~FPEXC_EN);
+<<<<<<< HEAD
 	} else if (vfp_current_hw_state[ti->cpu]) {
 		fmxr(FPEXC, fpexc | FPEXC_EN);
 		vfp_save_state(vfp_current_hw_state[ti->cpu], fpexc);
@@ -426,6 +455,12 @@ static int vfp_pm_suspend(void)
 
 	/* clear any information we had about last context state */
 	memset(vfp_current_hw_state, 0, sizeof(vfp_current_hw_state));
+=======
+	}
+
+	/* clear any information we had about last context state */
+	memset(last_VFP_context, 0, sizeof(last_VFP_context));
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	return 0;
 }
@@ -461,7 +496,11 @@ void vfp_sync_hwstate(struct thread_info *thread)
 	 * If the thread we're interested in is the current owner of the
 	 * hardware VFP state, then we need to save its state.
 	 */
+<<<<<<< HEAD
 	if (vfp_current_hw_state[cpu] == &thread->vfpstate) {
+=======
+	if (last_VFP_context[cpu] == &thread->vfpstate) {
+>>>>>>> remotes/gregkh/linux-3.0.y
 		u32 fpexc = fmrx(FPEXC);
 
 		/*
@@ -483,7 +522,11 @@ void vfp_flush_hwstate(struct thread_info *thread)
 	 * If the thread we're interested in is the current owner of the
 	 * hardware VFP state, then we need to save its state.
 	 */
+<<<<<<< HEAD
 	if (vfp_current_hw_state[cpu] == &thread->vfpstate) {
+=======
+	if (last_VFP_context[cpu] == &thread->vfpstate) {
+>>>>>>> remotes/gregkh/linux-3.0.y
 		u32 fpexc = fmrx(FPEXC);
 
 		fmxr(FPEXC, fpexc & ~FPEXC_EN);
@@ -492,7 +535,11 @@ void vfp_flush_hwstate(struct thread_info *thread)
 		 * Set the context to NULL to force a reload the next time
 		 * the thread uses the VFP.
 		 */
+<<<<<<< HEAD
 		vfp_current_hw_state[cpu] = NULL;
+=======
+		last_VFP_context[cpu] = NULL;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 
 #ifdef CONFIG_SMP
@@ -524,7 +571,11 @@ static int vfp_hotplug(struct notifier_block *b, unsigned long action,
 {
 	if (action == CPU_DYING || action == CPU_DYING_FROZEN) {
 		unsigned int cpu = (long)hcpu;
+<<<<<<< HEAD
 		vfp_current_hw_state[cpu] = NULL;
+=======
+		last_VFP_context[cpu] = NULL;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	} else if (action == CPU_STARTING || action == CPU_STARTING_FROZEN)
 		vfp_enable(NULL);
 	return NOTIFY_OK;

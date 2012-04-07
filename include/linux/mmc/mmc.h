@@ -140,6 +140,7 @@ static inline bool mmc_op_multi(u32 opcode)
 #define R1_SWITCH_ERROR		(1 << 7)	/* sx, c */
 #define R1_APP_CMD		(1 << 5)	/* sr, c */
 
+<<<<<<< HEAD
 #define R1_STATE_IDLE	0
 #define R1_STATE_READY	1
 #define R1_STATE_IDENT	2
@@ -150,6 +151,8 @@ static inline bool mmc_op_multi(u32 opcode)
 #define R1_STATE_PRG	7
 #define R1_STATE_DIS	8
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*
  * MMC/SD in SPI mode reports R1 status always, and R2 for SEND_STATUS
  * R1 is the low order byte; R2 is the next highest byte, when present.

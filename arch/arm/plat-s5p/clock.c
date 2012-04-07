@@ -38,6 +38,7 @@ struct clk clk_ext_xtal_mux = {
 struct clk clk_xusbxti = {
 	.name		= "xusbxti",
 	.id		= -1,
+<<<<<<< HEAD
 	.rate		= 24000000,
 };
 
@@ -45,6 +46,8 @@ struct clk clk_xrtcxti = {
 	.name		= "xrtcxti",
 	.id		= -1,
 	.rate		= 32768,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 struct clk s5p_clk_27m = {
@@ -177,8 +180,11 @@ unsigned long s5p_epll_get_rate(struct clk *clk)
 
 static struct clk *s5p_clks[] __initdata = {
 	&clk_ext_xtal_mux,
+<<<<<<< HEAD
 	&clk_xrtcxti,
 	&clk_xusbxti,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	&clk_48m,
 	&s5p_clk_27m,
 	&clk_fout_apll,
@@ -187,6 +193,10 @@ static struct clk *s5p_clks[] __initdata = {
 	&clk_fout_dpll,
 	&clk_fout_vpll,
 	&clk_vpll,
+<<<<<<< HEAD
+=======
+	&clk_xusbxti,
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 void __init s5p_register_clocks(unsigned long xtal_freq)

@@ -19,6 +19,9 @@ struct s3c_dma_params {
 	int dma_size;			/* Size of the DMA transfer */
 };
 
+<<<<<<< HEAD
 extern struct snd_soc_platform_driver samsung_asoc_platform;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif

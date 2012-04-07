@@ -30,6 +30,7 @@
 
 static u64 dma_dmamask = DMA_BIT_MASK(32);
 
+<<<<<<< HEAD
 static struct resource s5pv210_mdma_resource[] = {
 	[0] = {
 		.start  = S5PV210_PA_MDMA,
@@ -95,6 +96,8 @@ struct platform_device s5pv210_device_mdma = {
 	},
 };
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static struct resource s5pv210_pdma0_resource[] = {
 	[0] = {
 		.start  = S5PV210_PA_PDMA0,
@@ -145,9 +148,15 @@ static struct s3c_pl330_platdata s5pv210_pdma0_pdata = {
 	},
 };
 
+<<<<<<< HEAD
 struct platform_device s5pv210_device_pdma0 = {
 	.name		= "s3c-pl330",
 	.id		= 1,
+=======
+static struct platform_device s5pv210_device_pdma0 = {
+	.name		= "s3c-pl330",
+	.id		= 0,
+>>>>>>> remotes/gregkh/linux-3.0.y
 	.num_resources	= ARRAY_SIZE(s5pv210_pdma0_resource),
 	.resource	= s5pv210_pdma0_resource,
 	.dev		= {
@@ -207,9 +216,15 @@ static struct s3c_pl330_platdata s5pv210_pdma1_pdata = {
 	},
 };
 
+<<<<<<< HEAD
 struct platform_device s5pv210_device_pdma1 = {
 	.name		= "s3c-pl330",
 	.id		= 2,
+=======
+static struct platform_device s5pv210_device_pdma1 = {
+	.name		= "s3c-pl330",
+	.id		= 1,
+>>>>>>> remotes/gregkh/linux-3.0.y
 	.num_resources	= ARRAY_SIZE(s5pv210_pdma1_resource),
 	.resource	= s5pv210_pdma1_resource,
 	.dev		= {
@@ -220,7 +235,10 @@ struct platform_device s5pv210_device_pdma1 = {
 };
 
 static struct platform_device *s5pv210_dmacs[] __initdata = {
+<<<<<<< HEAD
 	&s5pv210_device_mdma,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	&s5pv210_device_pdma0,
 	&s5pv210_device_pdma1,
 };

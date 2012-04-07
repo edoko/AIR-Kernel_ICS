@@ -1050,6 +1050,11 @@ ep0_read (struct file *fd, char __user *buf, size_t len, loff_t *ptr)
 // FIXME don't call this with the spinlock held ...
 				if (copy_to_user (buf, dev->req->buf, len))
 					retval = -EFAULT;
+<<<<<<< HEAD
+=======
+				else
+					retval = len;
+>>>>>>> remotes/gregkh/linux-3.0.y
 				clean_req (dev->gadget->ep0, dev->req);
 				/* NOTE userspace can't yet choose to stall */
 			}

@@ -19,6 +19,7 @@
 
 /* uart devices */
 
+<<<<<<< HEAD
 struct platform_device s3c24xx_uart_device0 = {
 	.id		= 0,
 };
@@ -32,6 +33,21 @@ struct platform_device s3c24xx_uart_device2 = {
 };
 
 struct platform_device s3c24xx_uart_device3 = {
+=======
+static struct platform_device s3c24xx_uart_device0 = {
+	.id		= 0,
+};
+
+static struct platform_device s3c24xx_uart_device1 = {
+	.id		= 1,
+};
+
+static struct platform_device s3c24xx_uart_device2 = {
+	.id		= 2,
+};
+
+static struct platform_device s3c24xx_uart_device3 = {
+>>>>>>> remotes/gregkh/linux-3.0.y
 	.id		= 3,
 };
 

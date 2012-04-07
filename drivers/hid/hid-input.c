@@ -971,9 +971,12 @@ int hidinput_connect(struct hid_device *hid, unsigned int force)
 				 * UGCI) cram a lot of unrelated inputs into the
 				 * same interface. */
 				hidinput->report = report;
+<<<<<<< HEAD
 				if (hid->driver->input_register &&
 						hid->driver->input_register(hid, hidinput))
 					goto out_cleanup;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 				if (input_register_device(hidinput->input))
 					goto out_cleanup;
 				hidinput = NULL;
@@ -981,10 +984,13 @@ int hidinput_connect(struct hid_device *hid, unsigned int force)
 		}
 	}
 
+<<<<<<< HEAD
 	if (hidinput && hid->driver->input_register &&
 			hid->driver->input_register(hid, hidinput))
 		goto out_cleanup;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (hidinput && input_register_device(hidinput->input))
 		goto out_cleanup;
 

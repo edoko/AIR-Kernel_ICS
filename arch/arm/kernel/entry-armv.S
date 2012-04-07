@@ -496,7 +496,11 @@ __und_usr:
 	blo	__und_usr_unknown
 3:	ldrht	r0, [r4]
 	add	r2, r2, #2			@ r2 is PC + 2, make it PC + 4
+<<<<<<< HEAD
 	orr    	r0, r0, r5, lsl #16
+=======
+	orr	r0, r0, r5, lsl #16
+>>>>>>> remotes/gregkh/linux-3.0.y
 #else
 	b	__und_usr_unknown
 #endif

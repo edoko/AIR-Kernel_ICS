@@ -93,7 +93,10 @@ struct platform_device * __devinit fsl_usb2_device_register(
 	pdev->dev.parent = &ofdev->dev;
 
 	pdev->dev.coherent_dma_mask = ofdev->dev.coherent_dma_mask;
+<<<<<<< HEAD
 	pdev->dev.dma_mask = &pdev->archdata.dma_mask;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	*pdev->dev.dma_mask = *ofdev->dev.dma_mask;
 
 	retval = platform_device_add_data(pdev, pdata, sizeof(*pdata));

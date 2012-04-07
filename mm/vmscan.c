@@ -455,6 +455,18 @@ static pageout_t pageout(struct page *page, struct address_space *mapping,
 			return PAGE_ACTIVATE;
 		}
 
+<<<<<<< HEAD
+=======
+		/*
+		 * Wait on writeback if requested to. This happens when
+		 * direct reclaiming a large contiguous area and the
+		 * first attempt to free a range of pages fails.
+		 */
+		if (PageWriteback(page) &&
+		    (sc->reclaim_mode & RECLAIM_MODE_SYNC))
+			wait_on_page_writeback(page);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 		if (!PageWriteback(page)) {
 			/* synchronous write or broken a_ops? */
 			ClearPageReclaim(page);
@@ -710,10 +722,14 @@ static noinline_for_stack void free_page_list(struct list_head *free_pages)
  */
 static unsigned long shrink_page_list(struct list_head *page_list,
 				      struct zone *zone,
+<<<<<<< HEAD
 				      struct scan_control *sc,
 				      int priority,
 				      unsigned long *ret_nr_dirty,
 				      unsigned long *ret_nr_writeback)
+=======
+				      struct scan_control *sc)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	LIST_HEAD(ret_pages);
 	LIST_HEAD(free_pages);
@@ -721,7 +737,10 @@ static unsigned long shrink_page_list(struct list_head *page_list,
 	unsigned long nr_dirty = 0;
 	unsigned long nr_congested = 0;
 	unsigned long nr_reclaimed = 0;
+<<<<<<< HEAD
 	unsigned long nr_writeback = 0;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	cond_resched();
 
@@ -758,12 +777,22 @@ static unsigned long shrink_page_list(struct list_head *page_list,
 			(PageSwapCache(page) && (sc->gfp_mask & __GFP_IO));
 
 		if (PageWriteback(page)) {
+<<<<<<< HEAD
 			nr_writeback++;
 			/*
 			 * Synchronous reclaim cannot queue pages for
 			 * writeback due to the possibility of stack overflow
 			 * but if it encounters a page under writeback, wait
 			 * for the IO to complete.
+=======
+			/*
+			 * Synchronous reclaim is performed in two passes,
+			 * first an asynchronous pass over the list to
+			 * start parallel writeback, and a second synchronous
+			 * pass to wait for the IO to complete.  Wait here
+			 * for any page for which writeback has already
+			 * started.
+>>>>>>> remotes/gregkh/linux-3.0.y
 			 */
 			if ((sc->reclaim_mode & RECLAIM_MODE_SYNC) &&
 			    may_enter_fs)
@@ -819,6 +848,7 @@ static unsigned long shrink_page_list(struct list_head *page_list,
 		if (PageDirty(page)) {
 			nr_dirty++;
 
+<<<<<<< HEAD
 			/*
 			 * Only kswapd can writeback filesystem pages to
 			 * avoid risk of stack overflow but do not writeback
@@ -838,6 +868,8 @@ static unsigned long shrink_page_list(struct list_head *page_list,
 				goto keep_locked;
 			}
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 			if (references == PAGEREF_RECLAIM_CLEAN)
 				goto keep_locked;
 			if (!may_enter_fs)
@@ -972,8 +1004,11 @@ keep_lumpy:
 
 	list_splice(&ret_pages, page_list);
 	count_vm_events(PGACTIVATE, pgactivate);
+<<<<<<< HEAD
 	*ret_nr_dirty += nr_dirty;
 	*ret_nr_writeback += nr_writeback;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return nr_reclaimed;
 }
 
@@ -1369,7 +1404,11 @@ static noinline_for_stack void update_isolated_counts(struct zone *zone,
 }
 
 /*
+<<<<<<< HEAD
  * Returns true if a direct reclaim should wait on pages under writeback.
+=======
+ * Returns true if the caller should wait to clean dirty/writeback pages.
+>>>>>>> remotes/gregkh/linux-3.0.y
  *
  * If we are direct reclaiming for contiguous pages and we do not reclaim
  * everything in the list, try again and wait for writeback IO to complete.
@@ -1423,8 +1462,11 @@ shrink_inactive_list(unsigned long nr_to_scan, struct zone *zone,
 	unsigned long nr_taken;
 	unsigned long nr_anon;
 	unsigned long nr_file;
+<<<<<<< HEAD
 	unsigned long nr_dirty = 0;
 	unsigned long nr_writeback = 0;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	while (unlikely(too_many_isolated(zone, file, sc))) {
 		congestion_wait(BLK_RW_ASYNC, HZ/10);
@@ -1473,14 +1515,22 @@ shrink_inactive_list(unsigned long nr_to_scan, struct zone *zone,
 
 	spin_unlock_irq(&zone->lru_lock);
 
+<<<<<<< HEAD
 	nr_reclaimed = shrink_page_list(&page_list, zone, sc, priority,
 						&nr_dirty, &nr_writeback);
+=======
+	nr_reclaimed = shrink_page_list(&page_list, zone, sc);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/* Check if we should syncronously wait for writeback */
 	if (should_reclaim_stall(nr_taken, nr_reclaimed, priority, sc)) {
 		set_reclaim_mode(priority, sc, true);
+<<<<<<< HEAD
 		nr_reclaimed += shrink_page_list(&page_list, zone, sc,
 					priority, &nr_dirty, &nr_writeback);
+=======
+		nr_reclaimed += shrink_page_list(&page_list, zone, sc);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 
 	local_irq_disable();
@@ -1490,6 +1540,7 @@ shrink_inactive_list(unsigned long nr_to_scan, struct zone *zone,
 
 	putback_lru_pages(zone, sc, nr_anon, nr_file, &page_list);
 
+<<<<<<< HEAD
 	/*
 	 * If reclaim is isolating dirty pages under writeback, it implies
 	 * that the long-lived page allocation rate is exceeding the page
@@ -1516,6 +1567,8 @@ shrink_inactive_list(unsigned long nr_to_scan, struct zone *zone,
 	if (nr_writeback && nr_writeback >= (nr_taken >> (DEF_PRIORITY-priority)))
 		wait_iff_congested(zone, BLK_RW_ASYNC, HZ/10);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	trace_mm_vmscan_lru_shrink_inactive(zone->zone_pgdat->node_id,
 		zone_idx(zone),
 		nr_scanned, nr_reclaimed,
@@ -2182,8 +2235,12 @@ static unsigned long do_try_to_free_pages(struct zonelist *zonelist,
 		 */
 		writeback_threshold = sc->nr_to_reclaim + sc->nr_to_reclaim / 2;
 		if (total_scanned > writeback_threshold) {
+<<<<<<< HEAD
 			wakeup_flusher_threads(laptop_mode ? 0 : total_scanned,
 						WB_REASON_TRY_TO_FREE_PAGES);
+=======
+			wakeup_flusher_threads(laptop_mode ? 0 : total_scanned);
+>>>>>>> remotes/gregkh/linux-3.0.y
 			sc->may_writepage = 1;
 		}
 

@@ -12,6 +12,7 @@ config USB_OTG_UTILS
 	  Select this to make sure the build includes objects from
 	  the OTG infrastructure directory.
 
+<<<<<<< HEAD
 config USB_OTG_WAKELOCK
 	bool "Hold a wakelock when USB connected"
 	depends on WAKELOCK
@@ -20,6 +21,8 @@ config USB_OTG_WAKELOCK
 	  Select this to automatically hold a wakelock when USB is
 	  connected, preventing suspend.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 if USB || USB_GADGET
 
 #

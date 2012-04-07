@@ -122,10 +122,17 @@ extern void get_avenrun(unsigned long *loads, unsigned long offset, int shift);
 
 #define FSHIFT		11		/* nr of bits of precision */
 #define FIXED_1		(1<<FSHIFT)	/* 1.0 as fixed-point */
+<<<<<<< HEAD
 #define LOAD_FREQ       (4*HZ+61)       /* 4.61 sec intervals */
 #define EXP_1		1896		/* 1/exp(5sec/1min) as fixed-point */
 #define EXP_5		2017		/* 1/exp(5sec/5min) */
 #define EXP_15		2038		/* 1/exp(5sec/15min) */
+=======
+#define LOAD_FREQ	(5*HZ+1)	/* 5 sec intervals */
+#define EXP_1		1884		/* 1/exp(5sec/1min) as fixed-point */
+#define EXP_5		2014		/* 1/exp(5sec/5min) */
+#define EXP_15		2037		/* 1/exp(5sec/15min) */
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #define CALC_LOAD(load,exp,n) \
 	load *= exp; \
@@ -1526,6 +1533,7 @@ struct task_struct {
 	int make_it_fail;
 #endif
 	struct prop_local_single dirties;
+<<<<<<< HEAD
 	/*
 	 * when (nr_dirtied >= nr_dirtied_pause), it's time to call
 	 * balance_dirty_pages() for some dirty throttling pause
@@ -1533,6 +1541,8 @@ struct task_struct {
 	int nr_dirtied;
 	int nr_dirtied_pause;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #ifdef CONFIG_LATENCYTOP
 	int latency_record_count;
 	struct latency_record latency_record[LT_SAVECOUNT];
@@ -1761,9 +1771,12 @@ static inline void put_task_struct(struct task_struct *t)
 extern void task_times(struct task_struct *p, cputime_t *ut, cputime_t *st);
 extern void thread_group_times(struct task_struct *p, cputime_t *ut, cputime_t *st);
 
+<<<<<<< HEAD
 extern int task_free_register(struct notifier_block *n);
 extern int task_free_unregister(struct notifier_block *n);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*
  * Per process flags
  */

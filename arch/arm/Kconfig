@@ -20,7 +20,10 @@ config ARM
 	select HAVE_KERNEL_GZIP
 	select HAVE_KERNEL_LZO
 	select HAVE_KERNEL_LZMA
+<<<<<<< HEAD
 	select HAVE_KERNEL_XZ
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	select HAVE_IRQ_WORK
 	select HAVE_PERF_EVENTS
 	select PERF_USE_VMALLOC
@@ -137,9 +140,16 @@ config GENERIC_LOCKBREAK
 
 config RWSEM_GENERIC_SPINLOCK
 	bool
+<<<<<<< HEAD
 
 config RWSEM_XCHGADD_ALGORITHM
 	def_bool y
+=======
+	default y
+
+config RWSEM_XCHGADD_ALGORITHM
+	bool
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 config ARCH_HAS_ILOG2_U32
 	bool
@@ -749,13 +759,20 @@ config ARCH_S5PV210
 	bool "Samsung S5PV210/S5PC110"
 	select CPU_V7
 	select ARCH_SPARSEMEM_ENABLE
+<<<<<<< HEAD
 	select ARCH_HAS_HOLES_MEMORYMODEL
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	select GENERIC_GPIO
 	select HAVE_CLK
 	select ARM_L1_CACHE_SHIFT_6
 	select ARCH_HAS_CPUFREQ
 	select GENERIC_CLOCKEVENTS
+<<<<<<< HEAD
 	select HAVE_SCHED_CLOCK if !S5P_HIGH_RES_TIMERS
+=======
+	select HAVE_SCHED_CLOCK
+>>>>>>> remotes/gregkh/linux-3.0.y
 	select HAVE_S3C2410_I2C if I2C
 	select HAVE_S3C_RTC if RTC_CLASS
 	select HAVE_S3C2410_WATCHDOG if WATCHDOG
@@ -1435,7 +1452,10 @@ source kernel/Kconfig.preempt
 
 config HZ
 	int
+<<<<<<< HEAD
 	default 1000 if S5P_HIGH_RES_TIMERS
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	default 200 if ARCH_EBSA110 || ARCH_S3C2410 || ARCH_S5P64X0 || \
 		ARCH_S5PV210 || ARCH_EXYNOS4
 	default OMAP_32K_TIMER_HZ if ARCH_OMAP && OMAP_32K_TIMER
@@ -1699,6 +1719,7 @@ config DEPRECATED_PARAM_STRUCT
 	  This was deprecated in 2001 and announced to live on for 5 years.
 	  Some old boot loaders still use this way.
 
+<<<<<<< HEAD
 config ARM_FLUSH_CONSOLE_ON_RESTART
 	bool "Force flush the console on restart"
 	help
@@ -1708,6 +1729,8 @@ config ARM_FLUSH_CONSOLE_ON_RESTART
 	  released if it failed to be acquired, which will cause all the
 	  pending messages to be flushed.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 endmenu
 
 menu "Boot options"

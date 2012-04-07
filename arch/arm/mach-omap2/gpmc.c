@@ -78,9 +78,15 @@ struct gpmc_cs_config {
 
 /*
  * Structure to save/restore gpmc context
+<<<<<<< HEAD
  * to support core off.
  */
 struct omap_gpmc_regs {
+=======
+ * to support core off on OMAP3
+ */
+struct omap3_gpmc_regs {
+>>>>>>> remotes/gregkh/linux-3.0.y
 	u32 sysconfig;
 	u32 irqenable;
 	u32 timeout_ctrl;
@@ -776,9 +782,16 @@ static irqreturn_t gpmc_handle_irq(int irq, void *dev)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static struct omap_gpmc_regs gpmc_context;
 
 void omap_gpmc_save_context(void)
+=======
+#ifdef CONFIG_ARCH_OMAP3
+static struct omap3_gpmc_regs gpmc_context;
+
+void omap3_gpmc_save_context(void)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	int i;
 
@@ -810,7 +823,11 @@ void omap_gpmc_save_context(void)
 	}
 }
 
+<<<<<<< HEAD
 void omap_gpmc_restore_context(void)
+=======
+void omap3_gpmc_restore_context(void)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	int i;
 
@@ -840,6 +857,10 @@ void omap_gpmc_restore_context(void)
 		}
 	}
 }
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_ARCH_OMAP3 */
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /**
  * gpmc_enable_hwecc - enable hardware ecc functionality

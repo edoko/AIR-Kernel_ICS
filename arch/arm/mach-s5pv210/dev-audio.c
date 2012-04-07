@@ -80,8 +80,13 @@ static struct resource s5pv210_iis0_resource[] = {
 };
 
 struct platform_device s5pv210_device_iis0 = {
+<<<<<<< HEAD
 	.name		  = "samsung-i2s",
 	.id		  = 0,
+=======
+	.name = "samsung-i2s",
+	.id = 0,
+>>>>>>> remotes/gregkh/linux-3.0.y
 	.num_resources	  = ARRAY_SIZE(s5pv210_iis0_resource),
 	.resource	  = s5pv210_iis0_resource,
 	.dev = {

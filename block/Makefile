@@ -13,8 +13,11 @@ obj-$(CONFIG_BLK_DEV_THROTTLING)	+= blk-throttle.o
 obj-$(CONFIG_IOSCHED_NOOP)	+= noop-iosched.o
 obj-$(CONFIG_IOSCHED_DEADLINE)	+= deadline-iosched.o
 obj-$(CONFIG_IOSCHED_CFQ)	+= cfq-iosched.o
+<<<<<<< HEAD
 obj-$(CONFIG_IOSCHED_SIO)	+= sio-iosched.o
 obj-$(CONFIG_IOSCHED_VR)	+= vr-iosched.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 obj-$(CONFIG_BLOCK_COMPAT)	+= compat_ioctl.o
 obj-$(CONFIG_BLK_DEV_INTEGRITY)	+= blk-integrity.o

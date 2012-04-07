@@ -158,10 +158,17 @@ static void intel_hdmi_dpms(struct drm_encoder *encoder, int mode)
 	struct drm_i915_private *dev_priv = dev->dev_private;
 	struct intel_hdmi *intel_hdmi = enc_to_intel_hdmi(encoder);
 	u32 temp;
+<<<<<<< HEAD
 	u32 enable_bits = SDVO_ENABLE;	
 
 	if (intel_hdmi->has_audio)	
 	enable_bits |= SDVO_AUDIO_ENABLE;
+=======
+	u32 enable_bits = SDVO_ENABLE;
+
+	if (intel_hdmi->has_audio)
+		enable_bits |= SDVO_AUDIO_ENABLE;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	temp = I915_READ(intel_hdmi->sdvox_reg);
 

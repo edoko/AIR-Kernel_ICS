@@ -3222,6 +3222,7 @@ int nand_scan_ident(struct mtd_info *mtd, int maxchips,
 }
 EXPORT_SYMBOL(nand_scan_ident);
 
+<<<<<<< HEAD
 static void nand_panic_wait(struct mtd_info *mtd)
 {
 	struct nand_chip *chip = mtd->priv;
@@ -3260,6 +3261,8 @@ static int nand_panic_write(struct mtd_info *mtd, loff_t to, size_t len,
 	return ret;
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /**
  * nand_scan_tail - [NAND Interface] Scan for the NAND device
@@ -3503,7 +3506,10 @@ int nand_scan_tail(struct mtd_info *mtd)
 	mtd->panic_write = panic_nand_write;
 	mtd->read_oob = nand_read_oob;
 	mtd->write_oob = nand_write_oob;
+<<<<<<< HEAD
 	mtd->panic_write = nand_panic_write;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mtd->sync = nand_sync;
 	mtd->lock = NULL;
 	mtd->unlock = NULL;

@@ -104,8 +104,13 @@ static int i2c_write_demod_bytes (struct lgdt330x_state* state,
  * then reads the data returned for (len) bytes.
  */
 
+<<<<<<< HEAD
 static u8 i2c_read_demod_bytes (struct lgdt330x_state* state,
 			       enum I2C_REG reg, u8* buf, int len)
+=======
+static int i2c_read_demod_bytes(struct lgdt330x_state *state,
+				enum I2C_REG reg, u8 *buf, int len)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	u8 wr [] = { reg };
 	struct i2c_msg msg [] = {
@@ -118,6 +123,11 @@ static u8 i2c_read_demod_bytes (struct lgdt330x_state* state,
 	ret = i2c_transfer(state->i2c, msg, 2);
 	if (ret != 2) {
 		printk(KERN_WARNING "lgdt330x: %s: addr 0x%02x select 0x%02x error (ret == %i)\n", __func__, state->config->demod_address, reg, ret);
+<<<<<<< HEAD
+=======
+		if (ret >= 0)
+			ret = -EIO;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	} else {
 		ret = 0;
 	}

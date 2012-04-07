@@ -32,7 +32,10 @@ modules.builtin
 *.lzo
 *.patch
 *.gcno
+<<<<<<< HEAD
 *.xzkern
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #
 # Top-level generic files

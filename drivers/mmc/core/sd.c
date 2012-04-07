@@ -764,9 +764,12 @@ int mmc_sd_setup_card(struct mmc_host *host, struct mmc_card *card,
 	bool reinit)
 {
 	int err;
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
 	int retries;
 #endif
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	if (!reinit) {
 		/*
@@ -793,6 +796,7 @@ int mmc_sd_setup_card(struct mmc_host *host, struct mmc_card *card,
 		/*
 		 * Fetch switch information from card.
 		 */
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
 		for (retries = 1; retries <= 3; retries++) {
 			err = mmc_read_switch(card);
@@ -813,6 +817,9 @@ int mmc_sd_setup_card(struct mmc_host *host, struct mmc_card *card,
 		err = mmc_read_switch(card);
 #endif
 
+=======
+		err = mmc_read_switch(card);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		if (err)
 			return err;
 	}
@@ -1011,6 +1018,7 @@ static void mmc_sd_remove(struct mmc_host *host)
  */
 static void mmc_sd_detect(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	int err = 0;
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
         int retries = 5;
@@ -1019,11 +1027,19 @@ static void mmc_sd_detect(struct mmc_host *host)
 	BUG_ON(!host);
 	BUG_ON(!host->card);
        
+=======
+	int err;
+
+	BUG_ON(!host);
+	BUG_ON(!host->card);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mmc_claim_host(host);
 
 	/*
 	 * Just check if our card has been removed.
 	 */
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
 	while(retries) {
 		err = mmc_send_status(host->card, NULL);
@@ -1041,6 +1057,10 @@ static void mmc_sd_detect(struct mmc_host *host)
 #else
 	err = mmc_send_status(host->card, NULL);
 #endif
+=======
+	err = mmc_send_status(host->card, NULL);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mmc_release_host(host);
 
 	if (err) {
@@ -1079,14 +1099,18 @@ static int mmc_sd_suspend(struct mmc_host *host)
 static int mmc_sd_resume(struct mmc_host *host)
 {
 	int err;
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
 	int retries;
 #endif
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	BUG_ON(!host);
 	BUG_ON(!host->card);
 
 	mmc_claim_host(host);
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
 	retries = 5;
 	while (retries) {
@@ -1104,6 +1128,9 @@ static int mmc_sd_resume(struct mmc_host *host)
 #else
 	err = mmc_sd_init_card(host, host->ocr, host->card);
 #endif
+=======
+	err = mmc_sd_init_card(host, host->ocr, host->card);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mmc_release_host(host);
 
 	return err;
@@ -1155,9 +1182,12 @@ int mmc_attach_sd(struct mmc_host *host)
 {
 	int err;
 	u32 ocr;
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
 	int retries;
 #endif
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	BUG_ON(!host);
 	WARN_ON(!host->claimed);
@@ -1222,6 +1252,7 @@ int mmc_attach_sd(struct mmc_host *host)
 	/*
 	 * Detect and init the card.
 	 */
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
 	retries = 5;
 	while (retries) {
@@ -1243,6 +1274,11 @@ int mmc_attach_sd(struct mmc_host *host)
 	if (err)
 		goto err;
 #endif
+=======
+	err = mmc_sd_init_card(host, host->ocr, NULL);
+	if (err)
+		goto err;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	mmc_release_host(host);
 	err = mmc_add_card(host->card);

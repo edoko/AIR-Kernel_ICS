@@ -1,5 +1,9 @@
 obj-y += timekeeping.o ntp.o clocksource.o jiffies.o timer_list.o timecompare.o
+<<<<<<< HEAD
 obj-y += timeconv.o posix-clock.o #alarmtimer.o
+=======
+obj-y += timeconv.o posix-clock.o alarmtimer.o
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 obj-$(CONFIG_GENERIC_CLOCKEVENTS_BUILD)		+= clockevents.o
 obj-$(CONFIG_GENERIC_CLOCKEVENTS)		+= tick-common.o

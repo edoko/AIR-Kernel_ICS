@@ -719,10 +719,20 @@ static int vfp_set(struct task_struct *target,
 {
 	int ret;
 	struct thread_info *thread = task_thread_info(target);
+<<<<<<< HEAD
 	struct vfp_hard_struct new_vfp = thread->vfpstate.hard;
 	const size_t user_fpregs_offset = offsetof(struct user_vfp, fpregs);
 	const size_t user_fpscr_offset = offsetof(struct user_vfp, fpscr);
 
+=======
+	struct vfp_hard_struct new_vfp;
+	const size_t user_fpregs_offset = offsetof(struct user_vfp, fpregs);
+	const size_t user_fpscr_offset = offsetof(struct user_vfp, fpscr);
+
+	vfp_sync_hwstate(thread);
+	new_vfp = thread->vfpstate.hard;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
 				  &new_vfp.fpregs,
 				  user_fpregs_offset,
@@ -743,9 +753,14 @@ static int vfp_set(struct task_struct *target,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	vfp_sync_hwstate(thread);
 	thread->vfpstate.hard = new_vfp;
 	vfp_flush_hwstate(thread);
+=======
+	vfp_flush_hwstate(thread);
+	thread->vfpstate.hard = new_vfp;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	return 0;
 }

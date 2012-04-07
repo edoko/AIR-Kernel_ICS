@@ -29,6 +29,10 @@
 #include <linux/mutex.h>
 #include <linux/delay.h>
 #include <linux/string.h>
+<<<<<<< HEAD
+=======
+#include <linux/gpio.h>
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include <video/omapdss.h>
 #if defined(CONFIG_SND_OMAP_SOC_OMAP4_HDMI) || \
 	defined(CONFIG_SND_OMAP_SOC_OMAP4_HDMI_MODULE)
@@ -40,6 +44,12 @@
 #include "hdmi.h"
 #include "dss_features.h"
 
+<<<<<<< HEAD
+=======
+#define HDMI_DEFAULT_REGN 15
+#define HDMI_DEFAULT_REGM2 1
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 static struct {
 	struct mutex lock;
 	struct omap_display_platform_data *pdata;
@@ -51,6 +61,12 @@ static struct {
 	u8 edid_set;
 	bool custom_set;
 	struct hdmi_config cfg;
+<<<<<<< HEAD
+=======
+
+	int hpd_gpio;
+	bool phy_tx_enabled;
+>>>>>>> remotes/gregkh/linux-3.0.y
 } hdmi;
 
 /*
@@ -275,6 +291,50 @@ static int hdmi_pll_reset(void)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int hdmi_check_hpd_state(void)
+{
+	unsigned long flags;
+	bool hpd;
+	int r;
+	/* this should be in ti_hdmi_4xxx_ip private data */
+	static DEFINE_SPINLOCK(phy_tx_lock);
+
+	spin_lock_irqsave(&phy_tx_lock, flags);
+
+	hpd = gpio_get_value(hdmi.hpd_gpio);
+
+	if (hpd == hdmi.phy_tx_enabled) {
+		spin_unlock_irqrestore(&phy_tx_lock, flags);
+		return 0;
+	}
+
+	if (hpd)
+		r = hdmi_set_phy_pwr(HDMI_PHYPWRCMD_TXON);
+	else
+		r = hdmi_set_phy_pwr(HDMI_PHYPWRCMD_LDOON);
+
+	if (r) {
+		DSSERR("Failed to %s PHY TX power\n",
+				hpd ? "enable" : "disable");
+		goto err;
+	}
+
+	hdmi.phy_tx_enabled = hpd;
+err:
+	spin_unlock_irqrestore(&phy_tx_lock, flags);
+	return r;
+}
+
+static irqreturn_t hpd_irq_handler(int irq, void *data)
+{
+	hdmi_check_hpd_state();
+
+	return IRQ_HANDLED;
+}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int hdmi_phy_init(void)
 {
 	u16 r = 0;
@@ -283,10 +343,13 @@ static int hdmi_phy_init(void)
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	r = hdmi_set_phy_pwr(HDMI_PHYPWRCMD_TXON);
 	if (r)
 		return r;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/*
 	 * Read address 0 in order to get the SCP reset done completed
 	 * Dummy access performed to make sure reset is done
@@ -308,6 +371,26 @@ static int hdmi_phy_init(void)
 	/* Write to phy address 3 to change the polarity control */
 	REG_FLD_MOD(HDMI_TXPHY_PAD_CFG_CTRL, 0x1, 27, 27);
 
+<<<<<<< HEAD
+=======
+	r = request_threaded_irq(gpio_to_irq(hdmi.hpd_gpio),
+			NULL, hpd_irq_handler,
+			IRQF_DISABLED | IRQF_TRIGGER_RISING |
+			IRQF_TRIGGER_FALLING, "hpd", NULL);
+	if (r) {
+		DSSERR("HPD IRQ request failed\n");
+		hdmi_set_phy_pwr(HDMI_PHYPWRCMD_OFF);
+		return r;
+	}
+
+	r = hdmi_check_hpd_state();
+	if (r) {
+		free_irq(gpio_to_irq(hdmi.hpd_gpio), NULL);
+		hdmi_set_phy_pwr(HDMI_PHYPWRCMD_OFF);
+		return r;
+	}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return 0;
 }
 
@@ -358,7 +441,13 @@ static int hdmi_pll_program(struct hdmi_pll_info *fmt)
 
 static void hdmi_phy_off(void)
 {
+<<<<<<< HEAD
 	hdmi_set_phy_pwr(HDMI_PHYPWRCMD_OFF);
+=======
+	free_irq(gpio_to_irq(hdmi.hpd_gpio), NULL);
+	hdmi_set_phy_pwr(HDMI_PHYPWRCMD_OFF);
+	hdmi.phy_tx_enabled = false;
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static int hdmi_core_ddc_edid(u8 *pedid, int ext)
@@ -1069,7 +1158,15 @@ static void hdmi_compute_pll(struct omap_dss_device *dssdev, int phy,
 	 * Input clock is predivided by N + 1
 	 * out put of which is reference clk
 	 */
+<<<<<<< HEAD
 	pi->regn = dssdev->clocks.hdmi.regn;
+=======
+	if (dssdev->clocks.hdmi.regn == 0)
+		pi->regn = HDMI_DEFAULT_REGN;
+	else
+		pi->regn = dssdev->clocks.hdmi.regn;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	refclk = clkin / (pi->regn + 1);
 
 	/*
@@ -1077,7 +1174,15 @@ static void hdmi_compute_pll(struct omap_dss_device *dssdev, int phy,
 	 * Multiplying by 100 to avoid fractional part removal
 	 */
 	pi->regm = (phy * 100 / (refclk)) / 100;
+<<<<<<< HEAD
 	pi->regm2 = dssdev->clocks.hdmi.regm2;
+=======
+
+	if (dssdev->clocks.hdmi.regm2 == 0)
+		pi->regm2 = HDMI_DEFAULT_REGM2;
+	else
+		pi->regm2 = dssdev->clocks.hdmi.regm2;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/*
 	 * fractional multiplier is remainder of the difference between
@@ -1225,12 +1330,21 @@ void omapdss_hdmi_display_set_timing(struct omap_dss_device *dssdev)
 
 int omapdss_hdmi_display_enable(struct omap_dss_device *dssdev)
 {
+<<<<<<< HEAD
+=======
+	struct omap_dss_hdmi_data *priv = dssdev->data;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	int r = 0;
 
 	DSSDBG("ENTER hdmi_display_enable\n");
 
 	mutex_lock(&hdmi.lock);
 
+<<<<<<< HEAD
+=======
+	hdmi.hpd_gpio = priv->hpd_gpio;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	r = omap_dss_start_device(dssdev);
 	if (r) {
 		DSSERR("failed to start device\n");

@@ -101,7 +101,10 @@ struct __fat_dirent {
 /* <linux/videotext.h> has used 0x72 ('r') in collision, so skip a few */
 #define FAT_IOCTL_GET_ATTRIBUTES	_IOR('r', 0x10, __u32)
 #define FAT_IOCTL_SET_ATTRIBUTES	_IOW('r', 0x11, __u32)
+<<<<<<< HEAD
 #define VFAT_IOCTL_GET_VOLUME_ID	_IOR('r', 0x12, __u32)
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 struct fat_boot_sector {
 	__u8	ignored[3];	/* Boot strap short or near jump */
@@ -139,6 +142,7 @@ struct fat_boot_fsinfo {
 	__le32   reserved2[4];
 };
 
+<<<<<<< HEAD
 struct fat_boot_bsx {
 	__u8     drive;		    /* drive number */
 	__u8     reserved1;
@@ -150,6 +154,8 @@ struct fat_boot_bsx {
 #define FAT16_BSX_OFFSET	36 /* offset of fat_boot_bsx in FAT12 and FAT16 */
 #define FAT32_BSX_OFFSET	64 /* offset of fat_boot_bsx in FAT32 */
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 struct msdos_dir_entry {
 	__u8	name[MSDOS_NAME];/* name and extension */
 	__u8	attr;		/* attribute bits */

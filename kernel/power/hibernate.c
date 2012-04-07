@@ -623,7 +623,11 @@ int hibernate(void)
 	/* Allocate memory management structures */
 	error = create_basic_memory_bitmaps();
 	if (error)
+<<<<<<< HEAD
 		goto Exit;
+=======
+		goto Enable_umh;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	printk(KERN_INFO "PM: Syncing filesystems ... ");
 	sys_sync();
@@ -631,7 +635,11 @@ int hibernate(void)
 
 	error = prepare_processes();
 	if (error)
+<<<<<<< HEAD
 		goto Finish;
+=======
+		goto Free_bitmaps;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	if (hibernation_test(TEST_FREEZER))
 		goto Thaw;
@@ -663,8 +671,14 @@ int hibernate(void)
 
  Thaw:
 	thaw_processes();
+<<<<<<< HEAD
  Finish:
 	free_basic_memory_bitmaps();
+=======
+ Free_bitmaps:
+	free_basic_memory_bitmaps();
+ Enable_umh:
+>>>>>>> remotes/gregkh/linux-3.0.y
 	usermodehelper_enable();
  Exit:
 	pm_notifier_call_chain(PM_POST_HIBERNATION);

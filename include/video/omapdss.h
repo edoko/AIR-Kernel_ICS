@@ -514,6 +514,14 @@ struct omap_dss_device {
 	int (*get_backlight)(struct omap_dss_device *dssdev);
 };
 
+<<<<<<< HEAD
+=======
+struct omap_dss_hdmi_data
+{
+	int hpd_gpio;
+};
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 struct omap_dss_driver {
 	struct device_driver driver;
 

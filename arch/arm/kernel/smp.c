@@ -53,7 +53,10 @@ enum ipi_msg_type {
 	IPI_CALL_FUNC,
 	IPI_CALL_FUNC_SINGLE,
 	IPI_CPU_STOP,
+<<<<<<< HEAD
 	IPI_CPU_BACKTRACE,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 int __cpuinit __cpu_up(unsigned int cpu)
@@ -302,7 +305,21 @@ asmlinkage void __cpuinit secondary_start_kernel(void)
 	 */
 	platform_secondary_init(cpu);
 
+<<<<<<< HEAD
 	notify_cpu_starting(cpu);
+=======
+	/*
+	 * Enable local interrupts.
+	 */
+	notify_cpu_starting(cpu);
+	local_irq_enable();
+	local_fiq_enable();
+
+	/*
+	 * Setup the percpu timer for this CPU.
+	 */
+	percpu_timer_setup();
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	calibrate_delay();
 
@@ -314,16 +331,20 @@ asmlinkage void __cpuinit secondary_start_kernel(void)
 	 * before we continue.
 	 */
 	set_cpu_online(cpu, true);
+<<<<<<< HEAD
 
 	/*
 	 * Setup the percpu timer for this CPU.
 	 */
 	percpu_timer_setup();
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	while (!cpu_active(cpu))
 		cpu_relax();
 
 	/*
+<<<<<<< HEAD
 	 * cpu_active bit is set, so it's safe to enable interrupts
 	 * now.
 	 */
@@ -331,6 +352,8 @@ asmlinkage void __cpuinit secondary_start_kernel(void)
 	local_fiq_enable();
 
 	/*
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	 * OK, it's off to the idle thread for us
 	 */
 	cpu_idle();
@@ -409,7 +432,10 @@ static const char *ipi_types[NR_IPI] = {
 	S(IPI_CALL_FUNC, "Function call interrupts"),
 	S(IPI_CALL_FUNC_SINGLE, "Single function call interrupts"),
 	S(IPI_CPU_STOP, "CPU stop interrupts"),
+<<<<<<< HEAD
 	S(IPI_CPU_BACKTRACE, "CPU backtrace"),
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 void show_ipi_list(struct seq_file *p, int prec)
@@ -450,7 +476,13 @@ static DEFINE_PER_CPU(struct clock_event_device, percpu_clockevent);
 static void ipi_timer(void)
 {
 	struct clock_event_device *evt = &__get_cpu_var(percpu_clockevent);
+<<<<<<< HEAD
 	evt->event_handler(evt);
+=======
+	irq_enter();
+	evt->event_handler(evt);
+	irq_exit();
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 #ifdef CONFIG_LOCAL_TIMERS
@@ -558,6 +590,7 @@ static void ipi_cpu_stop(unsigned int cpu)
 		cpu_relax();
 }
 
+<<<<<<< HEAD
 static cpumask_t backtrace_mask;
 static DEFINE_RAW_SPINLOCK(backtrace_lock);
 
@@ -610,6 +643,8 @@ static void ipi_cpu_backtrace(unsigned int cpu, struct pt_regs *regs)
 	}
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*
  * Main handler for inter-processor interrupts
  */
@@ -623,16 +658,22 @@ asmlinkage void __exception_irq_entry do_IPI(int ipinr, struct pt_regs *regs)
 
 	switch (ipinr) {
 	case IPI_TIMER:
+<<<<<<< HEAD
         irq_enter();
 		ipi_timer();
         irq_exit();
         break;
+=======
+		ipi_timer();
+		break;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	case IPI_RESCHEDULE:
 		scheduler_ipi();
 		break;
 
 	case IPI_CALL_FUNC:
+<<<<<<< HEAD
         irq_enter();
 		generic_smp_call_function_interrupt();
         irq_exit();
@@ -652,6 +693,17 @@ asmlinkage void __exception_irq_entry do_IPI(int ipinr, struct pt_regs *regs)
 
 	case IPI_CPU_BACKTRACE:
 		ipi_cpu_backtrace(cpu, regs);
+=======
+		generic_smp_call_function_interrupt();
+		break;
+
+	case IPI_CALL_FUNC_SINGLE:
+		generic_smp_call_function_single_interrupt();
+		break;
+
+	case IPI_CPU_STOP:
+		ipi_cpu_stop(cpu);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		break;
 
 	default:

@@ -122,7 +122,11 @@ struct gs_port {
 };
 
 /* increase N_PORTS if you need more */
+<<<<<<< HEAD
 #define N_PORTS		8
+=======
+#define N_PORTS		4
+>>>>>>> remotes/gregkh/linux-3.0.y
 static struct portmaster {
 	struct mutex	lock;			/* protect open/close */
 	struct gs_port	*port;
@@ -1028,7 +1032,11 @@ static const struct tty_operations gs_tty_ops = {
 
 static struct tty_driver *gs_tty_driver;
 
+<<<<<<< HEAD
 static int
+=======
+static int __init
+>>>>>>> remotes/gregkh/linux-3.0.y
 gs_port_alloc(unsigned port_num, struct usb_cdc_line_coding *coding)
 {
 	struct gs_port	*port;
@@ -1074,7 +1082,11 @@ gs_port_alloc(unsigned port_num, struct usb_cdc_line_coding *coding)
  *
  * Returns negative errno or zero.
  */
+<<<<<<< HEAD
 int gserial_setup(struct usb_gadget *g, unsigned count)
+=======
+int __init gserial_setup(struct usb_gadget *g, unsigned count)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	unsigned			i;
 	struct usb_cdc_line_coding	coding;

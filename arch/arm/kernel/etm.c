@@ -15,7 +15,10 @@
 #include <linux/init.h>
 #include <linux/types.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/slab.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include <linux/sysrq.h>
 #include <linux/device.h>
 #include <linux/clk.h>
@@ -37,6 +40,7 @@ MODULE_AUTHOR("Alexander Shishkin");
 struct tracectx {
 	unsigned int	etb_bufsz;
 	void __iomem	*etb_regs;
+<<<<<<< HEAD
 	void __iomem	**etm_regs;
 	int		etm_regs_count;
 	unsigned long	flags;
@@ -48,25 +52,42 @@ struct tracectx {
 	unsigned long	data_range_start;
 	unsigned long	data_range_end;
 	bool		dump_initial_etb;
+=======
+	void __iomem	*etm_regs;
+	unsigned long	flags;
+	int		ncmppairs;
+	int		etm_portsz;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	struct device	*dev;
 	struct clk	*emu_clk;
 	struct mutex	mutex;
 };
 
+<<<<<<< HEAD
 static struct tracectx tracer = {
 	.range_start = (unsigned long)_stext,
 	.range_end = (unsigned long)_etext,
 };
+=======
+static struct tracectx tracer;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 static inline bool trace_isrunning(struct tracectx *t)
 {
 	return !!(t->flags & TRACER_RUNNING);
 }
 
+<<<<<<< HEAD
 static int etm_setup_address_range(struct tracectx *t, int id, int n,
 		unsigned long start, unsigned long end, int exclude, int data)
 {
 	u32 flags = ETMAAT_ARM | ETMAAT_IGNCONTEXTID | ETMAAT_IGNSECURITY |
+=======
+static int etm_setup_address_range(struct tracectx *t, int n,
+		unsigned long start, unsigned long end, int exclude, int data)
+{
+	u32 flags = ETMAAT_ARM | ETMAAT_IGNCONTEXTID | ETMAAT_NSONLY | \
+>>>>>>> remotes/gregkh/linux-3.0.y
 		    ETMAAT_NOVALCMP;
 
 	if (n < 1 || n > t->ncmppairs)
@@ -82,6 +103,7 @@ static int etm_setup_address_range(struct tracectx *t, int id, int n,
 		flags |= ETMAAT_IEXEC;
 
 	/* first comparator for the range */
+<<<<<<< HEAD
 	etm_writel(t, id, flags, ETMR_COMP_ACC_TYPE(n * 2));
 	etm_writel(t, id, start, ETMR_COMP_VAL(n * 2));
 
@@ -98,20 +120,47 @@ static int etm_setup_address_range(struct tracectx *t, int id, int n,
 		flags = exclude ? ETMTE_INCLEXCL : 0;
 		etm_writel(t, id, flags | (1 << n), ETMR_TRACEENCTRL);
 	}
+=======
+	etm_writel(t, flags, ETMR_COMP_ACC_TYPE(n * 2));
+	etm_writel(t, start, ETMR_COMP_VAL(n * 2));
+
+	/* second comparator is right next to it */
+	etm_writel(t, flags, ETMR_COMP_ACC_TYPE(n * 2 + 1));
+	etm_writel(t, end, ETMR_COMP_VAL(n * 2 + 1));
+
+	flags = exclude ? ETMTE_INCLEXCL : 0;
+	etm_writel(t, flags | (1 << n), ETMR_TRACEENCTRL);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int trace_start_etm(struct tracectx *t, int id)
+=======
+static int trace_start(struct tracectx *t)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	u32 v;
 	unsigned long timeout = TRACER_TIMEOUT;
 
+<<<<<<< HEAD
+=======
+	etb_unlock(t);
+
+	etb_writel(t, 0, ETBR_FORMATTERCTRL);
+	etb_writel(t, 1, ETBR_CTRL);
+
+	etb_lock(t);
+
+	/* configure etm */
+>>>>>>> remotes/gregkh/linux-3.0.y
 	v = ETMCTRL_OPTS | ETMCTRL_PROGRAM | ETMCTRL_PORTSIZE(t->etm_portsz);
 
 	if (t->flags & TRACER_CYCLE_ACC)
 		v |= ETMCTRL_CYCLEACCURATE;
 
+<<<<<<< HEAD
 	if (t->flags & TRACER_TRACE_DATA)
 		v |= ETMCTRL_DATA_DO_ADDR;
 
@@ -147,10 +196,30 @@ static int trace_start_etm(struct tracectx *t, int id)
 		etm_writel(t, id, ETMVDC3_EXCLONLY, ETMR_VIEWDATACTRL3);
 
 	etm_writel(t, id, 0x6f, ETMR_VIEWDATAEVT);
+=======
+	etm_unlock(t);
+
+	etm_writel(t, v, ETMR_CTRL);
+
+	while (!(etm_readl(t, ETMR_CTRL) & ETMCTRL_PROGRAM) && --timeout)
+		;
+	if (!timeout) {
+		dev_dbg(t->dev, "Waiting for progbit to assert timed out\n");
+		etm_lock(t);
+		return -EFAULT;
+	}
+
+	etm_setup_address_range(t, 1, (unsigned long)_stext,
+			(unsigned long)_etext, 0, 0);
+	etm_writel(t, 0, ETMR_TRACEENCTRL2);
+	etm_writel(t, 0, ETMR_TRACESSCTRL);
+	etm_writel(t, 0x6f, ETMR_TRACEENEVT);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	v &= ~ETMCTRL_PROGRAM;
 	v |= ETMCTRL_PORTSEL;
 
+<<<<<<< HEAD
 	etm_writel(t, id, v, ETMR_CTRL);
 
 	timeout = TRACER_TIMEOUT;
@@ -187,12 +256,27 @@ static int trace_start(struct tracectx *t)
 		if (ret)
 			return ret;
 	}
+=======
+	etm_writel(t, v, ETMR_CTRL);
+
+	timeout = TRACER_TIMEOUT;
+	while (etm_readl(t, ETMR_CTRL) & ETMCTRL_PROGRAM && --timeout)
+		;
+	if (!timeout) {
+		dev_dbg(t->dev, "Waiting for progbit to deassert timed out\n");
+		etm_lock(t);
+		return -EFAULT;
+	}
+
+	etm_lock(t);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	t->flags |= TRACER_RUNNING;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int trace_stop_etm(struct tracectx *t, int id)
 {
 	unsigned long timeout = TRACER_TIMEOUT;
@@ -231,6 +315,27 @@ static int trace_stop(struct tracectx *t)
 		etb_writel(t, t->etb_fc, ETBR_FORMATTERCTRL);
 	}
 	etb_writel(t, etb_fc | ETBFF_MANUAL_FLUSH, ETBR_FORMATTERCTRL);
+=======
+static int trace_stop(struct tracectx *t)
+{
+	unsigned long timeout = TRACER_TIMEOUT;
+
+	etm_unlock(t);
+
+	etm_writel(t, 0x440, ETMR_CTRL);
+	while (!(etm_readl(t, ETMR_CTRL) & ETMCTRL_PROGRAM) && --timeout)
+		;
+	if (!timeout) {
+		dev_dbg(t->dev, "Waiting for progbit to assert timed out\n");
+		etm_lock(t);
+		return -EFAULT;
+	}
+
+	etm_lock(t);
+
+	etb_unlock(t);
+	etb_writel(t, ETBFF_MANUAL_FLUSH, ETBR_FORMATTERCTRL);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	timeout = TRACER_TIMEOUT;
 	while (etb_readl(t, ETBR_FORMATTERCTRL) &
@@ -255,15 +360,33 @@ static int trace_stop(struct tracectx *t)
 static int etb_getdatalen(struct tracectx *t)
 {
 	u32 v;
+<<<<<<< HEAD
 	int wp;
+=======
+	int rp, wp;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	v = etb_readl(t, ETBR_STATUS);
 
 	if (v & 1)
 		return t->etb_bufsz;
 
+<<<<<<< HEAD
 	wp = etb_readl(t, ETBR_WRITEADDR);
 	return wp;
+=======
+	rp = etb_readl(t, ETBR_READADDR);
+	wp = etb_readl(t, ETBR_WRITEADDR);
+
+	if (rp > wp) {
+		etb_writel(t, 0, ETBR_READADDR);
+		etb_writel(t, 0, ETBR_WRITEADDR);
+
+		return 0;
+	}
+
+	return wp - rp;
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 /* sysrq+v will always stop the running trace and leave it at that */
@@ -296,11 +419,23 @@ static void etm_dump(void)
 		printk("%08x", cpu_to_be32(etb_readl(t, ETBR_READMEM)));
 	printk(KERN_INFO "\n--- ETB buffer end ---\n");
 
+<<<<<<< HEAD
+=======
+	/* deassert the overflow bit */
+	etb_writel(t, 1, ETBR_CTRL);
+	etb_writel(t, 0, ETBR_CTRL);
+
+	etb_writel(t, 0, ETBR_TRIGGERCOUNT);
+	etb_writel(t, 0, ETBR_READADDR);
+	etb_writel(t, 0, ETBR_WRITEADDR);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	etb_lock(t);
 }
 
 static void sysrq_etm_dump(int key)
 {
+<<<<<<< HEAD
 	if (!mutex_trylock(&tracer.mutex)) {
 		printk(KERN_INFO "Tracing hardware busy\n");
 		return;
@@ -308,6 +443,10 @@ static void sysrq_etm_dump(int key)
 	dev_dbg(tracer.dev, "Dumping ETB buffer\n");
 	etm_dump();
 	mutex_unlock(&tracer.mutex);
+=======
+	dev_dbg(tracer.dev, "Dumping ETB buffer\n");
+	etm_dump();
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static struct sysrq_key_op sysrq_etm_op = {
@@ -334,10 +473,13 @@ static ssize_t etb_read(struct file *file, char __user *data,
 	struct tracectx *t = file->private_data;
 	u32 first = 0;
 	u32 *buf;
+<<<<<<< HEAD
 	int wpos;
 	int skip;
 	long wlength;
 	loff_t pos = *ppos;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	mutex_lock(&t->mutex);
 
@@ -349,6 +491,7 @@ static ssize_t etb_read(struct file *file, char __user *data,
 	etb_unlock(t);
 
 	total = etb_getdatalen(t);
+<<<<<<< HEAD
 	if (total == 0 && t->dump_initial_etb)
 		total = t->etb_bufsz;
 	if (total == t->etb_bufsz)
@@ -382,6 +525,33 @@ static ssize_t etb_read(struct file *file, char __user *data,
 	length -= copy_to_user(data, (u8 *)buf + skip, length);
 	vfree(buf);
 	*ppos = pos + length;
+=======
+	if (total == t->etb_bufsz)
+		first = etb_readl(t, ETBR_WRITEADDR);
+
+	etb_writel(t, first, ETBR_READADDR);
+
+	length = min(total * 4, (int)len);
+	buf = vmalloc(length);
+
+	dev_dbg(t->dev, "ETB buffer length: %d\n", total);
+	dev_dbg(t->dev, "ETB status reg: %x\n", etb_readl(t, ETBR_STATUS));
+	for (i = 0; i < length / 4; i++)
+		buf[i] = etb_readl(t, ETBR_READMEM);
+
+	/* the only way to deassert overflow bit in ETB status is this */
+	etb_writel(t, 1, ETBR_CTRL);
+	etb_writel(t, 0, ETBR_CTRL);
+
+	etb_writel(t, 0, ETBR_WRITEADDR);
+	etb_writel(t, 0, ETBR_READADDR);
+	etb_writel(t, 0, ETBR_TRIGGERCOUNT);
+
+	etb_lock(t);
+
+	length -= copy_to_user(data, buf, length);
+	vfree(buf);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 out:
 	mutex_unlock(&t->mutex);
@@ -418,13 +588,17 @@ static int __devinit etb_probe(struct amba_device *dev, const struct amba_id *id
 	if (ret)
 		goto out;
 
+<<<<<<< HEAD
 	mutex_lock(&t->mutex);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	t->etb_regs = ioremap_nocache(dev->res.start, resource_size(&dev->res));
 	if (!t->etb_regs) {
 		ret = -ENOMEM;
 		goto out_release;
 	}
 
+<<<<<<< HEAD
 	t->dev = &dev->dev;
 	t->dump_initial_etb = true;
 	amba_set_drvdata(dev, t);
@@ -439,18 +613,41 @@ static int __devinit etb_probe(struct amba_device *dev, const struct amba_id *id
 	etb_lock(t);
 	mutex_unlock(&t->mutex);
 
+=======
+	amba_set_drvdata(dev, t);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	etb_miscdev.parent = &dev->dev;
 
 	ret = misc_register(&etb_miscdev);
 	if (ret)
 		goto out_unmap;
 
+<<<<<<< HEAD
 	/* Get optional clock. Currently used to select clock source on omap3 */
 	t->emu_clk = clk_get(&dev->dev, "emu_src_ck");
 	if (IS_ERR(t->emu_clk))
 		dev_dbg(&dev->dev, "Failed to obtain emu_src_ck.\n");
 	else
 		clk_enable(t->emu_clk);
+=======
+	t->emu_clk = clk_get(&dev->dev, "emu_src_ck");
+	if (IS_ERR(t->emu_clk)) {
+		dev_dbg(&dev->dev, "Failed to obtain emu_src_ck.\n");
+		return -EFAULT;
+	}
+
+	clk_enable(t->emu_clk);
+
+	etb_unlock(t);
+	t->etb_bufsz = etb_readl(t, ETBR_DEPTH);
+	dev_dbg(&dev->dev, "Size: %x\n", t->etb_bufsz);
+
+	/* make sure trace capture is disabled */
+	etb_writel(t, 0, ETBR_CTRL);
+	etb_writel(t, 0x1000, ETBR_FORMATTERCTRL);
+	etb_lock(t);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	dev_dbg(&dev->dev, "ETB AMBA driver initialized.\n");
 
@@ -458,6 +655,7 @@ out:
 	return ret;
 
 out_unmap:
+<<<<<<< HEAD
 	mutex_lock(&t->mutex);
 	amba_set_drvdata(dev, NULL);
 	iounmap(t->etb_regs);
@@ -465,6 +663,12 @@ out_unmap:
 
 out_release:
 	mutex_unlock(&t->mutex);
+=======
+	amba_set_drvdata(dev, NULL);
+	iounmap(t->etb_regs);
+
+out_release:
+>>>>>>> remotes/gregkh/linux-3.0.y
 	amba_release_regions(dev);
 
 	return ret;
@@ -479,10 +683,15 @@ static int etb_remove(struct amba_device *dev)
 	iounmap(t->etb_regs);
 	t->etb_regs = NULL;
 
+<<<<<<< HEAD
 	if (!IS_ERR(t->emu_clk)) {
 		clk_disable(t->emu_clk);
 		clk_put(t->emu_clk);
 	}
+=======
+	clk_disable(t->emu_clk);
+	clk_put(t->emu_clk);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	amba_release_regions(dev);
 
@@ -526,10 +735,14 @@ static ssize_t trace_running_store(struct kobject *kobj,
 		return -EINVAL;
 
 	mutex_lock(&tracer.mutex);
+<<<<<<< HEAD
 	if (!tracer.etb_regs)
 		ret = -ENODEV;
 	else
 		ret = value ? trace_start(&tracer) : trace_stop(&tracer);
+=======
+	ret = value ? trace_start(&tracer) : trace_stop(&tracer);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mutex_unlock(&tracer.mutex);
 
 	return ret ? : n;
@@ -544,6 +757,7 @@ static ssize_t trace_info_show(struct kobject *kobj,
 {
 	u32 etb_wa, etb_ra, etb_st, etb_fc, etm_ctrl, etm_st;
 	int datalen;
+<<<<<<< HEAD
 	int id;
 	int ret;
 
@@ -566,11 +780,35 @@ static ssize_t trace_info_show(struct kobject *kobj,
 			"ETBR_READADDR:\t%08x\n"
 			"ETBR_STATUS:\t%08x\n"
 			"ETBR_FORMATTERCTRL:\t%08x\n",
+=======
+
+	etb_unlock(&tracer);
+	datalen = etb_getdatalen(&tracer);
+	etb_wa = etb_readl(&tracer, ETBR_WRITEADDR);
+	etb_ra = etb_readl(&tracer, ETBR_READADDR);
+	etb_st = etb_readl(&tracer, ETBR_STATUS);
+	etb_fc = etb_readl(&tracer, ETBR_FORMATTERCTRL);
+	etb_lock(&tracer);
+
+	etm_unlock(&tracer);
+	etm_ctrl = etm_readl(&tracer, ETMR_CTRL);
+	etm_st = etm_readl(&tracer, ETMR_STATUS);
+	etm_lock(&tracer);
+
+	return sprintf(buf, "Trace buffer len: %d\nComparator pairs: %d\n"
+			"ETBR_WRITEADDR:\t%08x\n"
+			"ETBR_READADDR:\t%08x\n"
+			"ETBR_STATUS:\t%08x\n"
+			"ETBR_FORMATTERCTRL:\t%08x\n"
+			"ETMR_CTRL:\t%08x\n"
+			"ETMR_STATUS:\t%08x\n",
+>>>>>>> remotes/gregkh/linux-3.0.y
 			datalen,
 			tracer.ncmppairs,
 			etb_wa,
 			etb_ra,
 			etb_st,
+<<<<<<< HEAD
 			etb_fc
 			);
 
@@ -588,6 +826,12 @@ static ssize_t trace_info_show(struct kobject *kobj,
 	mutex_unlock(&tracer.mutex);
 
 	return ret;
+=======
+			etb_fc,
+			etm_ctrl,
+			etm_st
+			);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static struct kobj_attribute trace_info_attr =
@@ -626,6 +870,7 @@ static ssize_t trace_mode_store(struct kobject *kobj,
 static struct kobj_attribute trace_mode_attr =
 	__ATTR(trace_mode, 0644, trace_mode_show, trace_mode_store);
 
+<<<<<<< HEAD
 static ssize_t trace_range_show(struct kobject *kobj,
 				  struct kobj_attribute *attr,
 				  char *buf)
@@ -697,10 +942,13 @@ static struct kobj_attribute trace_data_range_attr =
 	__ATTR(trace_data_range, 0644,
 		trace_data_range_show, trace_data_range_store);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static int __devinit etm_probe(struct amba_device *dev, const struct amba_id *id)
 {
 	struct tracectx *t = &tracer;
 	int ret = 0;
+<<<<<<< HEAD
 	void __iomem **new_regs;
 	int new_count;
 
@@ -715,18 +963,32 @@ static int __devinit etm_probe(struct amba_device *dev, const struct amba_id *id
 		goto out;
 	}
 	t->etm_regs = new_regs;
+=======
+
+	if (t->etm_regs) {
+		dev_dbg(&dev->dev, "ETM already initialized\n");
+		ret = -EBUSY;
+		goto out;
+	}
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	ret = amba_request_regions(dev, NULL);
 	if (ret)
 		goto out;
 
+<<<<<<< HEAD
 	t->etm_regs[t->etm_regs_count] =
 		ioremap_nocache(dev->res.start, resource_size(&dev->res));
 	if (!t->etm_regs[t->etm_regs_count]) {
+=======
+	t->etm_regs = ioremap_nocache(dev->res.start, resource_size(&dev->res));
+	if (!t->etm_regs) {
+>>>>>>> remotes/gregkh/linux-3.0.y
 		ret = -ENOMEM;
 		goto out_release;
 	}
 
+<<<<<<< HEAD
 	amba_set_drvdata(dev, t->etm_regs[t->etm_regs_count]);
 
 	t->flags = TRACER_CYCLE_ACC | TRACER_TRACE_DATA;
@@ -741,6 +1003,23 @@ static int __devinit etm_probe(struct amba_device *dev, const struct amba_id *id
 	etm_writel(t, t->etm_regs_count, 0x441, ETMR_CTRL);
 	etm_writel(t, t->etm_regs_count, new_count, ETMR_TRACEIDR);
 	etm_lock(t, t->etm_regs_count);
+=======
+	amba_set_drvdata(dev, t);
+
+	mutex_init(&t->mutex);
+	t->dev = &dev->dev;
+	t->flags = TRACER_CYCLE_ACC;
+	t->etm_portsz = 1;
+
+	etm_unlock(t);
+	(void)etm_readl(t, ETMMR_PDSR);
+	/* dummy first read */
+	(void)etm_readl(&tracer, ETMMR_OSSRR);
+
+	t->ncmppairs = etm_readl(t, ETMR_CONFCODE) & 0xf;
+	etm_writel(t, 0x440, ETMR_CTRL);
+	etm_lock(t);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	ret = sysfs_create_file(&dev->dev.kobj,
 			&trace_running_attr.attr);
@@ -756,6 +1035,7 @@ static int __devinit etm_probe(struct amba_device *dev, const struct amba_id *id
 	if (ret)
 		dev_dbg(&dev->dev, "Failed to create trace_mode in sysfs\n");
 
+<<<<<<< HEAD
 	ret = sysfs_create_file(&dev->dev.kobj, &trace_range_attr.attr);
 	if (ret)
 		dev_dbg(&dev->dev, "Failed to create trace_range in sysfs\n");
@@ -775,21 +1055,34 @@ static int __devinit etm_probe(struct amba_device *dev, const struct amba_id *id
 
 out:
 	mutex_unlock(&t->mutex);
+=======
+	dev_dbg(t->dev, "ETM AMBA driver initialized.\n");
+
+out:
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return ret;
 
 out_unmap:
 	amba_set_drvdata(dev, NULL);
+<<<<<<< HEAD
 	iounmap(t->etm_regs[t->etm_regs_count]);
+=======
+	iounmap(t->etm_regs);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 out_release:
 	amba_release_regions(dev);
 
+<<<<<<< HEAD
 	mutex_unlock(&t->mutex);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return ret;
 }
 
 static int etm_remove(struct amba_device *dev)
 {
+<<<<<<< HEAD
 	int i;
 	struct tracectx *t = &tracer;
 	void __iomem	*etm_regs = amba_get_drvdata(dev);
@@ -818,6 +1111,21 @@ static int etm_remove(struct amba_device *dev)
 	iounmap(etm_regs);
 	amba_release_regions(dev);
 
+=======
+	struct tracectx *t = amba_get_drvdata(dev);
+
+	amba_set_drvdata(dev, NULL);
+
+	iounmap(t->etm_regs);
+	t->etm_regs = NULL;
+
+	amba_release_regions(dev);
+
+	sysfs_remove_file(&dev->dev.kobj, &trace_running_attr.attr);
+	sysfs_remove_file(&dev->dev.kobj, &trace_info_attr.attr);
+	sysfs_remove_file(&dev->dev.kobj, &trace_mode_attr.attr);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return 0;
 }
 
@@ -826,10 +1134,13 @@ static struct amba_id etm_ids[] = {
 		.id	= 0x0003b921,
 		.mask	= 0x0007ffff,
 	},
+<<<<<<< HEAD
 	{
 		.id	= 0x0003b950,
 		.mask	= 0x0007ffff,
 	},
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	{ 0, 0 },
 };
 
@@ -847,8 +1158,11 @@ static int __init etm_init(void)
 {
 	int retval;
 
+<<<<<<< HEAD
 	mutex_init(&tracer.mutex);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	retval = amba_driver_register(&etb_driver);
 	if (retval) {
 		printk(KERN_ERR "Failed to register etb\n");

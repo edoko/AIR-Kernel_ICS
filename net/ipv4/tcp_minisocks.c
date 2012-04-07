@@ -745,6 +745,11 @@ listen_overflow:
 
 embryonic_reset:
 	NET_INC_STATS_BH(sock_net(sk), LINUX_MIB_EMBRYONICRSTS);
+<<<<<<< HEAD
+=======
+	if (!(flg & TCP_FLAG_RST))
+		req->rsk_ops->send_reset(sk, skb);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	inet_csk_reqsk_queue_drop(sk, req, prev);
 	return NULL;

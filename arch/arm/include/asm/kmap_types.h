@@ -21,7 +21,10 @@ enum km_type {
 	KM_L1_CACHE,
 	KM_L2_CACHE,
 	KM_KDB,
+<<<<<<< HEAD
 	KM_CLEARPAGE,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	KM_TYPE_NR
 };
 

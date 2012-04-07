@@ -12,7 +12,10 @@ obj-$(CONFIG_USB_IMX)		+= imx_udc.o
 obj-$(CONFIG_USB_GOKU)		+= goku_udc.o
 obj-$(CONFIG_USB_OMAP)		+= omap_udc.o
 obj-$(CONFIG_USB_S3C2410)	+= s3c2410_udc.o
+<<<<<<< HEAD
 obj-$(CONFIG_USB_S3C_OTGD)	+= s3c_udc_otg.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 obj-$(CONFIG_USB_AT91)		+= at91_udc.o
 obj-$(CONFIG_USB_ATMEL_USBA)	+= atmel_usba_udc.o
 obj-$(CONFIG_USB_FSL_USB2)	+= fsl_usb2_udc.o
@@ -50,7 +53,10 @@ g_dbgp-y			:= dbgp.o
 g_nokia-y			:= nokia.o
 g_webcam-y			:= webcam.o
 g_ncm-y				:= ncm.o
+<<<<<<< HEAD
 g_android-y			:= android.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 obj-$(CONFIG_USB_ZERO)		+= g_zero.o
 obj-$(CONFIG_USB_AUDIO)		+= g_audio.o
@@ -69,4 +75,7 @@ obj-$(CONFIG_USB_G_MULTI)	+= g_multi.o
 obj-$(CONFIG_USB_G_NOKIA)	+= g_nokia.o
 obj-$(CONFIG_USB_G_WEBCAM)	+= g_webcam.o
 obj-$(CONFIG_USB_G_NCM)		+= g_ncm.o
+<<<<<<< HEAD
 obj-$(CONFIG_USB_G_ANDROID)	+= g_android.o
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

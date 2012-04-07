@@ -45,8 +45,11 @@
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
 
+<<<<<<< HEAD
 static int enable_le;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /* Handle HCI Event packets */
 
 static void hci_cc_inquiry_cancel(struct hci_dev *hdev, struct sk_buff *skb)
@@ -527,6 +530,7 @@ static void hci_setup_event_mask(struct hci_dev *hdev)
 	hci_send_cmd(hdev, HCI_OP_SET_EVENT_MASK, sizeof(events), events);
 }
 
+<<<<<<< HEAD
 static void hci_set_le_support(struct hci_dev *hdev)
 {
 	struct hci_cp_write_le_host_supported cp;
@@ -541,6 +545,8 @@ static void hci_set_le_support(struct hci_dev *hdev)
 	hci_send_cmd(hdev, HCI_OP_WRITE_LE_HOST_SUPPORTED, sizeof(cp), &cp);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static void hci_setup(struct hci_dev *hdev)
 {
 	hci_setup_event_mask(hdev);
@@ -558,6 +564,7 @@ static void hci_setup(struct hci_dev *hdev)
 
 	if (hdev->features[7] & LMP_INQ_TX_PWR)
 		hci_send_cmd(hdev, HCI_OP_READ_INQ_RSP_TX_POWER, 0, NULL);
+<<<<<<< HEAD
 
 	if (hdev->features[7] & LMP_EXTFEATURES) {
 		struct hci_cp_read_local_ext_features cp;
@@ -569,6 +576,8 @@ static void hci_setup(struct hci_dev *hdev)
 
 	if (hdev->features[4] & LMP_LE)
 		hci_set_le_support(hdev);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static void hci_cc_read_local_version(struct hci_dev *hdev, struct sk_buff *skb)
@@ -685,6 +694,7 @@ static void hci_cc_read_local_features(struct hci_dev *hdev, struct sk_buff *skb
 					hdev->features[6], hdev->features[7]);
 }
 
+<<<<<<< HEAD
 static void hci_cc_read_local_ext_features(struct hci_dev *hdev,
 							struct sk_buff *skb)
 {
@@ -700,6 +710,8 @@ static void hci_cc_read_local_ext_features(struct hci_dev *hdev,
 	hci_req_complete(hdev, HCI_OP_READ_LOCAL_EXT_FEATURES, rp->status);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static void hci_cc_read_buffer_size(struct hci_dev *hdev, struct sk_buff *skb)
 {
 	struct hci_rp_read_buffer_size *rp = (void *) skb->data;
@@ -883,6 +895,7 @@ static void hci_cc_read_local_oob_data_reply(struct hci_dev *hdev,
 						rp->randomizer, rp->status);
 }
 
+<<<<<<< HEAD
 static void hci_cc_le_set_scan_enable(struct hci_dev *hdev,
 					struct sk_buff *skb)
 {
@@ -949,6 +962,8 @@ static inline void hci_cc_write_le_host_supported(struct hci_dev *hdev,
 	hci_send_cmd(hdev, HCI_OP_READ_LOCAL_EXT_FEATURES, sizeof(cp), &cp);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static inline void hci_cs_inquiry(struct hci_dev *hdev, __u8 status)
 {
 	BT_DBG("%s status 0x%x", hdev->name, status);
@@ -992,7 +1007,11 @@ static inline void hci_cs_create_conn(struct hci_dev *hdev, __u8 status)
 		}
 	} else {
 		if (!conn) {
+<<<<<<< HEAD
 			conn = hci_conn_add(hdev, ACL_LINK, 0, &cp->bdaddr);
+=======
+			conn = hci_conn_add(hdev, ACL_LINK, &cp->bdaddr);
+>>>>>>> remotes/gregkh/linux-3.0.y
 			if (conn) {
 				conn->out = 1;
 				conn->link_mode |= HCI_LM_MASTER;
@@ -1315,6 +1334,7 @@ static void hci_cs_le_create_conn(struct hci_dev *hdev, __u8 status)
 		}
 	} else {
 		if (!conn) {
+<<<<<<< HEAD
 			conn = hci_conn_add(hdev, LE_LINK, 0, &cp->peer_addr);
 			if (conn) {
 				conn->dst_type = cp->peer_addr_type;
@@ -1322,17 +1342,27 @@ static void hci_cs_le_create_conn(struct hci_dev *hdev, __u8 status)
 			} else {
 				BT_ERR("No memory for new connection");
 			}
+=======
+			conn = hci_conn_add(hdev, LE_LINK, &cp->peer_addr);
+			if (conn)
+				conn->out = 1;
+			else
+				BT_ERR("No memory for new connection");
+>>>>>>> remotes/gregkh/linux-3.0.y
 		}
 	}
 
 	hci_dev_unlock(hdev);
 }
 
+<<<<<<< HEAD
 static void hci_cs_le_start_enc(struct hci_dev *hdev, u8 status)
 {
 	BT_DBG("%s status 0x%x", hdev->name, status);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static inline void hci_inquiry_complete_evt(struct hci_dev *hdev, struct sk_buff *skb)
 {
 	__u8 status = *((__u8 *) skb->data);
@@ -1486,8 +1516,12 @@ static inline void hci_conn_request_evt(struct hci_dev *hdev, struct sk_buff *sk
 
 		conn = hci_conn_hash_lookup_ba(hdev, ev->link_type, &ev->bdaddr);
 		if (!conn) {
+<<<<<<< HEAD
 			/* pkt_type not yet used for incoming connections */
 			conn = hci_conn_add(hdev, ev->link_type, 0, &ev->bdaddr);
+=======
+			conn = hci_conn_add(hdev, ev->link_type, &ev->bdaddr);
+>>>>>>> remotes/gregkh/linux-3.0.y
 			if (!conn) {
 				BT_ERR("No memory for new connection");
 				hci_dev_unlock(hdev);
@@ -1577,6 +1611,7 @@ static inline void hci_auth_complete_evt(struct hci_dev *hdev, struct sk_buff *s
 	hci_dev_lock(hdev);
 
 	conn = hci_conn_hash_lookup_handle(hdev, __le16_to_cpu(ev->handle));
+<<<<<<< HEAD
 	if (!conn)
 		goto unlock;
 
@@ -1629,6 +1664,53 @@ static inline void hci_auth_complete_evt(struct hci_dev *hdev, struct sk_buff *s
 	}
 
 unlock:
+=======
+	if (conn) {
+		if (!ev->status) {
+			conn->link_mode |= HCI_LM_AUTH;
+			conn->sec_level = conn->pending_sec_level;
+		} else {
+			mgmt_auth_failed(hdev->id, &conn->dst, ev->status);
+		}
+
+		clear_bit(HCI_CONN_AUTH_PEND, &conn->pend);
+
+		if (conn->state == BT_CONFIG) {
+			if (!ev->status && hdev->ssp_mode > 0 &&
+							conn->ssp_mode > 0) {
+				struct hci_cp_set_conn_encrypt cp;
+				cp.handle  = ev->handle;
+				cp.encrypt = 0x01;
+				hci_send_cmd(hdev, HCI_OP_SET_CONN_ENCRYPT,
+							sizeof(cp), &cp);
+			} else {
+				conn->state = BT_CONNECTED;
+				hci_proto_connect_cfm(conn, ev->status);
+				hci_conn_put(conn);
+			}
+		} else {
+			hci_auth_cfm(conn, ev->status);
+
+			hci_conn_hold(conn);
+			conn->disc_timeout = HCI_DISCONN_TIMEOUT;
+			hci_conn_put(conn);
+		}
+
+		if (test_bit(HCI_CONN_ENCRYPT_PEND, &conn->pend)) {
+			if (!ev->status) {
+				struct hci_cp_set_conn_encrypt cp;
+				cp.handle  = ev->handle;
+				cp.encrypt = 0x01;
+				hci_send_cmd(hdev, HCI_OP_SET_CONN_ENCRYPT,
+							sizeof(cp), &cp);
+			} else {
+				clear_bit(HCI_CONN_ENCRYPT_PEND, &conn->pend);
+				hci_encrypt_cfm(conn, ev->status, 0x00);
+			}
+		}
+	}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	hci_dev_unlock(hdev);
 }
 
@@ -1679,7 +1761,10 @@ static inline void hci_encrypt_change_evt(struct hci_dev *hdev, struct sk_buff *
 				/* Encryption implies authentication */
 				conn->link_mode |= HCI_LM_AUTH;
 				conn->link_mode |= HCI_LM_ENCRYPT;
+<<<<<<< HEAD
 				conn->sec_level = conn->pending_sec_level;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 			} else
 				conn->link_mode &= ~HCI_LM_ENCRYPT;
 		}
@@ -1883,10 +1968,13 @@ static inline void hci_cmd_complete_evt(struct hci_dev *hdev, struct sk_buff *sk
 		hci_cc_read_local_features(hdev, skb);
 		break;
 
+<<<<<<< HEAD
 	case HCI_OP_READ_LOCAL_EXT_FEATURES:
 		hci_cc_read_local_ext_features(hdev, skb);
 		break;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	case HCI_OP_READ_BUFFER_SIZE:
 		hci_cc_read_buffer_size(hdev, skb);
 		break;
@@ -1943,6 +2031,7 @@ static inline void hci_cmd_complete_evt(struct hci_dev *hdev, struct sk_buff *sk
 		hci_cc_user_confirm_neg_reply(hdev, skb);
 		break;
 
+<<<<<<< HEAD
 	case HCI_OP_LE_SET_SCAN_ENABLE:
 		hci_cc_le_set_scan_enable(hdev, skb);
 		break;
@@ -1959,6 +2048,8 @@ static inline void hci_cmd_complete_evt(struct hci_dev *hdev, struct sk_buff *sk
 		hci_cc_write_le_host_supported(hdev, skb);
 		break;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	default:
 		BT_DBG("%s opcode 0x%x", hdev->name, opcode);
 		break;
@@ -2037,10 +2128,13 @@ static inline void hci_cmd_status_evt(struct hci_dev *hdev, struct sk_buff *skb)
 		hci_cs_le_create_conn(hdev, ev->status);
 		break;
 
+<<<<<<< HEAD
 	case HCI_OP_LE_START_ENC:
 		hci_cs_le_start_enc(hdev, ev->status);
 		break;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	default:
 		BT_DBG("%s opcode 0x%x", hdev->name, opcode);
 		break;
@@ -2480,7 +2574,10 @@ static inline void hci_sync_conn_complete_evt(struct hci_dev *hdev, struct sk_bu
 		hci_conn_add_sysfs(conn);
 		break;
 
+<<<<<<< HEAD
 	case 0x10:	/* Connection Accept Timeout */
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	case 0x11:	/* Unsupported Feature or Parameter Value */
 	case 0x1c:	/* SCO interval rejected */
 	case 0x1a:	/* Unsupported Remote Feature */
@@ -2800,14 +2897,21 @@ static inline void hci_le_conn_complete_evt(struct hci_dev *hdev, struct sk_buff
 
 	conn = hci_conn_hash_lookup_ba(hdev, LE_LINK, &ev->bdaddr);
 	if (!conn) {
+<<<<<<< HEAD
 		conn = hci_conn_add(hdev, LE_LINK, 0, &ev->bdaddr);
+=======
+		conn = hci_conn_add(hdev, LE_LINK, &ev->bdaddr);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		if (!conn) {
 			BT_ERR("No memory for new connection");
 			hci_dev_unlock(hdev);
 			return;
 		}
+<<<<<<< HEAD
 
 		conn->dst_type = ev->bdaddr_type;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 
 	if (ev->status) {
@@ -2820,7 +2924,10 @@ static inline void hci_le_conn_complete_evt(struct hci_dev *hdev, struct sk_buff
 
 	mgmt_connected(hdev->id, &ev->bdaddr);
 
+<<<<<<< HEAD
 	conn->sec_level = BT_SECURITY_LOW;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	conn->handle = __le16_to_cpu(ev->handle);
 	conn->state = BT_CONNECTED;
 
@@ -2833,6 +2940,7 @@ unlock:
 	hci_dev_unlock(hdev);
 }
 
+<<<<<<< HEAD
 static inline void hci_le_adv_report_evt(struct hci_dev *hdev,
 						struct sk_buff *skb)
 {
@@ -2891,6 +2999,8 @@ not_found:
 	hci_dev_unlock(hdev);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static inline void hci_le_meta_evt(struct hci_dev *hdev, struct sk_buff *skb)
 {
 	struct hci_ev_le_meta *le_ev = (void *) skb->data;
@@ -2902,6 +3012,7 @@ static inline void hci_le_meta_evt(struct hci_dev *hdev, struct sk_buff *skb)
 		hci_le_conn_complete_evt(hdev, skb);
 		break;
 
+<<<<<<< HEAD
 	case HCI_EV_LE_ADVERTISING_REPORT:
 		hci_le_adv_report_evt(hdev, skb);
 		break;
@@ -2910,6 +3021,8 @@ static inline void hci_le_meta_evt(struct hci_dev *hdev, struct sk_buff *skb)
 		hci_le_ltk_request_evt(hdev, skb);
 		break;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	default:
 		break;
 	}
@@ -3103,6 +3216,9 @@ void hci_si_event(struct hci_dev *hdev, int type, int dlen, void *data)
 	hci_send_to_sock(hdev, skb, NULL);
 	kfree_skb(skb);
 }
+<<<<<<< HEAD
 
 module_param(enable_le, bool, 0444);
 MODULE_PARM_DESC(enable_le, "Enable LE support");
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

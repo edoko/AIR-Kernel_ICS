@@ -84,6 +84,7 @@ struct s3c_sdhci_platdata {
 			    void __iomem *regbase,
 			    struct mmc_ios *ios,
 			    struct mmc_card *card);
+<<<<<<< HEAD
 	void	(*adjust_cfg_card)(struct s3c_sdhci_platdata *pdata, void __iomem *regbase, int rw);
 	int		rx_cfg;
 	int		tx_cfg;
@@ -93,6 +94,8 @@ struct s3c_sdhci_platdata {
 
 	int must_maintain_clock;
 	int enable_intr_on_resume;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 /**
@@ -103,7 +106,10 @@ struct s3c_sdhci_platdata {
  * The call will copy the platform data, so the board definitions can
  * make the structure itself __initdata.
  */
+<<<<<<< HEAD
 extern void s3c_sdhci_set_platdata(void);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 extern void s3c_sdhci0_set_platdata(struct s3c_sdhci_platdata *pd);
 extern void s3c_sdhci1_set_platdata(struct s3c_sdhci_platdata *pd);
 extern void s3c_sdhci2_set_platdata(struct s3c_sdhci_platdata *pd);
@@ -299,10 +305,16 @@ static inline void s5pc100_default_sdhci2(void) { }
 extern char *s5pv210_hsmmc_clksrcs[4];
 
 extern void s5pv210_setup_sdhci_cfg_card(struct platform_device *dev,
+<<<<<<< HEAD
 					 void __iomem *r,
 					 struct mmc_ios *ios,
 					 struct mmc_card *card);
 extern void s5pv210_adjust_sdhci_cfg_card(struct s3c_sdhci_platdata *pdata, void __iomem *r, int rw);
+=======
+					   void __iomem *r,
+					   struct mmc_ios *ios,
+					   struct mmc_card *card);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 static inline void s5pv210_default_sdhci0(void)
 {
@@ -310,7 +322,10 @@ static inline void s5pv210_default_sdhci0(void)
 	s3c_hsmmc0_def_platdata.clocks = s5pv210_hsmmc_clksrcs;
 	s3c_hsmmc0_def_platdata.cfg_gpio = s5pv210_setup_sdhci0_cfg_gpio;
 	s3c_hsmmc0_def_platdata.cfg_card = s5pv210_setup_sdhci_cfg_card;
+<<<<<<< HEAD
 	s3c_hsmmc0_def_platdata.adjust_cfg_card = s5pv210_adjust_sdhci_cfg_card;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif
 }
 
@@ -320,7 +335,10 @@ static inline void s5pv210_default_sdhci1(void)
 	s3c_hsmmc1_def_platdata.clocks = s5pv210_hsmmc_clksrcs;
 	s3c_hsmmc1_def_platdata.cfg_gpio = s5pv210_setup_sdhci1_cfg_gpio;
 	s3c_hsmmc1_def_platdata.cfg_card = s5pv210_setup_sdhci_cfg_card;
+<<<<<<< HEAD
 	s3c_hsmmc1_def_platdata.adjust_cfg_card = s5pv210_adjust_sdhci_cfg_card;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif
 }
 
@@ -330,7 +348,10 @@ static inline void s5pv210_default_sdhci2(void)
 	s3c_hsmmc2_def_platdata.clocks = s5pv210_hsmmc_clksrcs;
 	s3c_hsmmc2_def_platdata.cfg_gpio = s5pv210_setup_sdhci2_cfg_gpio;
 	s3c_hsmmc2_def_platdata.cfg_card = s5pv210_setup_sdhci_cfg_card;
+<<<<<<< HEAD
 	s3c_hsmmc2_def_platdata.adjust_cfg_card = s5pv210_adjust_sdhci_cfg_card;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif
 }
 
@@ -340,7 +361,10 @@ static inline void s5pv210_default_sdhci3(void)
 	s3c_hsmmc3_def_platdata.clocks = s5pv210_hsmmc_clksrcs;
 	s3c_hsmmc3_def_platdata.cfg_gpio = s5pv210_setup_sdhci3_cfg_gpio;
 	s3c_hsmmc3_def_platdata.cfg_card = s5pv210_setup_sdhci_cfg_card;
+<<<<<<< HEAD
 	s3c_hsmmc3_def_platdata.adjust_cfg_card = s5pv210_adjust_sdhci_cfg_card;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif
 }
 
@@ -405,6 +429,9 @@ static inline void exynos4_default_sdhci3(void) { }
 
 #endif /* CONFIG_EXYNOS4_SETUP_SDHCI */
 
+<<<<<<< HEAD
 extern void sdhci_s3c_force_presence_change(struct platform_device *pdev);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif /* __PLAT_S3C_SDHCI_H */

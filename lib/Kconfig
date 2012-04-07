@@ -51,11 +51,16 @@ config CRC_ITU_T
 	  functions require M here.
 
 config CRC32
+<<<<<<< HEAD
 	tristate "CRC32/CRC32c functions"
+=======
+	tristate "CRC32 functions"
+>>>>>>> remotes/gregkh/linux-3.0.y
 	default y
 	select BITREVERSE
 	help
 	  This option is provided for the case where no in-kernel-tree
+<<<<<<< HEAD
 	  modules require CRC32/CRC32c functions, but a module built outside
 	  the kernel tree does. Such modules that use library CRC32/CRC32c
 	  functions require M here.
@@ -105,6 +110,11 @@ config CRC32_BIT
 	  no lookup table.  This is provided as a debugging option.
 
 endchoice
+=======
+	  modules require CRC32 functions, but a module built outside the
+	  kernel tree does. Such modules that use library CRC32 functions
+	  require M here.
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 config CRC7
 	tristate "CRC7 functions"

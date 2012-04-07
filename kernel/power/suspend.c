@@ -28,9 +28,12 @@
 #include "power.h"
 
 const char *const pm_states[PM_SUSPEND_MAX] = {
+<<<<<<< HEAD
 #ifdef CONFIG_EARLYSUSPEND
 	[PM_SUSPEND_ON]		= "on",
 #endif
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	[PM_SUSPEND_STANDBY]	= "standby",
 	[PM_SUSPEND_MEM]	= "mem",
 };
@@ -90,6 +93,7 @@ static int suspend_test(int level)
 static int suspend_prepare(void)
 {
 	int error;
+<<<<<<< HEAD
     
 	if (!suspend_ops || !suspend_ops->enter)
 		return -EPERM;
@@ -111,6 +115,29 @@ static int suspend_prepare(void)
 	suspend_thaw_processes();
 	usermodehelper_enable();
 Finish:
+=======
+
+	if (!suspend_ops || !suspend_ops->enter)
+		return -EPERM;
+
+	pm_prepare_console();
+
+	error = pm_notifier_call_chain(PM_SUSPEND_PREPARE);
+	if (error)
+		goto Finish;
+
+	error = usermodehelper_disable();
+	if (error)
+		goto Finish;
+
+	error = suspend_freeze_processes();
+	if (!error)
+		return 0;
+
+	suspend_thaw_processes();
+	usermodehelper_enable();
+ Finish:
+>>>>>>> remotes/gregkh/linux-3.0.y
 	pm_notifier_call_chain(PM_POST_SUSPEND);
 	pm_restore_console();
 	return error;
@@ -137,24 +164,37 @@ void __attribute__ ((weak)) arch_suspend_enable_irqs(void)
 static int suspend_enter(suspend_state_t state)
 {
 	int error;
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (suspend_ops->prepare) {
 		error = suspend_ops->prepare();
 		if (error)
 			goto Platform_finish;
 	}
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	error = dpm_suspend_noirq(PMSG_SUSPEND);
 	if (error) {
 		printk(KERN_ERR "PM: Some devices failed to power down\n");
 		goto Platform_finish;
 	}
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (suspend_ops->prepare_late) {
 		error = suspend_ops->prepare_late();
 		if (error)
 			goto Platform_wake;
 	}
+<<<<<<< HEAD
     
 	if (suspend_test(TEST_PLATFORM))
 		goto Platform_wake;
@@ -166,6 +206,19 @@ static int suspend_enter(suspend_state_t state)
 	arch_suspend_disable_irqs();
 	BUG_ON(!irqs_disabled());
     
+=======
+
+	if (suspend_test(TEST_PLATFORM))
+		goto Platform_wake;
+
+	error = disable_nonboot_cpus();
+	if (error || suspend_test(TEST_CPUS))
+		goto Enable_cpus;
+
+	arch_suspend_disable_irqs();
+	BUG_ON(!irqs_disabled());
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	error = syscore_suspend();
 	if (!error) {
 		if (!(suspend_test(TEST_CORE) || pm_wakeup_pending())) {
@@ -174,6 +227,7 @@ static int suspend_enter(suspend_state_t state)
 		}
 		syscore_resume();
 	}
+<<<<<<< HEAD
     
 	arch_suspend_enable_irqs();
 	BUG_ON(irqs_disabled());
@@ -191,6 +245,25 @@ Platform_finish:
 	if (suspend_ops->finish)
 		suspend_ops->finish();
     
+=======
+
+	arch_suspend_enable_irqs();
+	BUG_ON(irqs_disabled());
+
+ Enable_cpus:
+	enable_nonboot_cpus();
+
+ Platform_wake:
+	if (suspend_ops->wake)
+		suspend_ops->wake();
+
+	dpm_resume_noirq(PMSG_RESUME);
+
+ Platform_finish:
+	if (suspend_ops->finish)
+		suspend_ops->finish();
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return error;
 }
 
@@ -202,10 +275,17 @@ Platform_finish:
 int suspend_devices_and_enter(suspend_state_t state)
 {
 	int error;
+<<<<<<< HEAD
     
 	if (!suspend_ops)
 		return -ENOSYS;
     
+=======
+
+	if (!suspend_ops)
+		return -ENOSYS;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	trace_machine_suspend(state);
 	if (suspend_ops->begin) {
 		error = suspend_ops->begin(state);
@@ -222,21 +302,37 @@ int suspend_devices_and_enter(suspend_state_t state)
 	suspend_test_finish("suspend devices");
 	if (suspend_test(TEST_DEVICES))
 		goto Recover_platform;
+<<<<<<< HEAD
     
 	error = suspend_enter(state);
     
 Resume_devices:
+=======
+
+	error = suspend_enter(state);
+
+ Resume_devices:
+>>>>>>> remotes/gregkh/linux-3.0.y
 	suspend_test_start();
 	dpm_resume_end(PMSG_RESUME);
 	suspend_test_finish("resume devices");
 	resume_console();
+<<<<<<< HEAD
 Close:
+=======
+ Close:
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (suspend_ops->end)
 		suspend_ops->end();
 	trace_machine_suspend(PWR_EVENT_EXIT);
 	return error;
+<<<<<<< HEAD
     
 Recover_platform:
+=======
+
+ Recover_platform:
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (suspend_ops->recover)
 		suspend_ops->recover();
 	goto Resume_devices;
@@ -269,6 +365,7 @@ static void suspend_finish(void)
 int enter_state(suspend_state_t state)
 {
 	int error;
+<<<<<<< HEAD
     
 	if (!valid_state(state))
 		return -ENODEV;
@@ -280,23 +377,51 @@ int enter_state(suspend_state_t state)
 	sys_sync();
 	printk("done.\n");
     
+=======
+
+	if (!valid_state(state))
+		return -ENODEV;
+
+	if (!mutex_trylock(&pm_mutex))
+		return -EBUSY;
+
+	printk(KERN_INFO "PM: Syncing filesystems ... ");
+	sys_sync();
+	printk("done.\n");
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	pr_debug("PM: Preparing system for %s sleep\n", pm_states[state]);
 	error = suspend_prepare();
 	if (error)
 		goto Unlock;
+<<<<<<< HEAD
     
 	if (suspend_test(TEST_FREEZER))
 		goto Finish;
     
+=======
+
+	if (suspend_test(TEST_FREEZER))
+		goto Finish;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	pr_debug("PM: Entering %s sleep\n", pm_states[state]);
 	pm_restrict_gfp_mask();
 	error = suspend_devices_and_enter(state);
 	pm_restore_gfp_mask();
+<<<<<<< HEAD
     
 Finish:
 	pr_debug("PM: Finishing wakeup.\n");
 	suspend_finish();
 Unlock:
+=======
+
+ Finish:
+	pr_debug("PM: Finishing wakeup.\n");
+	suspend_finish();
+ Unlock:
+>>>>>>> remotes/gregkh/linux-3.0.y
 	mutex_unlock(&pm_mutex);
 	return error;
 }
@@ -310,11 +435,16 @@ Unlock:
  */
 int pm_suspend(suspend_state_t state)
 {
+<<<<<<< HEAD
 	if (state > PM_SUSPEND_ON && state <= PM_SUSPEND_MAX)
+=======
+	if (state > PM_SUSPEND_ON && state < PM_SUSPEND_MAX)
+>>>>>>> remotes/gregkh/linux-3.0.y
 		return enter_state(state);
 	return -EINVAL;
 }
 EXPORT_SYMBOL(pm_suspend);
+<<<<<<< HEAD
 
 #ifdef CONFIG_CPU_DIDLE
 bool suspend_ongoing(void)
@@ -323,3 +453,5 @@ bool suspend_ongoing(void)
 }
 EXPORT_SYMBOL(suspend_ongoing);
 #endif
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

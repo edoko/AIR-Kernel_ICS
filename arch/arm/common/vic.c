@@ -82,6 +82,11 @@ static void resume_one_vic(struct vic_device *vic)
 {
 	void __iomem *base = vic->base;
 
+<<<<<<< HEAD
+=======
+	printk(KERN_DEBUG "%s: resuming vic at %p\n", __func__, base);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* re-initialise static settings */
 	vic_init2(base);
 
@@ -110,6 +115,11 @@ static void suspend_one_vic(struct vic_device *vic)
 {
 	void __iomem *base = vic->base;
 
+<<<<<<< HEAD
+=======
+	printk(KERN_DEBUG "%s: suspending vic at %p\n", __func__, base);
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	vic->int_select = readl(base + VIC_INT_SELECT);
 	vic->int_enable = readl(base + VIC_INT_ENABLE);
 	vic->soft_int = readl(base + VIC_INT_SOFT);
@@ -204,6 +214,7 @@ static void vic_unmask_irq(struct irq_data *d)
 	writel(1 << irq, base + VIC_INT_ENABLE);
 }
 
+<<<<<<< HEAD
 static int vic_retrigger_irq(struct irq_data *d)
 {
 	void __iomem *base = irq_data_get_irq_chip_data(d);
@@ -235,6 +246,8 @@ int vic_set_fiq(unsigned int irq, bool enable)
 }
 EXPORT_SYMBOL(vic_set_fiq);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #if defined(CONFIG_PM)
 static struct vic_device *vic_from_irq(unsigned int irq)
 {
@@ -278,7 +291,10 @@ static struct irq_chip vic_chip = {
 	.irq_ack	= vic_ack_irq,
 	.irq_mask	= vic_mask_irq,
 	.irq_unmask	= vic_unmask_irq,
+<<<<<<< HEAD
 	.irq_retrigger	= vic_retrigger_irq,
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	.irq_set_wake	= vic_set_wake,
 };
 

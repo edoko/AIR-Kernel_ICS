@@ -95,6 +95,7 @@ static int dev_is_platform_device(struct device *dev)
 
 /* Clock API calls */
 
+<<<<<<< HEAD
 static int nullstrcmp(const char *a, const char *b)
 {
 	if (!a)
@@ -108,6 +109,12 @@ static int nullstrcmp(const char *a, const char *b)
 struct clk *clk_get(struct device *dev, const char *id)
 {
 	struct clk *clk;
+=======
+struct clk *clk_get(struct device *dev, const char *id)
+{
+	struct clk *p;
+	struct clk *clk = ERR_PTR(-ENOENT);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	int idno;
 
 	if (dev == NULL || !dev_is_platform_device(dev))
@@ -117,6 +124,7 @@ struct clk *clk_get(struct device *dev, const char *id)
 
 	spin_lock(&clocks_lock);
 
+<<<<<<< HEAD
 	list_for_each_entry(clk, &clocks, list)
 		if (!nullstrcmp(id, clk->name) && clk->dev == dev)
 			goto found_it;
@@ -140,12 +148,37 @@ found_it:
 		 __func__, dev, id, clk->name, clk->id, clk->dev);
 	if (!try_module_get(clk->owner))
 		clk = ERR_PTR(-ENOENT);
+=======
+	list_for_each_entry(p, &clocks, list) {
+		if (p->id == idno &&
+		    strcmp(id, p->name) == 0 &&
+		    try_module_get(p->owner)) {
+			clk = p;
+			break;
+		}
+	}
+
+	/* check for the case where a device was supplied, but the
+	 * clock that was being searched for is not device specific */
+
+	if (IS_ERR(clk)) {
+		list_for_each_entry(p, &clocks, list) {
+			if (p->id == -1 && strcmp(id, p->name) == 0 &&
+			    try_module_get(p->owner)) {
+				clk = p;
+				break;
+			}
+		}
+	}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	spin_unlock(&clocks_lock);
 	return clk;
 }
 
 void clk_put(struct clk *clk)
 {
+<<<<<<< HEAD
 	pr_debug("%s on %s %d %pS", __func__, clk->name, clk->id, clk->dev);
 	module_put(clk->owner);
 }
@@ -192,10 +225,30 @@ void _clk_disable(struct clk *clk)
 		 __func__, clk->name, clk->id, clk->dev);
 	(clk->enable)(clk, 0);
 	_clk_disable(clk->parent);
+=======
+	module_put(clk->owner);
+}
+
+int clk_enable(struct clk *clk)
+{
+	if (IS_ERR(clk) || clk == NULL)
+		return -EINVAL;
+
+	clk_enable(clk->parent);
+
+	spin_lock(&clocks_lock);
+
+	if ((clk->usage++) == 0)
+		(clk->enable)(clk, 1);
+
+	spin_unlock(&clocks_lock);
+	return 0;
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 void clk_disable(struct clk *clk)
 {
+<<<<<<< HEAD
 	if (IS_ERR(clk) || clk == NULL) {
 		pr_debug("%s request on invalid clock\n", __func__);
 		return;
@@ -207,6 +260,18 @@ void clk_disable(struct clk *clk)
 	spin_lock(&clocks_lock);
 	_clk_disable(clk);
 	spin_unlock(&clocks_lock);
+=======
+	if (IS_ERR(clk) || clk == NULL)
+		return;
+
+	spin_lock(&clocks_lock);
+
+	if ((--clk->usage) == 0)
+		(clk->enable)(clk, 0);
+
+	spin_unlock(&clocks_lock);
+	clk_disable(clk->parent);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 
@@ -392,6 +457,7 @@ int s3c24xx_register_clock(struct clk *clk)
 	BUG_ON(clk->list.prev != clk->list.next);
 
 	spin_lock(&clocks_lock);
+<<<<<<< HEAD
 	if (clk->enable != clk_null_enable) {
 		struct clk *c;
 		list_for_each_entry(c, &clocks, list) {
@@ -411,6 +477,8 @@ int s3c24xx_register_clock(struct clk *clk)
 			}
 		}
 	}
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	list_add(&clk->list, &clocks);
 	spin_unlock(&clocks_lock);
 
@@ -521,11 +589,15 @@ static int clk_debugfs_register_one(struct clk *c)
 	struct clk *pa = c->parent;
 	char s[255];
 	char *p = s;
+<<<<<<< HEAD
 	int i;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	p += sprintf(p, "%s", c->name);
 
 	if (c->id >= 0)
+<<<<<<< HEAD
 		p += sprintf(p, ":%d", c->id);
 
 	for (i = 1; i < 16; i++) {
@@ -550,6 +622,16 @@ static int clk_debugfs_register_one(struct clk *c)
 		}
 	}
 
+=======
+		sprintf(p, ":%d", c->id);
+
+	d = debugfs_create_dir(s, pa ? pa->dent : clk_debugfs_root);
+	if (!d)
+		return -ENOMEM;
+
+	c->dent = d;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	d = debugfs_create_u8("usecount", S_IRUGO, c->dent, (u8 *)&c->usage);
 	if (!d) {
 		err = -ENOMEM;

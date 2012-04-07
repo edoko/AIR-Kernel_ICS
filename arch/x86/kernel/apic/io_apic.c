@@ -3927,6 +3927,7 @@ int mp_find_ioapic_pin(int ioapic, u32 gsi)
 static __init int bad_ioapic(unsigned long address)
 {
 	if (nr_ioapics >= MAX_IO_APICS) {
+<<<<<<< HEAD
 		printk(KERN_WARNING "WARNING: Max # of I/O APICs (%d) exceeded "
 		       "(found %d), skipping\n", MAX_IO_APICS, nr_ioapics);
 		return 1;
@@ -3934,11 +3935,41 @@ static __init int bad_ioapic(unsigned long address)
 	if (!address) {
 		printk(KERN_WARNING "WARNING: Bogus (zero) I/O APIC address"
 		       " found in table, skipping!\n");
+=======
+		pr_warn("WARNING: Max # of I/O APICs (%d) exceeded (found %d), skipping\n",
+			MAX_IO_APICS, nr_ioapics);
+		return 1;
+	}
+	if (!address) {
+		pr_warn("WARNING: Bogus (zero) I/O APIC address found in table, skipping!\n");
+>>>>>>> remotes/gregkh/linux-3.0.y
 		return 1;
 	}
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static __init int bad_ioapic_register(int idx)
+{
+	union IO_APIC_reg_00 reg_00;
+	union IO_APIC_reg_01 reg_01;
+	union IO_APIC_reg_02 reg_02;
+
+	reg_00.raw = io_apic_read(idx, 0);
+	reg_01.raw = io_apic_read(idx, 1);
+	reg_02.raw = io_apic_read(idx, 2);
+
+	if (reg_00.raw == -1 && reg_01.raw == -1 && reg_02.raw == -1) {
+		pr_warn("I/O APIC 0x%x registers return all ones, skipping!\n",
+			mpc_ioapic_addr(idx));
+		return 1;
+	}
+
+	return 0;
+}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 void __init mp_register_ioapic(int id, u32 address, u32 gsi_base)
 {
 	int idx = 0;
@@ -3955,6 +3986,15 @@ void __init mp_register_ioapic(int id, u32 address, u32 gsi_base)
 	ioapics[idx].mp_config.apicaddr = address;
 
 	set_fixmap_nocache(FIX_IO_APIC_BASE_0 + idx, address);
+<<<<<<< HEAD
+=======
+
+	if (bad_ioapic_register(idx)) {
+		clear_fixmap(FIX_IO_APIC_BASE_0 + idx);
+		return;
+	}
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	ioapics[idx].mp_config.apicid = io_apic_unique_id(id);
 	ioapics[idx].mp_config.apicver = io_apic_get_version(idx);
 
@@ -3975,10 +4015,17 @@ void __init mp_register_ioapic(int id, u32 address, u32 gsi_base)
 	if (gsi_cfg->gsi_end >= gsi_top)
 		gsi_top = gsi_cfg->gsi_end + 1;
 
+<<<<<<< HEAD
 	printk(KERN_INFO "IOAPIC[%d]: apic_id %d, version %d, address 0x%x, "
 	       "GSI %d-%d\n", idx, mpc_ioapic_id(idx),
 	       mpc_ioapic_ver(idx), mpc_ioapic_addr(idx),
 	       gsi_cfg->gsi_base, gsi_cfg->gsi_end);
+=======
+	pr_info("IOAPIC[%d]: apic_id %d, version %d, address 0x%x, GSI %d-%d\n",
+		idx, mpc_ioapic_id(idx),
+		mpc_ioapic_ver(idx), mpc_ioapic_addr(idx),
+		gsi_cfg->gsi_base, gsi_cfg->gsi_end);
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	nr_ioapics++;
 }

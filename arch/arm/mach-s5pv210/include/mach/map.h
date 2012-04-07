@@ -16,11 +16,15 @@
 #include <plat/map-base.h>
 #include <plat/map-s5p.h>
 
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_SMDKV210)
 #define S5PV210_PA_SDRAM	(0x20000000)
 #else
 #define S5PV210_PA_SDRAM	(0x30000000)
 #endif
+=======
+#define S5PV210_PA_SDRAM		0x20000000
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #define S5PV210_PA_SROM_BANK5		0xA8000000
 
@@ -57,9 +61,12 @@
 #define S5PV210_PA_WATCHDOG		0xE2700000
 #define S5PV210_PA_RTC			0xE2800000
 
+<<<<<<< HEAD
 #define S5PV210_VA_RTC          S3C_ADDR(0x00c00000)
 #define S5P_VA_RTC		S5PV210_VA_RTC
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define S5PV210_PA_UART			0xE2900000
 
 #define S5PV210_PA_SROMC		0xE8000000
@@ -68,6 +75,7 @@
 
 #define S5PV210_PA_HSMMC(x)		(0xEB000000 + ((x) * 0x100000))
 
+<<<<<<< HEAD
 /* usb */
 #define S5PV210_PA_OTG          (0xEC000000)
 #define S5PV210_SZ_OTG          SZ_1M
@@ -89,6 +97,11 @@
 
 #define S5PV210_PA_AUDSS		(0xEEE10000)
 
+=======
+#define S5PV210_PA_HSOTG		0xEC000000
+#define S5PV210_PA_HSPHY		0xEC100000
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define S5PV210_PA_IIS0			0xEEE30000
 #define S5PV210_PA_IIS1			0xE2100000
 #define S5PV210_PA_IIS2			0xE2A00000
@@ -96,6 +109,7 @@
 #define S5PV210_PA_DMC0			0xF0000000
 #define S5PV210_PA_DMC1			0xF1400000
 
+<<<<<<< HEAD
 #define S5P_VA_VIC0             (S3C_VA_IRQ + 0x0)
 #define S5P_VA_VIC1             (S3C_VA_IRQ + 0x10000)
 #define S5P_VA_VIC2             (S3C_VA_IRQ + 0x20000)
@@ -121,6 +135,8 @@
 #define S5PV210_SZ_IPC		SZ_1M
 #define S5P_SZ_IPC		S5PV210_SZ_IPC
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define S5PV210_PA_VIC0			0xF2000000
 #define S5PV210_PA_VIC1			0xF2100000
 #define S5PV210_PA_VIC2			0xF2200000
@@ -138,6 +154,7 @@
 #define S5PV210_PA_FIMC1		0xFB300000
 #define S5PV210_PA_FIMC2		0xFB400000
 
+<<<<<<< HEAD
 /* mfc */
 #define S5PV210_PA_MFC		(0xF1700000)
 #define S5PV210_SZ_MFC		SZ_1M
@@ -160,6 +177,8 @@
 #define S5P_PA_FIMG2D		S5PV210_PA_FIMG2D
 #define S5P_SZ_FIMG2D		SZ_1M
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /* Compatibiltiy Defines */
 
 #define S3C_PA_FB			S5PV210_PA_FB
@@ -204,6 +223,7 @@
 
 #define S5P_SZ_UART			SZ_256
 
+<<<<<<< HEAD
 /* CEC */
 #define S5PV210_PA_CEC		(0xE1B00000)
 #define S5P_PA_CEC		S5PV210_PA_CEC
@@ -238,4 +258,6 @@
 #define S3C_SZ_OTGSFR           S5PV210_SZ_OTGSFR
 
 /* end usb */
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif /* __ASM_ARCH_MAP_H */

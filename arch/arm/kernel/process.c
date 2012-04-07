@@ -30,9 +30,15 @@
 #include <linux/uaccess.h>
 #include <linux/random.h>
 #include <linux/hw_breakpoint.h>
+<<<<<<< HEAD
 #include <linux/console.h>
 
 #include <asm/cacheflush.h>
+=======
+
+#include <asm/cacheflush.h>
+#include <asm/leds.h>
+>>>>>>> remotes/gregkh/linux-3.0.y
 #include <asm/processor.h>
 #include <asm/system.h>
 #include <asm/thread_notify.h>
@@ -62,6 +68,7 @@ static volatile int hlt_counter;
 
 #include <mach/system.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_SMP
 void arch_trigger_all_cpu_backtrace(void)
 {
@@ -74,6 +81,8 @@ void arch_trigger_all_cpu_backtrace(void)
 }
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 void disable_hlt(void)
 {
 	hlt_counter++;
@@ -103,6 +112,7 @@ static int __init hlt_setup(char *__unused)
 __setup("nohlt", nohlt_setup);
 __setup("hlt", hlt_setup);
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM_FLUSH_CONSOLE_ON_RESTART
 void arm_machine_flush_console(void)
 {
@@ -134,6 +144,10 @@ void arm_machine_restart(char mode, const char *cmd)
 	 * out to the console drivers */
 	arm_machine_flush_console();
 
+=======
+void arm_machine_restart(char mode, const char *cmd)
+{
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* Disable interrupts first */
 	local_irq_disable();
 	local_fiq_disable();
@@ -224,7 +238,11 @@ void cpu_idle(void)
 	/* endless idle loop with no priority at all */
 	while (1) {
 		tick_nohz_stop_sched_tick(1);
+<<<<<<< HEAD
 		idle_notifier_call_chain(IDLE_START);
+=======
+		leds_event(led_idle_start);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		while (!need_resched()) {
 #ifdef CONFIG_HOTPLUG_CPU
 			if (cpu_is_offline(smp_processor_id()))
@@ -251,8 +269,13 @@ void cpu_idle(void)
 				local_irq_enable();
 			}
 		}
+<<<<<<< HEAD
 		tick_nohz_restart_sched_tick();
 		idle_notifier_call_chain(IDLE_END);
+=======
+		leds_event(led_idle_end);
+		tick_nohz_restart_sched_tick();
+>>>>>>> remotes/gregkh/linux-3.0.y
 		preempt_enable_no_resched();
 		schedule();
 		preempt_disable();
@@ -295,6 +318,7 @@ void machine_restart(char *cmd)
 	arm_pm_restart(reboot_mode, cmd);
 }
 
+<<<<<<< HEAD
 /*
  * dump a block of kernel memory from around the given address
  */
@@ -366,6 +390,8 @@ static void show_extra_register_data(struct pt_regs *regs, int nbytes)
 	set_fs(fs);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 void __show_regs(struct pt_regs *regs)
 {
 	unsigned long flags;
@@ -425,8 +451,11 @@ void __show_regs(struct pt_regs *regs)
 		printk("Control: %08x%s\n", ctrl, buf);
 	}
 #endif
+<<<<<<< HEAD
 
 	show_extra_register_data(regs, 128);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 void show_regs(struct pt_regs * regs)

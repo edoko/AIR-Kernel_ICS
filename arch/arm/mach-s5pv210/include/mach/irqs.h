@@ -17,6 +17,7 @@
 
 /* VIC0: System, DMA, Timer */
 
+<<<<<<< HEAD
 #define IRQ_EINT0		S5P_IRQ_VIC0(0)
 #define IRQ_EINT1		S5P_IRQ_VIC0(1)
 #define IRQ_EINT2		S5P_IRQ_VIC0(2)
@@ -33,6 +34,8 @@
 #define IRQ_EINT13		S5P_IRQ_VIC0(13)
 #define IRQ_EINT14		S5P_IRQ_VIC0(14)
 #define IRQ_EINT15		S5P_IRQ_VIC0(15)
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define IRQ_EINT16_31		S5P_IRQ_VIC0(16)
 #define IRQ_BATF		S5P_IRQ_VIC0(17)
 #define IRQ_MDMA		S5P_IRQ_VIC0(18)
@@ -132,19 +135,30 @@
 #define IRQ_MDNIE1		S5P_IRQ_VIC3(6)
 #define IRQ_MDNIE2		S5P_IRQ_VIC3(7)
 #define IRQ_MDNIE3		S5P_IRQ_VIC3(8)
+<<<<<<< HEAD
 #define IRQ_ADC1		S5P_IRQ_VIC3(9)
 #define IRQ_PENDN1		S5P_IRQ_VIC3(10)
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define IRQ_VIC_END		S5P_IRQ_VIC3(31)
 
 #define S5P_EINT_BASE1		(S5P_IRQ_VIC0(0))
 #define S5P_EINT_BASE2		(IRQ_VIC_END + 1)
+<<<<<<< HEAD
 #define S5P_IRQ_EINT_BASE   S5P_EINT_BASE2
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /* GPIO interrupt */
 #define S5P_GPIOINT_BASE	(IRQ_EINT(31) + 1)
 #define S5P_GPIOINT_GROUP_MAXNR	22
 
+<<<<<<< HEAD
 #define S5P_EINT(x)    ((x) + S5P_IRQ_EINT_BASE)
+=======
+/* Set the default NR_IRQS */
+#define NR_IRQS			(IRQ_EINT(31) + S5P_GPIOINT_COUNT + 1)
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 /* Compatibility */
 #define IRQ_LCD_FIFO		IRQ_LCD0
@@ -152,6 +166,7 @@
 #define IRQ_LCD_SYSTEM		IRQ_LCD2
 #define IRQ_MIPI_CSIS0		IRQ_MIPI_CSIS
 
+<<<<<<< HEAD
 /* Next the external interrupt groups. These are similar to the IRQ_EINT(x)
  * that they are sourced from the GPIO pins but with a different scheme for
  * priority and source indication.
@@ -221,4 +236,6 @@
 
 #define FIQ_START		0
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif /* ASM_ARCH_IRQS_H */

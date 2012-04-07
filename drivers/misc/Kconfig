@@ -61,6 +61,7 @@ config AD525X_DPOT_SPI
 	  To compile this driver as a module, choose M here: the
 	  module will be called ad525x_dpot-spi.
 
+<<<<<<< HEAD
 config ANDROID_PMEM
 	bool "Android pmem allocator"
 	default y
@@ -80,6 +81,8 @@ config ANDROID_PMEM_MEMSIZE_PMEM_ADSP
         default "6144"
 endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config ATMEL_PWM
 	tristate "Atmel AT32/AT91 PWM support"
 	depends on AVR32 || ARCH_AT91SAM9263 || ARCH_AT91SAM9RL || ARCH_AT91CAP9
@@ -410,6 +413,7 @@ config HMC6352
 	  This driver provides support for the Honeywell HMC6352 compass,
 	  providing configuration and heading data via sysfs.
 
+<<<<<<< HEAD
 config SENSORS_AK8973
 	tristate "AK8973 magnetometer support"
 	default n
@@ -433,6 +437,8 @@ config SENSORS_KR3DM
 	help
 	  Driver for STMicro KR3DM accelerometer - digital motion sensor.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config EP93XX_PWM
 	tristate "EP93xx PWM support"
 	depends on ARCH_EP93XX
@@ -476,10 +482,13 @@ config TI_DAC7512
 	  This driver can also be built as a module. If so, the module
 	  will be called ti_dac7512.
 
+<<<<<<< HEAD
 config UID_STAT
 	bool "UID based statistics tracking exported to /proc/uid_stat"
 	default n
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config VMWARE_BALLOON
 	tristate "VMware Balloon Driver"
 	depends on X86
@@ -536,6 +545,7 @@ config PCH_PHUB
 	  To compile this driver as a module, choose M here: the module will
 	  be called pch_phub.
 
+<<<<<<< HEAD
 config WL127X_RFKILL
 	tristate "Bluetooth power control driver for TI wl127x"
 	depends on RFKILL
@@ -577,6 +587,8 @@ config USB_SWITCH_FSA9480
 	  stereo and mono audio, video, microphone and UART data to use
 	  a common connector port.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"
@@ -585,6 +597,7 @@ source "drivers/misc/ti-st/Kconfig"
 source "drivers/misc/lis3lv02d/Kconfig"
 source "drivers/misc/carma/Kconfig"
 
+<<<<<<< HEAD
 config SAMSUNG_MODEMCTL
 	bool "Samsung Modem Control/IO Driver"
 
@@ -625,4 +638,6 @@ config TOUCH_WAKE
        help
          Say Y here to enable Touch Wake
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 endif # MISC_DEVICES

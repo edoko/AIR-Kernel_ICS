@@ -170,7 +170,11 @@ static void iser_create_send_desc(struct iser_conn	*ib_conn,
 }
 
 
+<<<<<<< HEAD
 static int iser_alloc_rx_descriptors(struct iser_conn *ib_conn)
+=======
+int iser_alloc_rx_descriptors(struct iser_conn *ib_conn)
+>>>>>>> remotes/gregkh/linux-3.0.y
 {
 	int i, j;
 	u64 dma_addr;
@@ -236,6 +240,7 @@ void iser_free_rx_descriptors(struct iser_conn *ib_conn)
 	kfree(ib_conn->rx_descs);
 }
 
+<<<<<<< HEAD
 /**
  *  iser_conn_set_full_featured_mode - (iSER API)
  */
@@ -253,6 +258,26 @@ int iser_conn_set_full_featured_mode(struct iscsi_conn *conn)
 	if (iser_alloc_rx_descriptors(iser_conn->ib_conn))
 		return -ENOMEM;
 
+=======
+static int iser_post_rx_bufs(struct iscsi_conn *conn, struct iscsi_hdr *req)
+{
+	struct iscsi_iser_conn *iser_conn = conn->dd_data;
+
+	iser_dbg("req op %x flags %x\n", req->opcode, req->flags);
+	/* check if this is the last login - going to full feature phase */
+	if ((req->flags & ISCSI_FULL_FEATURE_PHASE) != ISCSI_FULL_FEATURE_PHASE)
+		return 0;
+
+	/*
+	 * Check that there is one posted recv buffer (for the last login
+	 * response) and no posted send buffers left - they must have been
+	 * consumed during previous login phases.
+	 */
+	WARN_ON(iser_conn->ib_conn->post_recv_buf_count != 1);
+	WARN_ON(atomic_read(&iser_conn->ib_conn->post_send_buf_count) != 0);
+
+	iser_dbg("Initially post: %d\n", ISER_MIN_POSTED_RX);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* Initial post receive buffers */
 	if (iser_post_recvm(iser_conn->ib_conn, ISER_MIN_POSTED_RX))
 		return -ENOMEM;
@@ -421,6 +446,12 @@ int iser_send_control(struct iscsi_conn *conn,
 		err = iser_post_recvl(iser_conn->ib_conn);
 		if (err)
 			goto send_control_error;
+<<<<<<< HEAD
+=======
+		err = iser_post_rx_bufs(conn, task->hdr);
+		if (err)
+			goto send_control_error;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 
 	err = iser_post_send(iser_conn->ib_conn, mdesc);

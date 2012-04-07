@@ -120,6 +120,10 @@ struct autofs_sb_info {
 	int sub_version;
 	int min_proto;
 	int max_proto;
+<<<<<<< HEAD
+=======
+	int compat_daemon;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	unsigned long exp_timeout;
 	unsigned int type;
 	int reghost_enabled;

@@ -28,9 +28,13 @@ obj-$(CONFIG_BATTERY_DA9030)	+= da9030_battery.o
 obj-$(CONFIG_BATTERY_MAX17040)	+= max17040_battery.o
 obj-$(CONFIG_BATTERY_MAX17042)	+= max17042_battery.o
 obj-$(CONFIG_BATTERY_Z2)	+= z2_battery.o
+<<<<<<< HEAD
 obj-$(CONFIG_BATTERY_S3C)	+= s3c_fake_battery.o
 obj-$(CONFIG_BATTERY_S3C_ADC)	+= s3c_adc_battery.o
 obj-$(CONFIG_BATTERY_S5PC110)	+= s5pc110_battery.o
+=======
+obj-$(CONFIG_BATTERY_S3C_ADC)	+= s3c_adc_battery.o
+>>>>>>> remotes/gregkh/linux-3.0.y
 obj-$(CONFIG_CHARGER_PCF50633)	+= pcf50633-charger.o
 obj-$(CONFIG_BATTERY_JZ4740)	+= jz4740-battery.o
 obj-$(CONFIG_BATTERY_INTEL_MID)	+= intel_mid_battery.o

@@ -101,8 +101,11 @@ struct mgmt_key_info {
 	u8 type;
 	u8 val[16];
 	u8 pin_len;
+<<<<<<< HEAD
 	u8 dlen;
 	u8 data[0];
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 } __packed;
 
 #define MGMT_OP_LOAD_KEYS		0x000D
@@ -201,6 +204,7 @@ struct mgmt_cp_remove_remote_oob_data {
 
 #define MGMT_OP_STOP_DISCOVERY		0x001C
 
+<<<<<<< HEAD
 #define MGMT_OP_BLOCK_DEVICE		0x001D
 struct mgmt_cp_block_device {
 	bdaddr_t bdaddr;
@@ -211,6 +215,8 @@ struct mgmt_cp_unblock_device {
 	bdaddr_t bdaddr;
 } __packed;
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #define MGMT_EV_CMD_COMPLETE		0x0001
 struct mgmt_ev_cmd_complete {
 	__le16 opcode;

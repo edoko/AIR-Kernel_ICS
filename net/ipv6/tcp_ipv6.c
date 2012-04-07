@@ -1667,7 +1667,10 @@ static int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
 	return 0;
 
 reset:
+<<<<<<< HEAD
 	if (!skb->dev || (skb->dev->flags & IFF_LOOPBACK))
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	tcp_v6_send_reset(sk, skb);
 discard:
 	if (opt_skb)
@@ -1800,7 +1803,10 @@ no_tcp_socket:
 bad_packet:
 		TCP_INC_STATS_BH(net, TCP_MIB_INERRS);
 	} else {
+<<<<<<< HEAD
 		if (skb->dev->flags & IFF_LOOPBACK)
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 		tcp_v6_send_reset(NULL, skb);
 	}
 

@@ -104,6 +104,7 @@ int check_wakeup_irqs(void)
 
 	for_each_irq_desc(irq, desc) {
 		if (irqd_is_wakeup_set(&desc->irq_data)) {
+<<<<<<< HEAD
 			if (desc->istate & IRQS_PENDING) {
 				pr_info("Wakeup IRQ %d %s pending, suspend aborted\n",
 					irq,
@@ -111,6 +112,10 @@ int check_wakeup_irqs(void)
 					desc->action->name : "");
 				return -EBUSY;
 			}
+=======
+			if (desc->istate & IRQS_PENDING)
+				return -EBUSY;
+>>>>>>> remotes/gregkh/linux-3.0.y
 			continue;
 		}
 		/*

@@ -29,6 +29,7 @@ static void __iomem *l2x0_base;
 static DEFINE_SPINLOCK(l2x0_lock);
 static uint32_t l2x0_way_mask;	/* Bitmask of active ways */
 static uint32_t l2x0_size;
+<<<<<<< HEAD
 static u32 l2x0_cache_id;
 static unsigned int l2x0_sets;
 static unsigned int l2x0_ways;
@@ -39,6 +40,8 @@ static inline bool is_pl310_rev(int rev)
 		(L2X0_CACHE_ID_PART_MASK | L2X0_CACHE_ID_REV_MASK)) ==
 			(L2X0_CACHE_ID_PART_L310 | rev);
 }
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 static inline void cache_wait_way(void __iomem *reg, unsigned long mask)
 {
@@ -130,6 +133,7 @@ static void l2x0_cache_sync(void)
 	spin_unlock_irqrestore(&l2x0_lock, flags);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PL310_ERRATA_727915
 static void l2x0_for_each_set_way(void __iomem *reg)
 {
@@ -147,6 +151,8 @@ static void l2x0_for_each_set_way(void __iomem *reg)
 }
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static void __l2x0_flush_all(void)
 {
 	debug_writel(0x03);
@@ -160,6 +166,7 @@ static void l2x0_flush_all(void)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 #ifdef CONFIG_PL310_ERRATA_727915
 	if (is_pl310_rev(REV_PL310_R2P0)) {
 		l2x0_for_each_set_way(l2x0_base + L2X0_CLEAN_INV_LINE_IDX);
@@ -167,6 +174,8 @@ static void l2x0_flush_all(void)
 	}
 #endif
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* clean all ways */
 	spin_lock_irqsave(&l2x0_lock, flags);
 	__l2x0_flush_all();
@@ -177,6 +186,7 @@ static void l2x0_clean_all(void)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 #ifdef CONFIG_PL310_ERRATA_727915
 	if (is_pl310_rev(REV_PL310_R2P0)) {
 		l2x0_for_each_set_way(l2x0_base + L2X0_CLEAN_LINE_IDX);
@@ -191,6 +201,13 @@ static void l2x0_clean_all(void)
 	cache_wait_way(l2x0_base + L2X0_CLEAN_WAY, l2x0_way_mask);
 	cache_sync();
 	debug_writel(0x00);
+=======
+	/* clean all ways */
+	spin_lock_irqsave(&l2x0_lock, flags);
+	writel_relaxed(l2x0_way_mask, l2x0_base + L2X0_CLEAN_WAY);
+	cache_wait_way(l2x0_base + L2X0_CLEAN_WAY, l2x0_way_mask);
+	cache_sync();
+>>>>>>> remotes/gregkh/linux-3.0.y
 	spin_unlock_irqrestore(&l2x0_lock, flags);
 }
 
@@ -323,18 +340,29 @@ static void l2x0_disable(void)
 void __init l2x0_init(void __iomem *base, __u32 aux_val, __u32 aux_mask)
 {
 	__u32 aux;
+<<<<<<< HEAD
 	__u32 way_size = 0;
+=======
+	__u32 cache_id;
+	__u32 way_size = 0;
+	int ways;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	const char *type;
 
 	l2x0_base = base;
 
+<<<<<<< HEAD
 	l2x0_cache_id = readl_relaxed(l2x0_base + L2X0_CACHE_ID);
+=======
+	cache_id = readl_relaxed(l2x0_base + L2X0_CACHE_ID);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	aux = readl_relaxed(l2x0_base + L2X0_AUX_CTRL);
 
 	aux &= aux_mask;
 	aux |= aux_val;
 
 	/* Determine the number of ways */
+<<<<<<< HEAD
 	switch (l2x0_cache_id & L2X0_CACHE_ID_PART_MASK) {
 	case L2X0_CACHE_ID_PART_L310:
 		if (aux & (1 << 16))
@@ -345,24 +373,49 @@ void __init l2x0_init(void __iomem *base, __u32 aux_val, __u32 aux_mask)
 		break;
 	case L2X0_CACHE_ID_PART_L210:
 		l2x0_ways = (aux >> 13) & 0xf;
+=======
+	switch (cache_id & L2X0_CACHE_ID_PART_MASK) {
+	case L2X0_CACHE_ID_PART_L310:
+		if (aux & (1 << 16))
+			ways = 16;
+		else
+			ways = 8;
+		type = "L310";
+		break;
+	case L2X0_CACHE_ID_PART_L210:
+		ways = (aux >> 13) & 0xf;
+>>>>>>> remotes/gregkh/linux-3.0.y
 		type = "L210";
 		break;
 	default:
 		/* Assume unknown chips have 8 ways */
+<<<<<<< HEAD
 		l2x0_ways = 8;
+=======
+		ways = 8;
+>>>>>>> remotes/gregkh/linux-3.0.y
 		type = "L2x0 series";
 		break;
 	}
 
+<<<<<<< HEAD
 	l2x0_way_mask = (1 << l2x0_ways) - 1;
+=======
+	l2x0_way_mask = (1 << ways) - 1;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/*
 	 * L2 cache Size =  Way size * Number of ways
 	 */
 	way_size = (aux & L2X0_AUX_CTRL_WAY_SIZE_MASK) >> 17;
+<<<<<<< HEAD
 	way_size = SZ_1K << (way_size + 3);
 	l2x0_size = l2x0_ways * way_size;
 	l2x0_sets = way_size / CACHE_LINE_SIZE;
+=======
+	way_size = 1 << (way_size + 3);
+	l2x0_size = ways * way_size * SZ_1K;
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	/*
 	 * Check if l2x0 controller is already enabled.
@@ -391,5 +444,9 @@ void __init l2x0_init(void __iomem *base, __u32 aux_val, __u32 aux_mask)
 
 	printk(KERN_INFO "%s cache controller enabled\n", type);
 	printk(KERN_INFO "l2x0: %d ways, CACHE_ID 0x%08x, AUX_CTRL 0x%08x, Cache size: %d B\n",
+<<<<<<< HEAD
 			l2x0_ways, l2x0_cache_id, aux, l2x0_size);
+=======
+			ways, cache_id, aux, l2x0_size);
+>>>>>>> remotes/gregkh/linux-3.0.y
 }

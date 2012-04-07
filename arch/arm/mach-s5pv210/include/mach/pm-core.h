@@ -14,7 +14,10 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
 */
+<<<<<<< HEAD
 #include <mach/regs-gpio.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 static inline void s3c_pm_debug_init_uart(void)
 {
@@ -34,10 +37,14 @@ static inline void s3c_pm_arch_stop_clocks(void)
 
 static inline void s3c_pm_arch_show_resume_irqs(void)
 {
+<<<<<<< HEAD
 	printk(KERN_DEBUG "S5P_WAKEUP_STAT 0x%X\n", __raw_readl(S5P_WAKEUP_STAT));
 	printk(KERN_DEBUG "EINT_PEND 0x%X, 0x%X, 0x%X, 0x%X\n",
 		__raw_readl(S5P_EINT_PEND(0)), __raw_readl(S5P_EINT_PEND(1)),
 		__raw_readl(S5P_EINT_PEND(2)), __raw_readl(S5P_EINT_PEND(3)));
+=======
+	/* nothing here yet */
+>>>>>>> remotes/gregkh/linux-3.0.y
 }
 
 static inline void s3c_pm_arch_update_uart(void __iomem *regs,
@@ -45,4 +52,7 @@ static inline void s3c_pm_arch_update_uart(void __iomem *regs,
 {
 	/* nothing here yet */
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

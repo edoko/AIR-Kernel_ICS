@@ -254,15 +254,37 @@ static int nfs4_handle_exception(struct nfs_server *server, int errorcode, struc
 {
 	struct nfs_client *clp = server->nfs_client;
 	struct nfs4_state *state = exception->state;
+<<<<<<< HEAD
+=======
+	struct inode *inode = exception->inode;
+>>>>>>> remotes/gregkh/linux-3.0.y
 	int ret = errorcode;
 
 	exception->retry = 0;
 	switch(errorcode) {
 		case 0:
 			return 0;
+<<<<<<< HEAD
 		case -NFS4ERR_ADMIN_REVOKED:
 		case -NFS4ERR_BAD_STATEID:
 		case -NFS4ERR_OPENMODE:
+=======
+		case -NFS4ERR_OPENMODE:
+			if (nfs_have_delegation(inode, FMODE_READ)) {
+				nfs_inode_return_delegation(inode);
+				exception->retry = 1;
+				return 0;
+			}
+			if (state == NULL)
+				break;
+			nfs4_schedule_stateid_recovery(server, state);
+			goto wait_on_recovery;
+		case -NFS4ERR_DELEG_REVOKED:
+		case -NFS4ERR_ADMIN_REVOKED:
+		case -NFS4ERR_BAD_STATEID:
+			if (state != NULL)
+				nfs_remove_bad_delegation(state->inode);
+>>>>>>> remotes/gregkh/linux-3.0.y
 			if (state == NULL)
 				break;
 			nfs4_schedule_stateid_recovery(server, state);
@@ -1305,8 +1327,16 @@ int nfs4_open_delegation_recall(struct nfs_open_context *ctx, struct nfs4_state 
 				 * The show must go on: exit, but mark the
 				 * stateid as needing recovery.
 				 */
+<<<<<<< HEAD
 			case -NFS4ERR_ADMIN_REVOKED:
 			case -NFS4ERR_BAD_STATEID:
+=======
+			case -NFS4ERR_DELEG_REVOKED:
+			case -NFS4ERR_ADMIN_REVOKED:
+			case -NFS4ERR_BAD_STATEID:
+				nfs_inode_find_state_and_recover(state->inode,
+						stateid);
+>>>>>>> remotes/gregkh/linux-3.0.y
 				nfs4_schedule_stateid_recovery(server, state);
 			case -EKEYEXPIRED:
 				/*
@@ -1862,7 +1892,14 @@ static int nfs4_do_setattr(struct inode *inode, struct rpc_cred *cred,
 			   struct nfs4_state *state)
 {
 	struct nfs_server *server = NFS_SERVER(inode);
+<<<<<<< HEAD
 	struct nfs4_exception exception = { };
+=======
+	struct nfs4_exception exception = {
+		.state = state,
+		.inode = inode,
+	};
+>>>>>>> remotes/gregkh/linux-3.0.y
 	int err;
 	do {
 		err = nfs4_handle_exception(server,
@@ -3678,8 +3715,16 @@ nfs4_async_handle_error(struct rpc_task *task, const struct nfs_server *server, 
 	if (task->tk_status >= 0)
 		return 0;
 	switch(task->tk_status) {
+<<<<<<< HEAD
 		case -NFS4ERR_ADMIN_REVOKED:
 		case -NFS4ERR_BAD_STATEID:
+=======
+		case -NFS4ERR_DELEG_REVOKED:
+		case -NFS4ERR_ADMIN_REVOKED:
+		case -NFS4ERR_BAD_STATEID:
+			if (state != NULL)
+				nfs_remove_bad_delegation(state->inode);
+>>>>>>> remotes/gregkh/linux-3.0.y
 		case -NFS4ERR_OPENMODE:
 			if (state == NULL)
 				break;
@@ -4484,7 +4529,13 @@ out:
 
 static int nfs4_proc_setlk(struct nfs4_state *state, int cmd, struct file_lock *request)
 {
+<<<<<<< HEAD
 	struct nfs4_exception exception = { };
+=======
+	struct nfs4_exception exception = {
+		.state = state,
+	};
+>>>>>>> remotes/gregkh/linux-3.0.y
 	int err;
 
 	do {
@@ -4577,6 +4628,10 @@ int nfs4_lock_delegation_recall(struct nfs4_state *state, struct file_lock *fl)
 				 * The show must go on: exit, but mark the
 				 * stateid as needing recovery.
 				 */
+<<<<<<< HEAD
+=======
+			case -NFS4ERR_DELEG_REVOKED:
+>>>>>>> remotes/gregkh/linux-3.0.y
 			case -NFS4ERR_ADMIN_REVOKED:
 			case -NFS4ERR_BAD_STATEID:
 			case -NFS4ERR_OPENMODE:

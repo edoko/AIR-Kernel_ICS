@@ -18,6 +18,7 @@ config CPU_S5PV210
 	help
 	  Enable S5PV210 CPU support
 
+<<<<<<< HEAD
 config CPU_DIDLE
         bool "Enable DEEP IDLE support for S5PV210 CPU"
         depends on CPU_IDLE
@@ -64,13 +65,20 @@ config S5PV210_SETUP_I2C1
 	bool
 	default	y
 	select HAVE_S3C2410_I2C
+=======
+config S5PV210_SETUP_I2C1
+	bool
+>>>>>>> remotes/gregkh/linux-3.0.y
 	help
 	  Common setup code for i2c bus 1.
 
 config S5PV210_SETUP_I2C2
 	bool
+<<<<<<< HEAD
 	default	y
 	select HAVE_S3C2410_I2C
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	help
 	  Common setup code for i2c bus 2.
 
@@ -105,6 +113,7 @@ config S5PV210_SETUP_FIMC
 	help
 	  Common setup code for the camera interfaces.
 
+<<<<<<< HEAD
 config S5PV210_POWER_DOMAIN
 	bool
 	depends on REGULATOR
@@ -138,6 +147,8 @@ help
 IF channel 2 uses 8-bit bus, channel 3 is disabled.
 endmenu
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 menu "S5PC110 Machines"
 
 config MACH_AQUILA
@@ -187,7 +198,10 @@ config MACH_SMDKC110
 	select S3C_DEV_I2C1
 	select S3C_DEV_I2C2
 	select S3C_DEV_RTC
+<<<<<<< HEAD
 	select HAVE_S3C_RTC
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	select S3C_DEV_WDT
 	select SAMSUNG_DEV_IDE
 	select S5PV210_SETUP_I2C1
@@ -252,6 +266,7 @@ config S5PV210_PM
 	help
 	  Power Management code common to S5PV210
 
+<<<<<<< HEAD
 config MACH_HERRING
 	bool "Herring"
 	select CPU_S5PV210
@@ -319,4 +334,6 @@ config FORCE_FAST_CHARGE
           A simple sysfs interface to force adapters that
           are detected as USB to charge as AC.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 endif

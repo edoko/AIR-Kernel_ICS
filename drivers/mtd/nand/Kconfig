@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 config MTD_NAND_IDS
 	tristate "Include chip ids for known NAND devices."
 	depends on MTD
@@ -5,6 +6,8 @@ config MTD_NAND_IDS
 	  Useful for NAND drivers that do not use the NAND subsystem but
 	  still like to take advantage of the known chip information.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config MTD_NAND_ECC
 	tristate
 
@@ -128,6 +131,7 @@ config MTD_NAND_OMAP2
 	help
           Support for NAND flash on Texas Instruments OMAP2 and OMAP3 platforms.
 
+<<<<<<< HEAD
 config MTD_NAND_OMAP_PREFETCH
 	bool "GPMC prefetch support for NAND Flash device"
 	depends on MTD_NAND_OMAP2
@@ -145,6 +149,8 @@ config MTD_NAND_OMAP_PREFETCH_DMA
 	 or in DMA interrupt mode.
 	 Say y for DMA mode or MPU mode will be used
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config MTD_NAND_IDS
 	tristate
 

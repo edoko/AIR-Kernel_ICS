@@ -35,8 +35,11 @@ struct pda_power_pdata {
 	unsigned int polling_interval; /* msecs, default is 2000 */
 
 	unsigned long ac_max_uA; /* current to draw when on AC */
+<<<<<<< HEAD
 
 	bool use_otg_notifier;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 #endif /* __PDA_POWER_H__ */

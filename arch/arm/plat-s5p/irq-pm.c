@@ -21,7 +21,10 @@
 #include <plat/irqs.h>
 #include <plat/pm.h>
 #include <mach/map.h>
+<<<<<<< HEAD
 #include <plat/irq-pm.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 #include <mach/regs-gpio.h>
 #include <mach/regs-irq.h>
@@ -42,6 +45,7 @@ int s3c_irq_wake(struct irq_data *data, unsigned int state)
 	unsigned long irqbit;
 
 	switch (data->irq) {
+<<<<<<< HEAD
 	case IRQ_RTC_ALARM:
 		irqbit = 1 << 1;
 		break;
@@ -77,14 +81,26 @@ int s3c_irq_wake(struct irq_data *data, unsigned int state)
 		break;
 	case IRQ_CEC:
 		irqbit = 1 << 15;
+=======
+	case IRQ_RTC_TIC:
+	case IRQ_RTC_ALARM:
+		irqbit = 1 << (data->irq + 1 - IRQ_RTC_ALARM);
+		if (!state)
+			s3c_irqwake_intmask |= irqbit;
+		else
+			s3c_irqwake_intmask &= ~irqbit;
+>>>>>>> remotes/gregkh/linux-3.0.y
 		break;
 	default:
 		return -ENOENT;
 	}
+<<<<<<< HEAD
 	if (!state)
 		s3c_irqwake_intmask |= irqbit;
 	else
 		s3c_irqwake_intmask &= ~irqbit;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	return 0;
 }
 
@@ -94,10 +110,23 @@ static struct sleep_save eint_save[] = {
 	SAVE_ITEM(S5P_EINT_CON(2)),
 	SAVE_ITEM(S5P_EINT_CON(3)),
 
+<<<<<<< HEAD
+=======
+	SAVE_ITEM(S5P_EINT_FLTCON(0)),
+	SAVE_ITEM(S5P_EINT_FLTCON(1)),
+	SAVE_ITEM(S5P_EINT_FLTCON(2)),
+	SAVE_ITEM(S5P_EINT_FLTCON(3)),
+	SAVE_ITEM(S5P_EINT_FLTCON(4)),
+	SAVE_ITEM(S5P_EINT_FLTCON(5)),
+	SAVE_ITEM(S5P_EINT_FLTCON(6)),
+	SAVE_ITEM(S5P_EINT_FLTCON(7)),
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	SAVE_ITEM(S5P_EINT_MASK(0)),
 	SAVE_ITEM(S5P_EINT_MASK(1)),
 	SAVE_ITEM(S5P_EINT_MASK(2)),
 	SAVE_ITEM(S5P_EINT_MASK(3)),
+<<<<<<< HEAD
 
 	SAVE_ITEM(S5P_EINT_FLTCON(0,0)),
 	SAVE_ITEM(S5P_EINT_FLTCON(0,1)),
@@ -107,6 +136,8 @@ static struct sleep_save eint_save[] = {
 	SAVE_ITEM(S5P_EINT_FLTCON(2,1)),
 	SAVE_ITEM(S5P_EINT_FLTCON(3,0)),
 	SAVE_ITEM(S5P_EINT_FLTCON(3,1)),
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 int s3c24xx_irq_suspend(void)

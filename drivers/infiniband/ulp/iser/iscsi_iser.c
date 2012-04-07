@@ -354,6 +354,12 @@ iscsi_iser_conn_bind(struct iscsi_cls_session *cls_session,
 	}
 	ib_conn = ep->dd_data;
 
+<<<<<<< HEAD
+=======
+	if (iser_alloc_rx_descriptors(ib_conn))
+		return -ENOMEM;
+
+>>>>>>> remotes/gregkh/linux-3.0.y
 	/* binds the iSER connection retrieved from the previously
 	 * connected ep_handle to the iSCSI layer connection. exchanges
 	 * connection pointers */
@@ -388,6 +394,7 @@ iscsi_iser_conn_stop(struct iscsi_cls_conn *cls_conn, int flag)
 	iser_conn->ib_conn = NULL;
 }
 
+<<<<<<< HEAD
 static int
 iscsi_iser_conn_start(struct iscsi_cls_conn *cls_conn)
 {
@@ -401,6 +408,8 @@ iscsi_iser_conn_start(struct iscsi_cls_conn *cls_conn)
 	return iscsi_conn_start(cls_conn);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 static void iscsi_iser_session_destroy(struct iscsi_cls_session *cls_session)
 {
 	struct Scsi_Host *shost = iscsi_session_to_shost(cls_session);
@@ -686,7 +695,11 @@ static struct iscsi_transport iscsi_iser_transport = {
 	.get_conn_param		= iscsi_conn_get_param,
 	.get_ep_param		= iscsi_iser_get_ep_param,
 	.get_session_param	= iscsi_session_get_param,
+<<<<<<< HEAD
 	.start_conn             = iscsi_iser_conn_start,
+=======
+	.start_conn             = iscsi_conn_start,
+>>>>>>> remotes/gregkh/linux-3.0.y
 	.stop_conn              = iscsi_iser_conn_stop,
 	/* iscsi host params */
 	.get_host_param		= iscsi_host_get_param,

@@ -1031,6 +1031,7 @@ config USB_S2255
 	  This driver can be compiled as a module, called s2255drv.
 
 endif # V4L_USB_DRIVERS
+<<<<<<< HEAD
 
 config VIDEO_S5KA3DFX
         tristate "S5KA3DFX Camera Sensor"
@@ -1067,6 +1068,8 @@ config VIDEO_S5K4ECGX_V_1_1
 
 source "drivers/media/video/samsung/Kconfig"
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 endif # VIDEO_CAPTURE_DRIVERS
 
 menuconfig V4L_MEM2MEM_DRIVERS

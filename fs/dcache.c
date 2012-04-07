@@ -2433,6 +2433,10 @@ struct dentry *d_materialise_unique(struct dentry *dentry, struct inode *inode)
 			if (d_ancestor(alias, dentry)) {
 				/* Check for loops */
 				actual = ERR_PTR(-ELOOP);
+<<<<<<< HEAD
+=======
+				spin_unlock(&inode->i_lock);
+>>>>>>> remotes/gregkh/linux-3.0.y
 			} else if (IS_ROOT(alias)) {
 				/* Is this an anonymous mountpoint that we
 				 * could splice into our tree? */
@@ -2442,7 +2446,11 @@ struct dentry *d_materialise_unique(struct dentry *dentry, struct inode *inode)
 				goto found;
 			} else {
 				/* Nope, but we must(!) avoid directory
+<<<<<<< HEAD
 				 * aliasing */
+=======
+				 * aliasing. This drops inode->i_lock */
+>>>>>>> remotes/gregkh/linux-3.0.y
 				actual = __d_unalias(inode, dentry, alias);
 			}
 			write_sequnlock(&rename_lock);

@@ -130,6 +130,7 @@ s3c_gpio_pull_t s3c_gpio_getpull(unsigned int pin)
 }
 EXPORT_SYMBOL(s3c_gpio_getpull);
 
+<<<<<<< HEAD
 int s3c_gpio_setpin(unsigned int pin, s3c_gpio_pull_t level)
 {
         struct s3c_gpio_chip *chip = s3c_gpiolib_getchip(pin);
@@ -151,6 +152,8 @@ int s3c_gpio_setpin(unsigned int pin, s3c_gpio_pull_t level)
 
 EXPORT_SYMBOL(s3c_gpio_setpin);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #ifdef CONFIG_S3C_GPIO_CFG_S3C24XX
 int s3c_gpio_setcfg_s3c24xx_a(struct s3c_gpio_chip *chip,
 			      unsigned int off, unsigned int cfg)

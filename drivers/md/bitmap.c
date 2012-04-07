@@ -1982,6 +1982,11 @@ location_store(mddev_t *mddev, const char *buf, size_t len)
 			if (mddev->pers) {
 				mddev->pers->quiesce(mddev, 1);
 				rv = bitmap_create(mddev);
+<<<<<<< HEAD
+=======
+				if (!rv)
+					rv = bitmap_load(mddev);
+>>>>>>> remotes/gregkh/linux-3.0.y
 				if (rv) {
 					bitmap_destroy(mddev);
 					mddev->bitmap_info.offset = 0;

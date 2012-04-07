@@ -476,7 +476,10 @@ static int set_config(struct usb_composite_dev *cdev,
 	power = c->bMaxPower ? (2 * c->bMaxPower) : CONFIG_USB_GADGET_VBUS_DRAW;
 done:
 	usb_gadget_vbus_draw(gadget, power);
+<<<<<<< HEAD
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	if (result >= 0 && cdev->delayed_status)
 		result = USB_GADGET_DELAYED_STATUS;
 	return result;
@@ -524,7 +527,10 @@ int usb_add_config(struct usb_composite_dev *cdev,
 
 	INIT_LIST_HEAD(&config->functions);
 	config->next_interface_id = 0;
+<<<<<<< HEAD
 	memset(config->interface, '\0', sizeof(config->interface));
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 	status = bind(config);
 	if (status < 0) {
@@ -564,6 +570,7 @@ done:
 	return status;
 }
 
+<<<<<<< HEAD
 static int remove_config(struct usb_composite_dev *cdev,
 			      struct usb_configuration *config)
 {
@@ -603,6 +610,8 @@ int usb_remove_config(struct usb_composite_dev *cdev,
 	return remove_config(cdev, config);
 }
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /*-------------------------------------------------------------------------*/
 
 /* We support strings in multiple languages ... string descriptor zero
@@ -1082,9 +1091,34 @@ composite_unbind(struct usb_gadget *gadget)
 
 	while (!list_empty(&cdev->configs)) {
 		struct usb_configuration	*c;
+<<<<<<< HEAD
 		c = list_first_entry(&cdev->configs,
 				struct usb_configuration, list);
 		remove_config(cdev, c);
+=======
+
+		c = list_first_entry(&cdev->configs,
+				struct usb_configuration, list);
+		while (!list_empty(&c->functions)) {
+			struct usb_function		*f;
+
+			f = list_first_entry(&c->functions,
+					struct usb_function, list);
+			list_del(&f->list);
+			if (f->unbind) {
+				DBG(cdev, "unbind function '%s'/%p\n",
+						f->name, f);
+				f->unbind(c, f);
+				/* may free memory for "f" */
+			}
+		}
+		list_del(&c->list);
+		if (c->unbind) {
+			DBG(cdev, "unbind config '%s'/%p\n", c->label, c);
+			c->unbind(c);
+			/* may free memory for "c" */
+		}
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 	if (composite->unbind)
 		composite->unbind(cdev);

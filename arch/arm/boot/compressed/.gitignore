@@ -5,4 +5,7 @@ piggy.lzo
 piggy.lzma
 vmlinux
 vmlinux.lds
+<<<<<<< HEAD
 piggy.xzkern
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y

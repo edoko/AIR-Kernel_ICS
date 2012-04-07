@@ -71,8 +71,11 @@ extern void s3c_i2c5_cfg_gpio(struct platform_device *dev);
 extern void s3c_i2c6_cfg_gpio(struct platform_device *dev);
 extern void s3c_i2c7_cfg_gpio(struct platform_device *dev);
 
+<<<<<<< HEAD
 extern void s3c_i2c0_force_stop(void);
 extern void s3c_i2c1_force_stop(void);
 extern void s3c_i2c2_force_stop(void);
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 #endif /* __ASM_ARCH_IIC_H */

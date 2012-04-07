@@ -48,6 +48,7 @@ ext4_xattr_security_set(struct dentry *dentry, const char *name,
 			      name, value, size, flags);
 }
 
+<<<<<<< HEAD
 static int
 ext4_initxattrs(struct inode *inode, const struct xattr *xattr_array,
 		void *fs_info)
@@ -68,6 +69,9 @@ ext4_initxattrs(struct inode *inode, const struct xattr *xattr_array,
 }
 
 static int
+=======
+int
+>>>>>>> remotes/gregkh/linux-3.0.y
 ext4_init_security(handle_t *handle, struct inode *inode, struct inode *dir,
 		   const struct qstr *qstr)
 {

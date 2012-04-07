@@ -1,6 +1,10 @@
 VERSION = 3
 PATCHLEVEL = 0
+<<<<<<< HEAD
 SUBLEVEL = 26
+=======
+SUBLEVEL = 27
+>>>>>>> remotes/gregkh/linux-3.0.y
 EXTRAVERSION =
 NAME = Sneaky Weasel
 
@@ -192,8 +196,13 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
 # Default value for CROSS_COMPILE is not to prefix executables
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 export KBUILD_BUILDHOST := $(SUBARCH)
+<<<<<<< HEAD
 ARCH		?= arm
 CROSS_COMPILE	?= /home/edoko/arm-2011.09/bin/arm-none-eabi-
+=======
+ARCH		?= $(SUBARCH)
+CROSS_COMPILE	?= $(CONFIG_CROSS_COMPILE:"%"=%)
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 # Architecture as present in compile.h
 UTS_MACHINE 	:= $(ARCH)
@@ -347,10 +356,17 @@ CHECK		= sparse
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
+<<<<<<< HEAD
 CFLAGS_MODULE   = -DMODULE -mcpu=cortex-a8 -mfpu=neon -funswitch-loops -fpredictive-commoning -fgcse-after-reload -ftree-vectorize -fipa-cp-clone -fsingle-precision-constant -pipe
 AFLAGS_MODULE   =
 LDFLAGS_MODULE  =
 CFLAGS_KERNEL	= -funswitch-loops -fpredictive-commoning -fgcse-after-reload -ftree-vectorize -fipa-cp-clone -fsingle-precision-constant -pipe
+=======
+CFLAGS_MODULE   =
+AFLAGS_MODULE   =
+LDFLAGS_MODULE  =
+CFLAGS_KERNEL	=
+>>>>>>> remotes/gregkh/linux-3.0.y
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
@@ -368,11 +384,15 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
+<<<<<<< HEAD
 		   -fno-delete-null-pointer-checks \
 		   -mfpu=neon \
 		   -mcpu=cortex-a8 \
 		   -mno-unaligned-access
 
+=======
+		   -fno-delete-null-pointer-checks
+>>>>>>> remotes/gregkh/linux-3.0.y
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__

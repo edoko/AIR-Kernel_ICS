@@ -915,12 +915,15 @@ config SYSCTL
 config ANON_INODES
 	bool
 
+<<<<<<< HEAD
 config PANIC_TIMEOUT
 	int "Default panic timeout"
 	default 0
 	help
 	  Set default panic timeout.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 menuconfig EXPERT
 	bool "Configure standard kernel features (expert users)"
 	help
@@ -1087,6 +1090,7 @@ config SHMEM
 	  option replaces shmem and tmpfs with the much simpler ramfs code,
 	  which may be appropriate on small systems without swap.
 
+<<<<<<< HEAD
 config ASHMEM
 	bool "Enable the Anonymous Shared Memory Subsystem"
 	default n
@@ -1096,6 +1100,8 @@ config ASHMEM
 	  POSIX SHM but with different behavior and sporting a simpler
 	  file-based API.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config AIO
 	bool "Enable AIO support" if EXPERT
 	default y
@@ -1222,7 +1228,11 @@ config COMPAT_BRK
 
 choice
 	prompt "Choose SLAB allocator"
+<<<<<<< HEAD
 	default SLQB
+=======
+	default SLUB
+>>>>>>> remotes/gregkh/linux-3.0.y
 	help
 	   This option allows to select a slab allocator.
 
@@ -1243,11 +1253,14 @@ config SLUB
 	   and has enhanced diagnostics. SLUB is the default choice for
 	   a slab allocator.
 
+<<<<<<< HEAD
 config SLQB
 	bool "SLQB (Queued allocator)"
 	help
 	  SLQB is a proposed new slab allocator.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config SLOB
 	depends on EXPERT
 	bool "SLOB (Simple Allocator)"
@@ -1304,7 +1317,11 @@ config HAVE_GENERIC_DMA_COHERENT
 config SLABINFO
 	bool
 	depends on PROC_FS
+<<<<<<< HEAD
 	depends on SLAB || SLUB_DEBUG || SLQB
+=======
+	depends on SLAB || SLUB_DEBUG
+>>>>>>> remotes/gregkh/linux-3.0.y
 	default y
 
 config RT_MUTEXES

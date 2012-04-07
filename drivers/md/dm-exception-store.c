@@ -282,7 +282,11 @@ int dm_exception_store_init(void)
 	return 0;
 
 persistent_fail:
+<<<<<<< HEAD
 	dm_persistent_snapshot_exit();
+=======
+	dm_transient_snapshot_exit();
+>>>>>>> remotes/gregkh/linux-3.0.y
 transient_fail:
 	return r;
 }

@@ -16,7 +16,10 @@
 #define __LINUX_USB_GADGET_H
 
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/device.h>
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 
 struct usb_ep;
 

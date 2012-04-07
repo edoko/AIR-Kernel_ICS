@@ -451,9 +451,13 @@ do_cache_op(unsigned long start, unsigned long end, int flags)
 		if (end > vma->vm_end)
 			end = vma->vm_end;
 
+<<<<<<< HEAD
 		up_read(&mm->mmap_sem);
 		flush_cache_user_range(start, end);
 		return;
+=======
+		flush_cache_user_range(vma, start, end);
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 	up_read(&mm->mmap_sem);
 }

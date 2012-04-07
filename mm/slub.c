@@ -3439,13 +3439,22 @@ struct kmem_cache *kmem_cache_create(const char *name, size_t size,
 		if (kmem_cache_open(s, n,
 				size, align, flags, ctor)) {
 			list_add(&s->list, &slab_caches);
+<<<<<<< HEAD
 			if (sysfs_slab_add(s)) {
+=======
+			up_write(&slub_lock);
+			if (sysfs_slab_add(s)) {
+				down_write(&slub_lock);
+>>>>>>> remotes/gregkh/linux-3.0.y
 				list_del(&s->list);
 				kfree(n);
 				kfree(s);
 				goto err;
 			}
+<<<<<<< HEAD
 			up_write(&slub_lock);
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 			return s;
 		}
 		kfree(n);

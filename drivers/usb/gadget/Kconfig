@@ -112,7 +112,10 @@ config	USB_GADGET_SELECTED
 choice
 	prompt "USB Peripheral Controller"
 	depends on USB_GADGET
+<<<<<<< HEAD
 	default USB_GADGET_S3C_OTGD if (ARCH_S5PV210)
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 	help
 	   A USB device uses a controller to talk to its host.
 	   Systems should have only one such upstream link.
@@ -374,6 +377,7 @@ config USB_S3C_HSUDC
 	default USB_GADGET
 	select USB_GADGET_SELECTED
 
+<<<<<<< HEAD
 config USB_GADGET_S3C_OTGD
 	boolean "S3C HS USB OTG Device"
 	depends on (ARCH_S5PV210)
@@ -388,6 +392,8 @@ config USB_GADGET_S3C_OTGD
           dynamically linked module called "s3c-udc-otg" and force all
           gadget drivers to also be dynamically linked.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config USB_GADGET_PXA_U2O
 	boolean "PXA9xx Processor USB2.0 controller"
 	select USB_GADGET_DUALSPEED
@@ -647,6 +653,7 @@ config USB_DUMMY_HCD
 
 endchoice
 
+<<<<<<< HEAD
 comment "NOTE: S3C OTG device role enables the controller driver below"
 	depends on USB_GADGET_S3C_OTGD
 
@@ -684,6 +691,8 @@ config USB_GADGET_S3C_OTGD_SLAVE_MODE
 	   S3C USB OTG core operates in Slave mode.
 endchoice
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 # Selected by UDC drivers that support high-speed operation.
 config USB_GADGET_DUALSPEED
 	bool
@@ -987,6 +996,7 @@ config USB_G_PRINTER
 	  For more information, see Documentation/usb/gadget_printer.txt
 	  which includes sample code for accessing the device file.
 
+<<<<<<< HEAD
 config USB_G_ANDROID
 	boolean "Android Gadget"
 	depends on SWITCH
@@ -1001,6 +1011,8 @@ config USB_ANDROID_RNDIS_DWORD_ALIGNED
         help
 	  Provides dword aligned for DMA controller.
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 config USB_CDC_COMPOSITE
 	tristate "CDC Composite Device (Ethernet and ACM)"
 	depends on NET

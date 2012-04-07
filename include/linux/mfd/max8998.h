@@ -64,6 +64,7 @@ struct max8998_regulator_data {
 	struct regulator_init_data	*initdata;
 };
 
+<<<<<<< HEAD
 enum cable_type_t {
 	CABLE_TYPE_NONE = 0,
 	CABLE_TYPE_USB,
@@ -97,6 +98,8 @@ struct max8998_charger_data {
 	int adc_array_size;
 };
 
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 /**
  * struct max8998_board - packages regulator init data
  * @regulators: array of defined regulators
@@ -140,7 +143,10 @@ struct max8998_platform_data {
 	int				buck2_default_idx;
 	bool				wakeup;
 	bool				rtc_delay;
+<<<<<<< HEAD
 	struct max8998_charger_data	*charger;
+=======
+>>>>>>> remotes/gregkh/linux-3.0.y
 };
 
 #endif /*  __LINUX_MFD_MAX8998_H */

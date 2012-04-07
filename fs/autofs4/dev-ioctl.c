@@ -385,6 +385,10 @@ static int autofs_dev_ioctl_setpipefd(struct file *fp,
 		sbi->pipefd = pipefd;
 		sbi->pipe = pipe;
 		sbi->catatonic = 0;
+<<<<<<< HEAD
+=======
+		sbi->compat_daemon = is_compat_task();
+>>>>>>> remotes/gregkh/linux-3.0.y
 	}
 out:
 	mutex_unlock(&sbi->wq_mutex);
