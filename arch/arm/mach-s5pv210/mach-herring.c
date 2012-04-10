@@ -6190,3 +6190,4 @@ void s3c_setup_uart_cfg_gpio(unsigned char port)
 	}
 }
 EXPORT_SYMBOL(s3c_setup_uart_cfg_gpio);
+
