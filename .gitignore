@@ -33,6 +33,7 @@ modules.builtin
 *.patch
 *.gcno
 *.xzkern
+piggy.xzkern
 
 #
 # Top-level generic files
