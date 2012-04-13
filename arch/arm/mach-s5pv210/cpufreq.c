@@ -837,24 +837,15 @@ static int __init s5pv210_cpu_init(struct cpufreq_policy *policy)
 static int s5pv210_cpufreq_notifier_event(struct notifier_block *this,
 		unsigned long event, void *ptr)
 {
-	static int max, min;
 	int ret;
-
-	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
 
 	switch (event) {
 	case PM_SUSPEND_PREPARE:
 #ifdef CONFIG_LIVE_OC
-	max = policy->max;
-	min = policy->min;
-	policy->max = policy->min = sleep_freq;
-		ret = cpufreq_driver_target(policy, sleep_freq,
+		ret = cpufreq_driver_target(cpufreq_cpu_get(0), sleep_freq,
 				DISABLE_FURTHER_CPUFREQ);
 #else
-	max = policy->max;
-	min = policy->min;
-	policy->max = policy->min = SLEEP_FREQ;
-		ret = cpufreq_driver_target(policy, SLEEP_FREQ,
+		ret = cpufreq_driver_target(cpufreq_cpu_get(0), SLEEP_FREQ,
 				DISABLE_FURTHER_CPUFREQ);
 #endif
 		if (ret < 0)
@@ -865,15 +856,11 @@ static int s5pv210_cpufreq_notifier_event(struct notifier_block *this,
 #ifdef CONFIG_LIVE_OC
 		pllbus_changing = true;
 
-		cpufreq_driver_target(policy, sleep_freq,
+		cpufreq_driver_target(cpufreq_cpu_get(0), sleep_freq,
 				ENABLE_FURTHER_CPUFREQ);
-	policy->max = max;
-	policy->min = min;
 #else
-		cpufreq_driver_target(policy, SLEEP_FREQ,
+		cpufreq_driver_target(cpufreq_cpu_get(0), SLEEP_FREQ,
 				ENABLE_FURTHER_CPUFREQ);
-	policy->max = max;
-	policy->min = min;
 #endif
 		return NOTIFY_OK;
 	}
